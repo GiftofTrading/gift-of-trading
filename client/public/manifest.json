@@ -1,0 +1,49 @@
+{
+  "name": "Gift of Trading",
+  "short_name": "Gift Trading",
+  "description": "Learn to invest in the stock market with confidence. Stock Market Made Easy — a comprehensive masterclass by Sounia Gill for complete beginners.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#001f3f",
+  "icons": [
+    {
+      "src": "/gift-logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/gift-logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/gift-logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "categories": ["education", "finance"],
+  "shortcuts": [
+    {
+      "name": "Admin Login",
+      "short_name": "Login",
+      "description": "Access the admin dashboard",
+      "url": "/login",
+      "icons": [
+        {
+          "src": "/gift-logo-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

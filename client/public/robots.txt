@@ -1,0 +1,31 @@
+# Gift of Trading - robots.txt
+# Search engine crawling and indexing rules
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/manage-admins
+Disallow: /verify-email
+Disallow: /login
+Disallow: /api/
+
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /admin/manage-admins
+Disallow: /verify-email
+Disallow: /login
+Disallow: /api/
+
+# Specific rules for Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /admin/manage-admins
+Disallow: /verify-email
+Disallow: /login
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://giftoftrading.com/sitemap.xml

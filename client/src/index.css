@@ -1,0 +1,308 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Marquee animation for running headline */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── Gift of Trading — Sureva-Inspired Premium Design System ────────────────
+   Palette:
+     Navy Deep  #0D1B3E  oklch(15% 0.06 255)
+     Navy       #1A2F5E  oklch(22% 0.07 255)
+     Cream      #F8F5EE  oklch(97% 0.012 80)
+     Gold       #C9A84C  oklch(72% 0.12 75)
+     Charcoal   #2D2D3A  oklch(20% 0.02 280)
+   ────────────────────────────────────────────────────────────────────────── */
+
+@theme inline {
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius: 0.75rem;
+
+  --color-background: oklch(97% 0.012 80);
+  --color-foreground: oklch(15% 0.06 255);
+  --color-card: oklch(100% 0 0);
+  --color-card-foreground: oklch(15% 0.06 255);
+  --color-popover: oklch(100% 0 0);
+  --color-popover-foreground: oklch(15% 0.06 255);
+  --color-primary: oklch(22% 0.07 255);
+  --color-primary-foreground: oklch(97% 0.012 80);
+  --color-secondary: oklch(93% 0.025 80);
+  --color-secondary-foreground: oklch(15% 0.06 255);
+  --color-muted: oklch(94% 0.010 80);
+  --color-muted-foreground: oklch(52% 0.03 255);
+  --color-accent: oklch(72% 0.12 75);
+  --color-accent-foreground: oklch(15% 0.06 255);
+  --color-destructive: oklch(55% 0.22 27);
+  --color-border: oklch(88% 0.018 80);
+  --color-input: oklch(88% 0.018 80);
+  --color-ring: oklch(72% 0.12 75);
+  --color-chart-1: oklch(72% 0.12 75);
+  --color-chart-2: oklch(60% 0.13 70);
+  --color-chart-3: oklch(50% 0.12 68);
+  --color-chart-4: oklch(40% 0.10 66);
+  --color-chart-5: oklch(30% 0.08 64);
+  --color-sidebar: oklch(15% 0.06 255);
+  --color-sidebar-foreground: oklch(80% 0.02 80);
+  --color-sidebar-primary: oklch(72% 0.12 75);
+  --color-sidebar-primary-foreground: oklch(15% 0.06 255);
+  --color-sidebar-accent: oklch(22% 0.07 255);
+  --color-sidebar-accent-foreground: oklch(97% 0.012 80);
+  --color-sidebar-border: oklch(28% 0.07 255);
+  --color-sidebar-ring: oklch(72% 0.12 75);
+}
+
+:root {
+  /* Brand tokens */
+  --navy-deep:  oklch(15% 0.06 255);
+  --navy:       oklch(22% 0.07 255);
+  --navy-mid:   oklch(28% 0.07 255);
+  --navy-light: oklch(34% 0.07 255);
+  --cream:      oklch(97% 0.012 80);
+  --cream-dark: oklch(93% 0.018 80);
+  --gold:       oklch(72% 0.12 75);
+  --gold-light: oklch(82% 0.09 75);
+  --gold-dark:  oklch(60% 0.14 75);
+  --charcoal:   oklch(20% 0.02 280);
+  --text-body:  oklch(38% 0.02 255);
+  --text-muted: oklch(55% 0.02 255);
+}
+
+.dark {
+  --color-background: oklch(15% 0.06 255);
+  --color-foreground: oklch(97% 0.012 80);
+  --color-card: oklch(20% 0.07 255);
+  --color-card-foreground: oklch(97% 0.012 80);
+  --color-primary: oklch(72% 0.12 75);
+  --color-primary-foreground: oklch(15% 0.06 255);
+  --color-muted: oklch(22% 0.07 255);
+  --color-muted-foreground: oklch(65% 0.03 255);
+  --color-border: oklch(28% 0.07 255);
+  --color-input: oklch(28% 0.07 255);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+}
+
+@layer utilities {
+  /* Marquee animation utility */
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
+  }
+
+  .flex { min-width: 0; min-height: 0; }
+
+  /* ── Typography ── */
+  .font-serif   { font-family: 'Playfair Display', Georgia, serif; }
+  .font-sans    { font-family: 'Inter', -apple-system, sans-serif; }
+
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .section-label-gold {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .editorial-heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 4.5vw, 3.75rem);
+    font-weight: 500;
+    line-height: 1.12;
+    color: var(--navy);
+  }
+  .editorial-heading-light {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 4.5vw, 3.75rem);
+    font-weight: 500;
+    line-height: 1.12;
+    color: var(--cream);
+  }
+  .editorial-heading-xl {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 500;
+    line-height: 1.08;
+    color: var(--navy);
+  }
+
+  .body-text  { font-family: 'Inter', sans-serif; color: var(--text-body); font-size: 1rem; line-height: 1.75; }
+  .body-muted { font-family: 'Inter', sans-serif; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.7; }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--navy); color: var(--cream);
+    font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500;
+    padding: 0.8rem 2rem; border-radius: 9999px;
+    border: 1.5px solid var(--navy); cursor: pointer;
+    transition: all 0.22s ease; text-decoration: none; white-space: nowrap;
+  }
+  .btn-primary:hover {
+    background: var(--navy-deep); border-color: var(--navy-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px oklch(15% 0.06 255 / 0.28);
+  }
+
+  .btn-gold {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold); color: var(--navy);
+    font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600;
+    padding: 0.8rem 2rem; border-radius: 9999px;
+    border: 1.5px solid var(--gold); cursor: pointer;
+    transition: all 0.22s ease; text-decoration: none; white-space: nowrap;
+  }
+  .btn-gold:hover {
+    background: var(--gold-dark); border-color: var(--gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px oklch(72% 0.12 75 / 0.35);
+  }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent; color: var(--navy);
+    font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500;
+    padding: 0.8rem 2rem; border-radius: 9999px;
+    border: 1.5px solid var(--navy); cursor: pointer;
+    transition: all 0.22s ease; text-decoration: none; white-space: nowrap;
+  }
+  .btn-ghost:hover { background: var(--navy); color: var(--cream); transform: translateY(-2px); }
+
+  .btn-ghost-light {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent; color: var(--cream);
+    font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500;
+    padding: 0.8rem 2rem; border-radius: 9999px;
+    border: 1.5px solid oklch(97% 0.012 80 / 0.4); cursor: pointer;
+    transition: all 0.22s ease; text-decoration: none; white-space: nowrap;
+  }
+  .btn-ghost-light:hover { background: oklch(100% 0 0 / 0.1); border-color: var(--cream); }
+
+  /* ── Cards ── */
+  .service-card {
+    background: white; border-radius: 1.25rem; padding: 2.5rem 2rem;
+    border: 1px solid oklch(88% 0.018 80);
+    transition: all 0.25s ease; display: block; text-decoration: none;
+  }
+  .service-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 16px 48px oklch(22% 0.07 255 / 0.09);
+    transform: translateY(-5px);
+  }
+
+  .testimonial-card {
+    background: oklch(19% 0.055 255);
+    border-radius: 1.25rem; padding: 2rem;
+    border: 1px solid oklch(28% 0.07 255);
+  }
+
+  /* ── Sections ── */
+  .section-py   { padding-top: 5.5rem; padding-bottom: 5.5rem; }
+  .section-dark  { background: var(--navy); }
+  .section-deep  { background: var(--navy-deep); }
+  .section-cream { background: var(--cream); }
+  .section-light { background: oklch(96% 0.008 80); }
+
+  /* ── Tags ── */
+  .tag-gold {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: oklch(72% 0.12 75 / 0.12); color: var(--gold-dark);
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.85rem; border-radius: 9999px;
+    border: 1px solid oklch(72% 0.12 75 / 0.3);
+  }
+  .tag-navy {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: oklch(22% 0.07 255 / 0.08); color: var(--navy);
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.85rem; border-radius: 9999px;
+    border: 1px solid oklch(22% 0.07 255 / 0.2);
+  }
+
+  /* ── Stat number ── */
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 700; line-height: 1;
+    color: var(--navy);
+  }
+  .stat-number-light {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 700; line-height: 1;
+    color: var(--gold);
+  }
+
+  /* ── Photo ── */
+  .photo-rounded { border-radius: 1.25rem; overflow: hidden; object-fit: cover; }
+
+  /* ── Scrollbar ── */
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* ── Line clamp ── */
+  .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .line-clamp-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+
+  /* ── Container ── */
+  .container {
+    width: 100%; max-width: 1200px;
+    margin-left: auto; margin-right: auto;
+    padding-left: 1.5rem; padding-right: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .container { padding-left: 2.5rem; padding-right: 2.5rem; }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1777083287674,
+      "tag": "0000_tricky_sentinel",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1777087952972,
+      "tag": "0001_lying_sage",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1777213528319,
+      "tag": "0002_wonderful_jigsaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1779484901408,
+      "tag": "0003_red_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1781882744523,
+      "tag": "0004_daffy_expediter",
+      "breakpoints": true
+    }
+  ]
+}
