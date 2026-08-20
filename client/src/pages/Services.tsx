@@ -3,8 +3,6 @@ import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import { ArrowRight, CheckCircle, Clock, Video, BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 
-const WHOP_MASTERCLASS_CHECKOUT = "https://buy.stripe.com/aFa7sKa5S4t1gbD62Xe3e0c";
-
 const IMGS = {
   sounia3: "/images/sounia-3_67fb747f.jpg",
 };
@@ -113,9 +111,9 @@ export default function Services() {
             </div>
             <p className="mb-2 text-sm" style={{ color: "var(--text-body)" }}>Limited spots available. Apply today to schedule your consultation.</p>
             <p className="mb-6 text-sm font-semibold" style={{ color: "#c9a84c" }}>Cohort starts August 18, 2026 • Tuesdays & Thursdays 5:00 - 6:30 PM PST</p>
-            <a href={WHOP_MASTERCLASS_CHECKOUT} target="_blank" rel="noopener noreferrer" className="btn-gold inline-flex items-center gap-2">
-              Enroll Now <ArrowRight size={16} />
-            </a>
+            <button disabled className="btn-gold inline-flex items-center gap-2 opacity-50 cursor-not-allowed">
+              Course is Sold Out
+            </button>
           </div>
         </div>
       </section>
@@ -155,7 +153,9 @@ export default function Services() {
             Join 2,700+ students who have already transformed their financial future with Gift of Trading.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href={WHOP_MASTERCLASS_CHECKOUT} target="_blank" rel="noopener noreferrer" className="btn-gold inline-flex items-center gap-2">Enroll Now <ArrowRight size={16} /></a>
+            <button disabled className="btn-gold inline-flex items-center gap-2 opacity-50 cursor-not-allowed">
+              Course is Sold Out
+            </button>
             <Link href="/contact"><span className="btn-ghost-light">Ask a Question</span></Link>
           </div>
         </div>

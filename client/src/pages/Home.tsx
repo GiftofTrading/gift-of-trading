@@ -23,7 +23,6 @@ const IMGS = {
 
 // WHOP URLs
 const WHOP_SMME = "https://whop.com/discover/options-academy-zero-to-pro-6/stock-market-made-simple/";
-const WHOP_MASTERCLASS = "https://buy.stripe.com/aFa7sKa5S4t1gbD62Xe3e0c";
 
 // HIDDEN: Stock Market Made Easy course - will be re-enabled later
 const hiddenStockMarketCourse = {
@@ -46,7 +45,8 @@ const services = [
     href: "/masterclass",
     price: "$3,000",
     originalPrice: null,
-    whopUrl: WHOP_MASTERCLASS,
+    whopUrl: null,
+    isSoldOut: true,
   },
 ];
 
@@ -324,7 +324,14 @@ export default function Home() {
                     </div>
                   )}
                   <div className="mt-4 flex gap-2 flex-wrap">
-                    {s.whopUrl ? (
+                    {s.isSoldOut ? (
+                      <button
+                        disabled
+                        style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", background: "var(--gold)", color: "var(--navy)", fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: "0.78rem", padding: "0.45rem 1rem", borderRadius: "0.375rem", opacity: 0.5, cursor: "not-allowed" }}
+                      >
+                        Course is Sold Out
+                      </button>
+                    ) : s.whopUrl ? (
                       <a
                         href={s.whopUrl}
                         target="_blank"
@@ -561,7 +568,7 @@ export default function Home() {
           </div>
           <div className="text-center mt-8">
             <a
-              href={WHOP_MASTERCLASS}
+              href="https://whop.com/discover/options-academy-zero-to-pro-6/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm"
@@ -607,7 +614,7 @@ export default function Home() {
               </div>
 
               <a
-                href={WHOP_MASTERCLASS}
+                href="https://whop.com/discover/options-academy-zero-to-pro-6/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center gap-2"

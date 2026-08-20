@@ -18,7 +18,6 @@ export default function Masterclass() {
   }, []);
 
   // REMOVED: applicationFormOpen state - using direct Whop link instead
-  const WHOP_CHECKOUT_URL = "https://buy.stripe.com/aFa7sKa5S4t1gbD62Xe3e0c";
 
   return (
     <Layout>
@@ -34,18 +33,16 @@ export default function Masterclass() {
               Master options trading with personalized guidance from Sounia. Learn the tools, resources, and mindset hacks for long-term success.
             </p>
             <div className="mt-6 p-4 rounded-lg" style={{ background: "rgba(201, 168, 76, 0.1)", borderLeft: "3px solid #c9a84c" }}>
-              <p className="text-sm font-semibold text-[#c9a84c] mb-2">Next Cohort Starts August 18, 2026</p>
+              <p className="text-sm font-semibold text-[#c9a84c] mb-2">Cohort Started August 18, 2026</p>
               <p className="text-sm" style={{ color: "oklch(70% 0.02 255)" }}>Tuesdays & Thursdays • 5:00 - 6:30 PM PST • Online (Zoom) • 4 Months</p>
               <p className="text-lg font-bold mt-3" style={{ color: "var(--gold)" }}>Price: $3,000</p>
             </div>
-            <a 
-              href={WHOP_CHECKOUT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-gold mt-8 inline-flex items-center gap-2"
+            <button 
+              disabled
+              className="btn-gold mt-8 inline-flex items-center gap-2 opacity-50 cursor-not-allowed"
             >
-              Enroll Now <ArrowRight size={16} />
-            </a>
+              Course is Sold Out
+            </button>
           </div>
         </div>
       </section>
@@ -94,7 +91,7 @@ export default function Masterclass() {
       <section className="section-py section-light">
         <div className="container">
           <div className="max-w-2xl mx-auto">
-            <MasterclassCourseCard onApplyClick={() => window.open(WHOP_CHECKOUT_URL, '_blank')} />
+            <MasterclassCourseCard onApplyClick={() => {}} isSoldOut={true} />
           </div>
         </div>
       </section>
@@ -149,19 +146,17 @@ export default function Masterclass() {
         <div className="container text-center">
           <h2 className="editorial-heading mb-5">Ready to Master Options Trading?</h2>
           <p className="mb-4 text-sm" style={{ color: "var(--text-body)", maxWidth: 460, margin: "0 auto", fontFamily: "'Inter', sans-serif" }}>
-            Limited spots available. Apply today to schedule your consultation with Sounia.
+            This cohort is currently full and in progress. Stay tuned for future dates!
           </p>
           <p className="mb-8 text-sm font-semibold" style={{ color: "#c9a84c", maxWidth: 460, margin: "0 auto 2rem", fontFamily: "'Inter', sans-serif" }}>
-            Cohort starts August 18, 2026 • Tuesdays & Thursdays 5:00 - 6:30 PM PST
+            Cohort started August 18, 2026 • Tuesdays & Thursdays 5:00 - 6:30 PM PST
           </p>
-          <a 
-            href={WHOP_CHECKOUT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-gold inline-flex items-center gap-2"
+          <button 
+            disabled
+            className="btn-gold inline-flex items-center gap-2 opacity-50 cursor-not-allowed"
           >
-            Enroll Now <ArrowRight size={16} />
-          </a>
+            Course is Sold Out
+          </button>
         </div>
       </section>
 

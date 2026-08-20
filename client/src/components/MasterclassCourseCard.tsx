@@ -6,9 +6,10 @@ import { CheckCircle2 } from "lucide-react";
 interface MasterclassCourseCardProps {
   onApplyClick: () => void;
   isNew?: boolean;
+  isSoldOut?: boolean;
 }
 
-export function MasterclassCourseCard({ onApplyClick, isNew = false }: MasterclassCourseCardProps) {
+export function MasterclassCourseCard({ onApplyClick, isNew = false, isSoldOut = false }: MasterclassCourseCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="bg-gradient-to-r from-[#0a1628] to-[#1a2a3a] p-6 text-white">
@@ -61,12 +62,15 @@ export function MasterclassCourseCard({ onApplyClick, isNew = false }: Mastercla
 
         <Button 
           onClick={onApplyClick}
-          className="w-full bg-[#c9a84c] hover:bg-[#b39a3f] text-black font-semibold"
+          disabled={isSoldOut}
+          className="w-full bg-[#c9a84c] hover:bg-[#b39a3f] text-black font-semibold disabled:opacity-50"
         >
-          Enroll Now
+          {isSoldOut ? "Course is Sold Out" : "Enroll Now"}
         </Button>
         <p className="text-xs text-gray-400 text-center mt-3">
-          Limited spots available. Cohort starts August 18th. Enroll today!
+          {isSoldOut 
+            ? "This cohort is currently full and in progress. Stay tuned for future dates!" 
+            : "Limited spots available. Cohort starts August 18th. Enroll today!"}
         </p>
       </div>
     </Card>
