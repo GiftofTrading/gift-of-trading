@@ -120,7 +120,7 @@ export default function SuccessStories() {
             Student Wins & Transformations
           </h1>
           <p className="text-[oklch(75%_0.02_80)] text-xl max-w-3xl mx-auto leading-relaxed">
-            Real students, real results. See how our community members have transformed their financial future with Stock Market Made Easy.
+            Real students, real results. See how our community members have transformed their financial future with Gift of Trading courses.
           </p>
         </div>
       </section>
@@ -222,10 +222,17 @@ export default function SuccessStories() {
             Ready to Join Our Community?
           </h2>
           <p className="text-[oklch(48%_0.04_255)] text-lg mb-8">
-            Start your journey to financial independence with Stock Market Made Easy. Learn from Sounia and become part of our success stories.
+            Start your journey to financial independence with Gift of Trading. Learn step-by-step from Sounia Gill and build disciplined market confidence.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            {/* Stock Market Made Easy Whop enrollment link removed */}
+            <Link href="/services">
+              <Button
+                size="lg"
+                className="bg-[var(--navy)] text-white hover:bg-[var(--navy-deep)] px-8"
+              >
+                Explore Courses
+              </Button>
+            </Link>
             <Link href="/contact">
               <Button
                 size="lg"

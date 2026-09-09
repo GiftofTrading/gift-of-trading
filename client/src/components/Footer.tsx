@@ -3,11 +3,26 @@ import { Link } from "wouter";
 import { Instagram, Youtube, Facebook, Mail, MapPin, ArrowRight } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
-// TikTok icon (not in lucide)
-function TikTokIcon({ size = 15 }: { size?: number }) {
+function TikTokColorIcon({ size = 19 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      {/* Cyan layer */}
+      <path
+        d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"
+        fill="#00F2FE"
+        transform="translate(-1, -0.5)"
+      />
+      {/* Magenta layer */}
+      <path
+        d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"
+        fill="#FE2C55"
+        transform="translate(1, 0.5)"
+      />
+      {/* Crisp White core */}
+      <path
+        d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"
+        fill="#FFFFFF"
+      />
     </svg>
   );
 }
@@ -64,34 +79,69 @@ export default function Footer() {
               Empowering traders and investors to build real wealth through education, strategy, and a thriving community.
             </p>
             <div className="flex items-center gap-3">
-              {[
-                { icon: Instagram, href: "https://www.instagram.com/giftoftrading", label: "Instagram" },
-                { icon: Youtube, href: "https://www.youtube.com/@giftoftrading", label: "YouTube" },
-                { icon: Facebook, href: "https://www.facebook.com/GIFTofTrading", label: "Facebook" },
-                { icon: TikTokIcon, href: "https://www.tiktok.com/@giftoftrading", label: "TikTok" },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200"
-                  style={{ background: "oklch(22% 0.07 255)", color: "oklch(65% 0.02 255)" }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.background = "var(--gold)";
-                    el.style.color = "var(--navy)";
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.background = "oklch(22% 0.07 255)";
-                    el.style.color = "oklch(65% 0.02 255)";
-                  }}
-                >
-                  <Icon size={15} />
-                </a>
-              ))}
+              {/* Instagram */}
+              <a
+                href="https://www.instagram.com/giftoftrading"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                title="Instagram @giftoftrading"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-transform hover:scale-110"
+                style={{
+                  background: "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)",
+                  boxShadow: "0 3px 10px rgba(214, 36, 159, 0.4)",
+                }}
+              >
+                <Instagram size={19} />
+              </a>
+
+              {/* YouTube */}
+              <a
+                href="https://www.youtube.com/@giftoftrading"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                title="YouTube @giftoftrading"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-transform hover:scale-110"
+                style={{
+                  background: "#FF0000",
+                  boxShadow: "0 3px 10px rgba(255, 0, 0, 0.4)",
+                }}
+              >
+                <Youtube size={19} />
+              </a>
+
+              {/* Facebook */}
+              <a
+                href="https://www.facebook.com/GIFTofTrading"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                title="Facebook"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-transform hover:scale-110"
+                style={{
+                  background: "#1877F2",
+                  boxShadow: "0 3px 10px rgba(24, 119, 242, 0.4)",
+                }}
+              >
+                <Facebook size={19} />
+              </a>
+
+              {/* TikTok */}
+              <a
+                href="https://www.tiktok.com/@giftoftrading"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                title="TikTok @giftoftrading"
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110"
+                style={{
+                  background: "#010101",
+                  boxShadow: "0 3px 10px rgba(0, 0, 0, 0.4)",
+                }}
+              >
+                <TikTokColorIcon size={19} />
+              </a>
             </div>
           </div>
 
@@ -102,8 +152,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {[
-                // HIDDEN: Stock Market Made Easy - will be re-enabled later
-                { label: "Masterclass", href: "/masterclass" },
+                { label: "Courses & Curriculum", href: "/services" },
                 { label: "Webinars & Sessions", href: "/webinars" },
               ].map((item) => (
                 <li key={item.href}>

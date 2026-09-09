@@ -1,868 +1,821 @@
 import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
-import { SpotifyPodcast } from "@/components/SpotifyPodcast";
-import { ArrowRight, ExternalLink, Star, ChevronDown, ChevronUp, Play, TrendingUp, Users, BookOpen, CheckCircle, Quote, Youtube } from "lucide-react";
-import { trpc } from "@/lib/trpc";
 import { updateMetaTags } from "@/lib/meta";
-import { trackButtonClick, trackLinkClick } from "@/lib/analytics";
+import { trackButtonClick } from "@/lib/analytics";
+import { ArrowRight, ArrowUpRight, Star, CheckCircle, Shield, Users, Clock, BookOpen } from "lucide-react";
+import "./HomeEditorial.css";
 
-const LOGO = "https://static.wixstatic.com/media/19e04d_5b3916fa625b4272b213150378dc7cd2~mv2.png/v1/fill/w_198,h_62,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GIFT-LOGO.png";
-const IMGS = {
-  sounia1: "/images/sounia-1_470e99c3.jpg",
-  sounia2: "/images/sounia-2_f0d34f15.jpg",
-  sounia3: "/images/sounia-3_67fb747f.jpg",
-  sounia4: "/images/sounia-4_e7722a5c.jpg",
-  testimonialAhmad: "/images/testimonial-ahmad_874d9fc9.jpg",
-  testimonialJim: "/images/testimonial-jim_c5862ebd.jpg",
-  testimonialMatthew: "/images/testimonial-matthew_81761078.jpg",
-};
-
-// Stats labels are translated dynamically in the component
-
-// WHOP URLs
+// External Whop URLs
+const WHOP_COMMUNITY = "https://whop.com/discover/options-academy-zero-to-pro-6/";
 const WHOP_SMME = "https://whop.com/discover/options-academy-zero-to-pro-6/stock-market-made-simple/";
+const WHOP_MASTERCLASS = "https://whop.com/discover/options-academy-zero-to-pro-6/";
 
-// HIDDEN: Stock Market Made Easy course - will be re-enabled later
-const hiddenStockMarketCourse = {
-  icon: TrendingUp,
-  title: "Stock Market Made Easy",
-  desc: "From Zero to Investor — 9 modules, 39 lessons, lifetime access. The complete beginner's guide to stocks, ETFs, and long-term investing.",
-  tag: "📚 Self-Paced Course",
-  href: "/stock-market-made-easy",
-  price: "$349",
-  originalPrice: "$436.25",
-  whopUrl: WHOP_SMME,
-};
-
-const services = [
-  {
-    icon: Users,
-    title: "Options Academy: Zero to Pro",
-    desc: "Master options trading with personalized guidance. Group live classes, real-time market analysis, and dedicated Q&A sessions with Sounia. Starts August 18, 2026 • Tuesdays & Thursdays 5-6:30 PM PST • Online via Zoom • 4 Months",
-    tag: "🎓 Masterclass",
-    href: "/masterclass",
-    price: "$3,000",
-    originalPrice: null,
-    whopUrl: null,
-    isSoldOut: true,
-  },
-];
-
-const testimonials = [
-  {
-    initials: "SC",
-    name: "Samitaa Chahal",
-    handle: "@smitakc",
-    result: "Best decision I ever made",
-    quote: "Sounia is the kind of mentor who puts her heart and soul in her teachings. Her focus is on long-term learning (and not shortcuts) and good habits which build long term success. Highly recommended for anyone serious about learning trading.",
-    stars: 5,
-    date: "March 2026",
-  },
-  {
-    initials: "M",
-    name: "Manu",
-    handle: "Whop Verified",
-    result: "Teaches with integrity",
-    quote: "Sounia Gill is rare in this space. She teaches with integrity and clarity and doesn't gatekeep a single thing. She genuinely wants her students to win — to think for themselves, trade with confidence, and build real independence.",
-    stars: 5,
-    date: "February 2026",
-  },
-  {
-    initials: "KP",
-    name: "Kamal Preet Singh",
-    handle: "Whop Verified",
-    result: "Most transparent mentor",
-    quote: "Sounia ji is the most transparent and genuine mentor I've ever learned from. She explains option trading clearly, shares her trades openly, and truly cares about her students' growth. The only place where you actually learn option trading the right way.",
-    stars: 5,
-    date: "November 2025",
-  },
-  {
-    initials: "GS",
-    name: "Gurpartap Singh",
-    handle: "Whop Verified",
-    result: "Worth every penny",
-    quote: "I really want to thank her for creating such a valuable course. Her way of teaching and explaining the stock market is so easy to grasp. Really worth the time and money spent on it. She is a wonderful mentor and a pure and positive soul.",
-    stars: 5,
-    date: "January 2026",
-  },
-  {
-    initials: "MS",
-    name: "Manvir Singh",
-    handle: "Whop Verified",
-    result: "Beginner to Advanced",
-    quote: "Thank you very much Sounia for making such an amazing course — beginner friendly to advanced level. Recommended to everyone who wants to learn trading and investing in the market. She is the best.",
-    stars: 5,
-    date: "February 2026",
-  },
-
-];
-
-const faqs = [
-  { q: "Do I need prior trading experience?", a: "No prior experience is needed for Stock Market Made Easy. This program is designed to take you from zero to confident investor step by step." },
-  { q: "Is the course pre-recorded or live?", a: "Stock Market Made Easy is a structured, pre-recorded program with lifetime access. You learn at your own pace and revisit any lesson as many times as you need." },
-  { q: "What trading platform do I need?", a: "We provide complete setup walkthroughs for both IBKR (Interactive Brokers) and Webull. You'll be fully set up and ready to invest before you begin the course." },
-  { q: "Is there a community I can join?", a: "Yes! All students get access to comprehensive course materials, lifetime resources, and direct support. You can reach out with questions anytime through our contact form." },
-  { q: "Do I get lifetime access to the course materials?", a: "Yes — once enrolled, you have lifetime access to all course content, recordings, and future updates. Learn at your own pace with no expiry." },
-  { q: "What if I have questions after enrolling?", a: "Our course materials are comprehensive with lifetime access. For additional support, you can reach out via our contact form and Sounia's team will assist you." },
-];
-
-function FAQItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div
-      className="border-b cursor-pointer"
-      style={{ borderColor: "oklch(88% 0.018 80)" }}
-      onClick={() => setOpen(!open)}
-    >
-      <div className="flex items-center justify-between py-5 gap-4">
-        <span className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", color: "var(--navy)" }}>{q}</span>
-        <span className="shrink-0" style={{ color: "var(--gold)" }}>
-          {open ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
-        </span>
-      </div>
-      {open && <p className="pb-5 text-sm leading-relaxed" style={{ color: "var(--text-body)" }}>{a}</p>}
-    </div>
-  );
+interface CourseItem {
+  id: string;
+  title: string;
+  category: string;
+  status: "enrolling" | "sold_out" | "coming_soon";
+  statusLabel: string;
+  price?: string;
+  originalPrice?: string;
+  description: string;
+  actionType: "enroll" | "waitlist";
+  actionLabel: string;
+  url?: string;
+  featured?: boolean;
 }
 
+interface CourseStory {
+  id: string;
+  stepLabel: string;
+  title: string;
+  category: string;
+  price: string;
+  originalPrice?: string;
+  status: "enrolling" | "coming_soon";
+  statusLabel: string;
+  duration: string;
+  format: string;
+  overview: string;
+  highlights: string[];
+  modules: string[];
+  actionType: "enroll" | "waitlist";
+  actionLabel: string;
+  whopUrl?: string;
+}
+
+const COURSE_STORIES: Record<string, CourseStory> = {
+  "options-beginner": {
+    id: "options-beginner",
+    stepLabel: "01 / START HERE",
+    title: "Option Beginner Course",
+    category: "🎯 Options Fundamentals",
+    price: "$199",
+    status: "coming_soon",
+    statusLabel: "Coming Soon",
+    duration: "Self-Paced Video Lessons",
+    format: "On-Demand Curriculum + Cheatsheets",
+    overview:
+      "The complete zero-to-one guide to options trading. Understand calls, puts, strike selection, and capital protection from the ground up with zero confusing jargon.",
+    highlights: [
+      "Zero prior trading knowledge required",
+      "Interactive risk calculation templates",
+      "Direct broker walkthroughs on Webull & IBKR",
+      "Lifetime access to future updates",
+    ],
+    modules: [
+      "Module 1: Options 101 — Understanding Calls, Puts & Contract Mechanics",
+      "Module 2: Option Pricing — Intrinsic vs. Extrinsic Value & Time Decay",
+      "Module 3: The Greeks Simplified — Delta, Theta, Vega & Implied Volatility",
+      "Module 4: Strike & Expiration Selection — How to Choose the Right Trade",
+      "Module 5: Broker Execution — Placing Your First Real Options Order",
+      "Module 6: Capital Preservation — Strict Risk Management & Position Sizing",
+    ],
+    actionType: "waitlist",
+    actionLabel: "Join Priority Waitlist",
+  },
+  "options-strategy": {
+    id: "options-strategy",
+    stepLabel: "02 / GO DEEPER",
+    title: "Options Beginner + Strategy",
+    category: "⚡ Advanced Options & Multi-Leg Spreads",
+    price: "$495",
+    status: "coming_soon",
+    statusLabel: "Coming Soon",
+    duration: "Self-Paced Video Lessons",
+    format: "Advanced Spread Frameworks + Case Studies",
+    overview:
+      "Go beyond single contracts. Master vertical credit/debit spreads, iron condors, implied volatility rank (IVR), and disciplined trade management under real market volatility.",
+    highlights: [
+      "High-probability defined-risk strategies",
+      "Volatility-based position sizing formulas",
+      "Defensive adjustments & rolling mechanics",
+      "Trade journal templates and risk checklist",
+    ],
+    modules: [
+      "Module 1: Vertical Credit & Debit Spreads Architecture",
+      "Module 2: Market-Neutral Income Strategies & Iron Condors",
+      "Module 3: Implied Volatility Rank (IVR) & Statistical Edge",
+      "Module 4: Trade Management — Profit Targets vs. Stop Rules",
+      "Module 5: Defensive Adjustments & Managing Tested Wings",
+      "Module 6: Building Your Personal Weekly Options Trading Plan",
+    ],
+    actionType: "waitlist",
+    actionLabel: "Join Priority Waitlist",
+  },
+  "long-term": {
+    id: "long-term",
+    stepLabel: "03 / THINK LONG TERM",
+    title: "Long-Term Investment Course",
+    category: "📚 Wealth Creation & Portfolio Building",
+    price: "$349",
+    originalPrice: "$499",
+    status: "enrolling",
+    statusLabel: "Enrolling Now",
+    duration: "Lifetime Access",
+    format: "Comprehensive Video Lessons + Community",
+    overview:
+      "Build a resilient, compound-growth stock portfolio. Master business fundamentals, 10-K financial reading, ETF selection, and disciplined wealth preservation strategies.",
+    highlights: [
+      "Understand financial balance sheets & cash flow",
+      "Smart ETF selection & sector diversification",
+      "Dividend reinvestment & compounding models",
+      "Direct enrollment via Whop with instant access",
+    ],
+    modules: [
+      "Module 1: Capital Market Dynamics & Business Valuation",
+      "Module 2: Decoding Company Financials, P/E & Free Cash Flow",
+      "Module 3: Core & Satellite Portfolio Allocation with Low-Cost ETFs",
+      "Module 4: Dividend Growth Investing & Compounding Mechanics",
+      "Module 5: Macroeconomic Cycles, Inflation & Interest Rate Impacts",
+      "Module 6: Position Sizing, DCA Strategies & Drawdown Protection",
+    ],
+    actionType: "enroll",
+    actionLabel: "Enroll on Whop ($349)",
+    whopUrl: WHOP_COMMUNITY,
+  },
+};
+
+const COURSES: CourseItem[] = [
+  {
+    id: "long-term",
+    title: "Long-Term Investment Course",
+    category: "📚 Self-Paced Course",
+    status: "enrolling",
+    statusLabel: "Enrolling Now",
+    price: "$349",
+    originalPrice: "$499",
+    description: "Build a resilient long-term portfolio. Master fundamental valuation, ETF selection, dividend investing, and sound risk discipline.",
+    actionType: "enroll",
+    actionLabel: "Enroll on Whop",
+    url: WHOP_COMMUNITY,
+    featured: true,
+  },
+  {
+    id: "options-beginner",
+    title: "Option Beginner Course",
+    category: "🎯 Options Fundamentals",
+    status: "coming_soon",
+    statusLabel: "Coming Soon",
+    description: "The complete zero-to-one guide to options trading. Learn calls, puts, strike mechanics, and contract selection without confusing jargon.",
+    actionType: "waitlist",
+    actionLabel: "Join Waitlist",
+  },
+  {
+    id: "options-strategy",
+    title: "Option Strategy",
+    category: "⚡ Advanced Options",
+    status: "coming_soon",
+    statusLabel: "Coming Soon",
+    description: "Advanced options strategies for systematic execution: credit spreads, iron condors, implied volatility analysis, and defensive adjustments.",
+    actionType: "waitlist",
+    actionLabel: "Join Waitlist",
+  },
+  {
+    id: "stock-market-made-easy",
+    title: "Stock Market Made Easy",
+    category: "📈 Foundational Masterclass",
+    status: "sold_out",
+    statusLabel: "Sold Out",
+    description: "Sounia's foundational 9-module curriculum covering market dynamics, candlestick patterns, supply & demand zones, and chart psychology.",
+    actionType: "waitlist",
+    actionLabel: "Join Next Cohort Waitlist",
+  },
+  {
+    id: "recorded-masterclass",
+    title: "Recorded Masterclass",
+    category: "🎥 On-Demand Series",
+    status: "coming_soon",
+    statusLabel: "Coming Soon",
+    description: "Full on-demand library of past live cohort lessons, market case studies, and advanced technical workshops with lifetime replay access.",
+    actionType: "waitlist",
+    actionLabel: "Notify Me When Available",
+  },
+];
+
 export default function Home() {
-  const { t } = useTranslation();
+  const [notifyModalOpen, setNotifyModalOpen] = useState(false);
+  const [selectedCourseTitle, setSelectedCourseTitle] = useState("Stock Market Made Easy");
+  const [notifyEmail, setNotifyEmail] = useState("");
+  const [notifyName, setNotifyName] = useState("");
+  const [notifySubmitted, setNotifySubmitted] = useState(false);
+
+  // Course Story Modal State
+  const [selectedStoryCourse, setSelectedStoryCourse] = useState<CourseStory | null>(null);
+  const [courseStoryModalOpen, setCourseStoryModalOpen] = useState(false);
 
   useEffect(() => {
     updateMetaTags({
-      title: "Stock Market Made Easy | Beginner's Masterclass by Sounia Gill",
-      description: "Learn stock market investing from zero with Stock Market Made Easy — a comprehensive 9-module masterclass by Sounia Gill. Lifetime access, beginner-friendly, no experience needed.",
-      keywords: "stock market masterclass, learn stock trading, beginner investing, stock market education, how to invest in stocks, ETF investing, long-term investing, Sounia Gill, stock market course",
-      ogTitle: "Stock Market Made Easy | Beginner's Masterclass by Sounia Gill",
-      ogDescription: "Learn stock market investing from zero with Stock Market Made Easy — a comprehensive 9-module masterclass. Lifetime access, beginner-friendly, no experience needed.",
+      title: "Gift of Trading: Learn Stock & Options Courses Online",
+      description: "Learn to read the market at your own pace with beginner-friendly stock and options trading courses by Sounia Gill. Start from zero—no experience needed.",
+      keywords: "stock market courses, options trading, beginner trading, Sounia Gill, stock market education, learn to invest, long term investing",
+      ogTitle: "Gift of Trading: Learn Stock & Options Courses Online",
+      ogDescription: "Learn to read the market at your own pace with beginner-friendly stock and options trading courses by Sounia Gill. Start from zero—no experience needed.",
       canonicalUrl: "https://giftoftrading.com/",
     });
   }, []);
 
-  const [videoPlaying, setVideoPlaying] = useState(false);
-  const stats = [
-    { number: "2,700+", label: t("home.statsStudents") },
-    { number: "62+", label: t("home.statsMillionaires") },
-    { number: "5+", label: t("home.statsExperience") },
-    { number: "95%", label: t("home.statsSatisfaction") },
-    { number: "$62M+", label: t("home.statsGains") },
-  ];
-  const { data: ytVideosRaw = [], isLoading: ytLoading } = trpc.youtube.latestVideos.useQuery();
-  const ytVideos = ytVideosRaw as Array<{ id: string; url: string; thumbnail: string; title: string; publishedAt: string }>;
+  const handleOpenWaitlist = (courseTitle: string) => {
+    setSelectedCourseTitle(courseTitle);
+    setNotifySubmitted(false);
+    setNotifyModalOpen(true);
+    trackButtonClick(`waitlist_open_${courseTitle}`);
+  };
+
+  const handleOpenCourseStory = (courseId: string) => {
+    const story = COURSE_STORIES[courseId];
+    if (story) {
+      setSelectedStoryCourse(story);
+      setCourseStoryModalOpen(true);
+      trackButtonClick(`open_course_story_${courseId}`);
+    }
+  };
+
+  const handleWaitlistSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!notifyEmail) return;
+    setNotifySubmitted(true);
+    trackButtonClick(`waitlist_submitted_${selectedCourseTitle}`);
+    setTimeout(() => {
+      setNotifyModalOpen(false);
+      setNotifySubmitted(false);
+      setNotifyEmail("");
+      setNotifyName("");
+    }, 2800);
+  };
 
   return (
     <Layout>
+      <div className="editorial-body">
+        {/* ── SECTION 1: HERO BANNER MATCHING USER REFERENCE ── */}
+        <section
+          className="hero-banner-strip-container"
+          style={{ backgroundImage: `url('/images/hero-trading-desk.jpg')` }}
+        >
+          <div className="hero-banner-overlay" />
 
-      {/* ══════════════════════════════════════════════════════════════════
-          HERO — split layout, photo right, headline left
-      ══════════════════════════════════════════════════════════════════ */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: "var(--navy)", minHeight: "92vh", display: "flex", alignItems: "center" }}
-      >
-        <div className="container relative z-10" style={{ paddingTop: 80, paddingBottom: 80 }}>
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left: Text */}
-            <div>
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-7"
-                style={{ background: "oklch(72% 0.12 75 / 0.15)", border: "1px solid oklch(72% 0.12 75 / 0.35)" }}>
-                <div className="w-2 h-2 rounded-full" style={{ background: "var(--gold)" }} />
-                <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "var(--gold)", fontFamily: "'Inter', sans-serif" }}>
-                  {t("home.badge")}
-                </span>
-              </div>
-
-              <h1
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: "clamp(2.8rem, 5.5vw, 5rem)",
-                  fontWeight: 500,
-                  lineHeight: 1.08,
-                  color: "var(--cream)",
-                  marginBottom: "1.5rem",
-                }}
-              >
-                {t("home.heroTitle").split("Gift")[0]}
-                <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Gift</em>
-                {t("home.heroTitle").split("Gift")[1]}
+          {/* Top/Left Content & Desk Quote */}
+          <div className="hero-banner-body">
+            <div className="hero-banner-left">
+              <span className="hero-banner-eyebrow">LEARN, PRACTICE, TRADE, GROW</span>
+              <h1 className="hero-banner-title">
+                Learn to read the<br />
+                market, <em className="gold-italic">at your own</em><br />
+                pace.
               </h1>
-
-              <p
-                className="text-base leading-relaxed mb-8"
-                style={{ color: "oklch(68% 0.02 255)", fontFamily: "'Inter', sans-serif", maxWidth: 480 }}
-              >
-                {t("home.heroSubtitle")}
+              <p className="hero-banner-desc">
+                Beginner-friendly stock and options courses taught step by step by Sounia Gill. No experience needed — start exactly where you are.
               </p>
 
-              <div className="mb-8 flex items-center gap-3">
-                <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "1.5rem", color: "var(--gold)" }}>$3,000</span>
-                <span style={{ color: "oklch(60% 0.02 255)", fontFamily: "'Inter', sans-serif", fontSize: "0.9rem" }}>Masterclass • Starts August 18</span>
-              </div>
-
-              {/* Social proof mini */}
-              <div className="flex items-center gap-3 mb-8">
-                <div className="flex -space-x-2">
-                  {[IMGS.testimonialAhmad, IMGS.testimonialJim, IMGS.testimonialMatthew].map((src, i) => (
-                    <img key={i} src={src} alt="student" className="w-9 h-9 rounded-full object-cover" style={{ border: "2px solid var(--navy)" }} />
-                  ))}
-                </div>
-                <div>
-                  <div className="flex gap-0.5 mb-0.5">
-                    {[1,2,3,4,5].map((i) => <Star key={i} size={11} fill="var(--gold)" style={{ color: "var(--gold)" }} />)}
-                  </div>
-                  <p className="text-xs" style={{ color: "oklch(60% 0.02 255)", fontFamily: "'Inter', sans-serif" }}>{t("home.trustedBy")}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <Link href="/masterclass" onClick={() => trackButtonClick('home_start_learning')}>
-                  <span className="btn-gold">Start Learning <ArrowRight size={16} /></span>
-                </Link>
-                <Link href="/about" onClick={() => trackButtonClick('home_meet_sounia')}>
-                  <span className="btn-ghost-light">Meet Sounia</span>
+              <div className="hero-banner-actions">
+                <Link href="/services">
+                  <span
+                    className="btn-banner-gold"
+                    onClick={() => trackButtonClick("hero_banner_view_all_courses")}
+                  >
+                    View all courses <ArrowUpRight size={17} />
+                  </span>
                 </Link>
               </div>
             </div>
 
-            {/* Right: Photo */}
-            <div className="relative hidden lg:block">
+            <div className="hero-desk-quote">
+              A LITTLE LEARNING. A NEW PERSPECTIVE.
+            </div>
+          </div>
+
+          {/* Bottom 3-Strip Bar */}
+          <div className="hero-bottom-strip">
+            <div className="hero-bottom-strip-wrap">
               <div
-                className="rounded-2xl overflow-hidden"
-                style={{ height: 560, boxShadow: "0 32px 80px oklch(8% 0.04 255 / 0.5)" }}
+                className="hero-strip-item"
+                onClick={() => handleOpenCourseStory("options-beginner")}
+                role="button"
+                tabIndex={0}
               >
-                <img
-                  src={IMGS.sounia1}
-                  alt="Sounia Gill — Gift of Trading"
-                  className="w-full h-full object-cover object-top"
-                />
-                {/* Overlay gradient at bottom */}
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, var(--navy) 0%, transparent 40%)" }} />
+                <div>
+                  <span className="hero-strip-label">01 / START HERE</span>
+                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Options beginner</h3>
+                </div>
+                <span className="hero-strip-price">$199 <ArrowUpRight size={16} /></span>
               </div>
 
+              <div
+                className="hero-strip-item"
+                onClick={() => handleOpenCourseStory("options-strategy")}
+                role="button"
+                tabIndex={0}
+              >
+                <div>
+                  <span className="hero-strip-label">02 / GO DEEPER</span>
+                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Options + strategy</h3>
+                </div>
+                <span className="hero-strip-price">$495 <ArrowUpRight size={16} /></span>
+              </div>
 
+              <div
+                className="hero-strip-item"
+                onClick={() => handleOpenCourseStory("long-term")}
+                role="button"
+                tabIndex={0}
+              >
+                <div>
+                  <span className="hero-strip-label">03 / THINK LONG TERM</span>
+                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Long term investing</h3>
+                </div>
+                <span className="hero-strip-price">$349 <ArrowUpRight size={16} /></span>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Background texture */}
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, oklch(80% 0.05 80) 1px, transparent 0)",
-          backgroundSize: "40px 40px"
-        }} />
-      </section>
+        {/* ── SECTION 2: THE TEACHER STORY ── */}
+        <section id="teacher" className="editorial-section" style={{ background: "var(--e-paper)" }}>
+          <div className="editorial-wrap">
+            <div className="teacher-grid">
+              <div>
+                <p className="section-label-gold">The Teacher</p>
+                <h2 className="section-title-large">
+                  From learning alone to teaching thousands.
+                </h2>
+                <p className="body-text" style={{ fontSize: "16px", color: "var(--e-muted)", marginBottom: "18px" }}>
+                  Sounia Gill didn't come from a Wall Street background. She learned by reading charts late at night, making mistakes, and refining rules until the market stopped feeling unpredictable.
+                </p>
+                <p className="body-text" style={{ fontSize: "16px", color: "var(--e-muted)", marginBottom: "22px" }}>
+                  Today, she teaches students across the United States, Canada, and beyond—not with get-rich-quick promises, but with repeatable frameworks and emotional discipline.
+                </p>
 
-      {/* ══════════════════════════════════════════════════════════════════
-          STATS BAR
-      ══════════════════════════════════════════════════════════════════ */}
-      <section style={{ background: "var(--gold)", padding: "2rem 0" }}>
-        <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((s) => (
-              <div key={s.label} className="text-center">
-                <p
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
-                    fontWeight: 700,
-                    color: "var(--navy)",
-                    lineHeight: 1,
-                    marginBottom: "0.35rem",
-                  }}
-                >
-                  {s.number}
-                </p>
-                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "oklch(22% 0.07 255 / 0.7)", fontFamily: "'Inter', sans-serif" }}>
-                  {s.label}
-                </p>
+                <div className="teacher-credentials">
+                  <span className="credential-badge">
+                    <Users size={14} style={{ color: "var(--e-gold)" }} /> 2,700+ Students Taught
+                  </span>
+                  <span className="credential-badge">
+                    <Star size={14} style={{ color: "var(--e-gold)" }} /> 4.96 / 5 Rating
+                  </span>
+                  <span className="credential-badge">
+                    <Shield size={14} style={{ color: "var(--e-gold)" }} /> Zero Jargon Framework
+                  </span>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ══════════════════════════════════════════════════════════════════
-          PROGRAMS
-      ══════════════════════════════════════════════════════════════════ */}
-      <section className="section-py" style={{ background: "white" }}>
-        <div className="container">
-          <div className="text-center mb-12">
-            <p className="section-label mb-3">Choose Your Learning Path</p>
-            <h2 className="editorial-heading mb-4">
-              Our Programs
-            </h2>
-            <p className="body-muted mx-auto" style={{ maxWidth: 480 }}>
-              Select the program that best fits your goals and learning style.
-            </p>
+              <div className="teacher-photo-card">
+                <img
+                  src="/images/sounia-desk.jpg"
+                  alt="Sounia Gill at trading desk"
+                  loading="lazy"
+                />
+                <div className="teacher-quote-box">
+                  "The goal isn't to be right on every trade. The goal is to survive every loss and let the math work for you."
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {services.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div key={s.title} className="service-card h-full flex flex-col">
-                  <div className="tag-gold mb-4 self-start text-xs">{s.tag}</div>
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: "var(--cream)" }}
-                  >
-                    <Icon size={20} style={{ color: "var(--navy)" }} />
-                  </div>
-                  <h3
-                    className="font-semibold mb-3"
-                    style={{ fontFamily: "'Inter', sans-serif", color: "var(--navy)", fontSize: "0.95rem" }}
-                  >
-                    {s.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed flex-1" style={{ color: "var(--text-body)" }}>{s.desc}</p>
-                  {s.price && (
-                    <div className="mt-3 flex items-baseline gap-2">
-                      <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "1.1rem", color: "var(--navy)" }}>{s.price}</span>
-                      {s.originalPrice && <span style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.75rem", color: "var(--text-muted)", textDecoration: "line-through" }}>{s.originalPrice}</span>}
+        {/* ── SECTION 3: COURSE CATALOG GRID ── */}
+        <section id="courses" className="editorial-section" style={{ background: "#FFFFFF", borderTop: "1px solid var(--e-line)" }}>
+          <div className="editorial-wrap">
+            <div style={{ textAlign: "center", maxWidth: 680, margin: "0 auto 10px" }}>
+              <p className="section-label-gold">Curriculum & Programs</p>
+              <h2 className="section-title-large">Choose your learning path</h2>
+              <p className="section-subtitle" style={{ margin: "0 auto" }}>
+                From foundational wealth-building to options mastery. Structured, transparent education designed for real-world execution.
+              </p>
+            </div>
+
+            <div className="catalog-grid">
+              {COURSES.map((course) => (
+                <div
+                  key={course.id}
+                  className={`course-card ${course.featured ? "featured" : ""}`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-semibold text-slate-500">{course.category}</span>
+                      {course.status === "enrolling" && (
+                        <span className="course-badge badge-enrolling">{course.statusLabel}</span>
+                      )}
+                      {course.status === "sold_out" && (
+                        <span className="course-badge badge-sold-out">{course.statusLabel}</span>
+                      )}
+                      {course.status === "coming_soon" && (
+                        <span className="course-badge badge-coming-soon">{course.statusLabel}</span>
+                      )}
                     </div>
-                  )}
-                  <div className="mt-4 flex gap-2 flex-wrap">
-                    {s.isSoldOut ? (
-                      <button
-                        disabled
-                        style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", background: "var(--gold)", color: "var(--navy)", fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: "0.78rem", padding: "0.45rem 1rem", borderRadius: "0.375rem", opacity: 0.5, cursor: "not-allowed" }}
-                      >
-                        Course is Sold Out
-                      </button>
-                    ) : s.whopUrl ? (
+
+                    <h3 className="course-card-title">{course.title}</h3>
+                    <p className="course-card-desc">{course.description}</p>
+                  </div>
+
+                  <div className="course-meta-box">
+                    {course.price ? (
+                      <div className="course-price-wrap">
+                        <span className="course-price-current">{course.price}</span>
+                        {course.originalPrice && (
+                          <span className="text-sm line-through text-slate-400">{course.originalPrice}</span>
+                        )}
+                        <span className="course-price-label">Lifetime access</span>
+                      </div>
+                    ) : (
+                      <div className="course-price-wrap">
+                        <span className="text-sm font-medium text-slate-500">
+                          {course.status === "sold_out" ? "Cohort Filled" : "Price announced at launch"}
+                        </span>
+                      </div>
+                    )}
+
+                    {course.actionType === "enroll" && course.url ? (
                       <a
-                        href={s.whopUrl}
+                        href={course.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", background: "var(--gold)", color: "var(--navy)", fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: "0.78rem", padding: "0.45rem 1rem", borderRadius: "0.375rem", textDecoration: "none" }}
+                        className="btn-card-action btn-card-enroll"
+                        onClick={() => trackButtonClick(`enroll_whop_${course.id}`)}
                       >
-                        Enroll on Whop <ExternalLink size={12} />
+                        {course.actionLabel} <ArrowRight size={14} />
                       </a>
+                    ) : course.status === "sold_out" ? (
+                      <button
+                        onClick={() => handleOpenWaitlist(course.title)}
+                        className="btn-card-action btn-card-waitlist"
+                      >
+                        {course.actionLabel}
+                      </button>
                     ) : (
-                      <a
-                        href={s.href}
-                        style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", background: "var(--gold)", color: "var(--navy)", fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: "0.78rem", padding: "0.45rem 1rem", borderRadius: "0.375rem", textDecoration: "none", cursor: "pointer" }}
+                      <button
+                        onClick={() => handleOpenWaitlist(course.title)}
+                        className="btn-card-action btn-card-coming"
                       >
-                        Learn more <ArrowRight size={12} />
-                      </a>
+                        {course.actionLabel}
+                      </button>
                     )}
-                    <Link href={s.href}>
-                      <span className="flex items-center gap-1" style={{ color: "var(--gold)", fontFamily: "'Inter', sans-serif", fontSize: "0.78rem", fontWeight: 600, cursor: "pointer" }}>
-                        Learn more <ArrowRight size={13} />
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════
-          FOUNDER MESSAGE
-      ══════════════════════════════════════════════════════════════════ */}
-      <section className="section-py section-dark">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-14 items-center">
-            {/* Photo */}
-            <div className="relative">
-              <div className="rounded-2xl overflow-hidden" style={{ height: 500, boxShadow: "0 24px 64px oklch(8% 0.04 255 / 0.4)" }}>
-                <img src="/images/sounia-portrait.png" alt="Sounia Gill — Trading" className="w-full h-full object-cover object-top" />
-              </div>
-              <div
-                className="absolute -bottom-4 -right-4 px-5 py-4 rounded-2xl"
-                style={{ background: "var(--gold)", boxShadow: "0 8px 24px oklch(72% 0.12 75 / 0.35)" }}
-              >
-                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--navy)", fontFamily: "'Inter', sans-serif" }}>Founder</p>
-                <p className="font-bold text-sm" style={{ color: "var(--navy)", fontFamily: "'Playfair Display', serif" }}>Sounia Gill</p>
-              </div>
-            </div>
-
-            {/* Message */}
-            <div>
-              <p className="section-label-gold mb-3">Founder's Message</p>
-              <h2 className="editorial-heading-light mb-6">
-                A Message from{" "}
-                <span style={{ color: "var(--gold)" }}>Sounia</span>
-              </h2>
-
-              <div className="mb-6" style={{ borderLeft: "3px solid var(--gold)", paddingLeft: "1.25rem" }}>
-                <Quote size={24} style={{ color: "var(--gold)", marginBottom: "0.75rem", opacity: 0.7 }} />
-                <p className="text-base leading-relaxed" style={{ color: "oklch(78% 0.015 255)", fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}>
-                  "I started Gift of Trading because I wished someone had given me this knowledge when I was starting out. The markets can feel overwhelming — but they don't have to be. With the right guidance, anyone can learn to trade with confidence and build real wealth."
-                </p>
-              </div>
-
-              <p className="text-sm leading-relaxed mb-5" style={{ color: "oklch(68% 0.02 255)", fontFamily: "'Inter', sans-serif" }}>
-                After years of self-study, trial and error, and navigating multiple market cycles, I developed a disciplined, risk-first approach to trading that produces consistent results.
-              </p>
-              <p className="text-sm leading-relaxed mb-8" style={{ color: "oklch(68% 0.02 255)", fontFamily: "'Inter', sans-serif" }}>
-                Watching my students achieve financial independence — that's what drives me every single day. This isn't just a business. It's a mission.
-              </p>
-
-              <div className="flex flex-wrap gap-3">
-                <Link href="/masterclass">
-                  <span className="btn-gold">Explore Masterclass <ArrowRight size={16} /></span>
-                </Link>
-                <Link href="/about">
-                  <span className="btn-ghost-light">My Full Story</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════
-          SPOTIFY PODCAST
-      ══════════════════════════════════════════════════════════════════ */}
-      <SpotifyPodcast />
-
-      {/* ══════════════════════════════════════════════════════════════════
-          LATEST YOUTUBE VIDEOS — auto-updates from RSS feed
-      ══════════════════════════════════════════════════════════════════ */}
-      <section className="section-py section-cream">
-        <div className="container">
-          <div className="text-center mb-10">
-            <p className="section-label mb-3">Latest from YouTube</p>
-            <h2 className="editorial-heading mb-4">
-              {t("home.youtubeTitle")}
-            </h2>
-            <p className="body-muted mx-auto" style={{ maxWidth: 500 }}>
-              {t("home.youtubeSubtitle")}
-            </p>
-          </div>
-
-          {ytLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="rounded-2xl overflow-hidden animate-pulse" style={{ background: "oklch(92% 0.01 80)" }}>
-                  <div style={{ paddingBottom: "56.25%", background: "oklch(88% 0.015 80)" }} />
-                  <div className="p-4">
-                    <div className="h-4 rounded mb-2" style={{ background: "oklch(85% 0.01 80)" }} />
-                    <div className="h-3 rounded w-2/3" style={{ background: "oklch(88% 0.01 80)" }} />
                   </div>
                 </div>
               ))}
             </div>
-          ) : ytVideos.length > 0 ? (
-            <div className="flex flex-wrap justify-center gap-6">
-              {ytVideos.map((video) => (
-                <a
-                  key={video.id}
-                  href={video.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group rounded-2xl overflow-hidden block w-full md:w-[calc(33.333%-1rem)] max-w-sm"
-                  style={{ background: "white", border: "1px solid oklch(88% 0.018 80)", boxShadow: "0 4px 24px oklch(15% 0.06 255 / 0.06)", textDecoration: "none", transition: "transform 0.2s, box-shadow 0.2s" }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 40px oklch(15% 0.06 255 / 0.12)"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px oklch(15% 0.06 255 / 0.06)"; }}
-                >
-                  {/* Thumbnail */}
-                  <div className="relative overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-                    <img
-                      src={video.thumbnail}
-                      alt={video.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      style={{ transition: "transform 0.3s" }}
-                    />
-                    {/* Play overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center" style={{ background: "oklch(15% 0.06 255 / 0.3)", opacity: 0, transition: "opacity 0.2s" }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "0"; }}
-                    >
-                      <div className="rounded-full flex items-center justify-center" style={{ width: 52, height: 52, background: "var(--gold)" }}>
-                        <Play size={20} fill="white" color="white" />
-                      </div>
-                    </div>
-                    {/* YouTube badge */}
-                    <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 rounded-full" style={{ background: "oklch(15% 0.06 255 / 0.75)", backdropFilter: "blur(4px)" }}>
-                      <Youtube size={12} color="#ff0000" fill="#ff0000" />
-                      <span style={{ color: "white", fontSize: 10, fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>YouTube</span>
-                    </div>
-                  </div>
-                  {/* Info */}
-                  <div className="p-4">
-                    <p className="font-semibold line-clamp-2" style={{ color: "var(--navy)", fontFamily: "'Inter', sans-serif", fontSize: 14, lineHeight: 1.4, marginBottom: 6 }}>
-                      {video.title}
-                    </p>
-                    <p style={{ color: "var(--text-muted)", fontSize: 12, fontFamily: "'Inter', sans-serif" }}>
-                      {new Date(video.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                    </p>
-                  </div>
-                </a>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="body-muted">Videos loading… check back soon.</p>
-            </div>
-          )}
 
-          <div className="text-center mt-10">
-            <a
-              href="https://www.youtube.com/@giftoftrading"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost inline-flex items-center gap-2"
-            >
-              <Youtube size={16} color="#ff0000" />
-              {t("home.subscribeYoutube")} <ArrowRight size={16} />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════
-          TESTIMONIALS
-      ══════════════════════════════════════════════════════════════════ */}
-      <section className="section-py section-dark">
-        <div className="container">
-          <div className="text-center mb-12">
-            <p className="section-label-gold mb-3">Verified Whop Reviews • 4.96 / 5</p>
-            <h2 className="editorial-heading-light mb-4">
-              {t("home.reviewsTitle")}
-            </h2>
-            <p className="text-sm" style={{ color: "oklch(60% 0.02 255)", fontFamily: "'Inter', sans-serif", maxWidth: 420, margin: "0 auto" }}>
-              {t("home.reviewsSubtitle")}
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <div
-                key={t.name}
-                className="p-6 rounded-2xl flex flex-col"
-                style={{ background: "oklch(19% 0.055 255)", border: "1px solid oklch(28% 0.07 255)" }}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex gap-1">
-                    {Array.from({ length: t.stars }).map((_, i) => (
-                      <Star key={i} size={13} fill="var(--gold)" style={{ color: "var(--gold)" }} />
-                    ))}
-                  </div>
-                  <span className="text-xs" style={{ color: "oklch(55% 0.02 255)", fontFamily: "'Inter', sans-serif" }}>{t.date}</span>
-                </div>
-                <div className="tag-gold mb-4 self-start text-xs">{t.result}</div>
-                <p className="text-sm leading-relaxed flex-1 mb-5" style={{ color: "oklch(75% 0.015 255)", fontStyle: "italic", fontFamily: "'Playfair Display', serif" }}>
-                  "{t.quote}"
-                </p>
-                <div className="flex items-center gap-3 pt-4" style={{ borderTop: "1px solid oklch(28% 0.07 255)" }}>
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold"
-                    style={{ background: "linear-gradient(135deg, var(--gold), oklch(65% 0.12 60))", color: "var(--navy)" }}
-                  >
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold" style={{ color: "var(--cream)", fontFamily: "'Inter', sans-serif" }}>{t.name}</p>
-                    <p className="text-xs" style={{ color: "oklch(55% 0.02 255)", fontFamily: "'Inter', sans-serif" }}>{t.handle}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <a
-              href="https://whop.com/discover/options-academy-zero-to-pro-6/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm"
-              style={{ color: "var(--gold)", fontFamily: "'Inter', sans-serif", textDecoration: "none" }}
-            >
-              <Star size={14} fill="var(--gold)" style={{ color: "var(--gold)" }} />
-              4.96 / 5 from 119 verified reviews on Whop
-              <ExternalLink size={13} />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════
-          SUCCESS STORIES — full-width photo feature
-      ══════════════════════════════════════════════════════════════════ */}
-      <section className="section-py" style={{ background: "white" }}>
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-14 items-center">
-            <div>
-              <p className="section-label mb-3">Success Stories</p>
-              <h2 className="editorial-heading mb-5">
-                {t("home.successTitle")}
-              </h2>
-              <p className="body-text mb-8">
-                {t("home.successSubtitle")}
-              </p>
-
-              <div className="space-y-4 mb-8">
-                {[
-                  { name: "Sanyam Kohli", result: "Sounia is one of the best Mentors — a mix of Care and Intelligence." },
-                  { name: "Sheena Goraya", result: "Great mentorship! Amazing and honest teacher." },
-                  { name: "Harmesh Dhaliwal", result: "Her passion and expertise truly shine. Can't wait to dive deeper into the course!" },
-                ].map((s) => (
-                  <div key={s.name} className="flex items-start gap-3 p-4 rounded-xl" style={{ background: "var(--cream)", border: "1px solid oklch(88% 0.018 80)" }}>
-                    <CheckCircle size={17} style={{ color: "var(--gold)", flexShrink: 0, marginTop: 1 }} />
-                    <div>
-                      <p className="text-sm font-semibold" style={{ color: "var(--navy)", fontFamily: "'Inter', sans-serif" }}>{s.name}</p>
-                      <p className="text-sm" style={{ color: "var(--text-body)" }}>{s.result}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <a
-                href="https://whop.com/discover/options-academy-zero-to-pro-6/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center gap-2"
-              >
-                {t("home.readAllStories")} <ExternalLink size={15} />
-              </a>
-            </div>
-
-            {/* Photo grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-2xl overflow-hidden" style={{ height: 260 }}>
-                <img src={IMGS.sounia2} alt="Sounia Gill" className="w-full h-full object-cover" />
-              </div>
-              <div className="rounded-2xl overflow-hidden mt-6" style={{ height: 260 }}>
-                <img src={IMGS.sounia4} alt="Sounia Gill" className="w-full h-full object-cover" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════
-          FAQ
-      ══════════════════════════════════════════════════════════════════ */}
-      <section className="section-py section-cream">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-14">
-            <div>
-              <p className="section-label mb-3">Got Questions?</p>
-              <h2 className="editorial-heading mb-5">
-                {t("home.faqTitle")}
-              </h2>
-              <p className="body-text mb-8">
-                {t("home.faqSubtitle")}
-              </p>
-              <Link href="/contact">
-                <span className="btn-primary">Ask Us Anything <ArrowRight size={16} /></span>
+            {/* View Full Curriculum Link */}
+            <div style={{ textAlign: "center", marginTop: 44 }}>
+              <Link href="/services">
+                <span className="inline-flex items-center gap-2 font-medium text-sm text-[var(--e-navy)] hover:text-[var(--e-gold)] transition-colors underline underline-offset-4 cursor-pointer">
+                  View full course syllabi and detailed comparison on the Courses page <ArrowRight size={14} />
+                </span>
               </Link>
             </div>
-            <div>
-              {faqs.map((faq) => (
-                <FAQItem key={faq.q} q={faq.q} a={faq.a} />
-              ))}
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ══════════════════════════════════════════════════════════════════
-          READY TO TAKE THE LEAP — CTA
-      ══════════════════════════════════════════════════════════════════ */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: "var(--navy)", padding: "6rem 0" }}
-      >
-        <div className="container relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="section-label-gold mb-4">Ready to Take the Leap?</p>
-              <h2 className="editorial-heading-light mb-5" style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)" }}>
-                {t("home.ctaTitle")}
-              </h2>
-              <p className="text-sm leading-relaxed mb-8" style={{ color: "oklch(65% 0.02 255)", fontFamily: "'Inter', sans-serif", maxWidth: 440 }}>
-                {t("home.ctaSubtitle")}
+        {/* ── SECTION 4: STUDENT TESTIMONIALS ── */}
+        <section id="testimonials" className="editorial-section" style={{ background: "var(--e-paper)", borderTop: "1px solid var(--e-line)" }}>
+          <div className="editorial-wrap">
+            <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto" }}>
+              <p className="section-label-gold">Student Experiences</p>
+              <h2 className="section-title-large">Real students. Real discipline.</h2>
+              <p className="section-subtitle" style={{ margin: "0 auto" }}>
+                Gift of Trading has taught over 2,700 students how to navigate the markets with calm, structured decision-making.
               </p>
-              <div className="flex flex-wrap gap-3">
-                {/* Stock Market Made Easy Whop enrollment link removed */}
-                <Link href="/stock-market-made-easy">
-                  <span className="btn-ghost-light">Learn More</span>
-                </Link>
+            </div>
+
+            <div className="testimonials-grid">
+              <div className="testimonial-card">
+                <div>
+                  <div className="testimonial-stars">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={15} fill="currentColor" />
+                    ))}
+                  </div>
+                  <p className="testimonial-text">
+                    "Before this course, I bought stocks based on Twitter hype and lost constantly. Sounia taught me how to read supply and demand. I finally have a plan every single morning."
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 pt-3 border-t border-[var(--e-line)]">
+                  <div className="w-9 h-9 rounded-full bg-[var(--e-gold-bg)] text-[var(--e-gold)] font-bold text-xs flex items-center justify-center flex-shrink-0">
+                    AK
+                  </div>
+                  <div>
+                    <p className="testimonial-author flex items-center gap-1.5">
+                      Ahmad K.
+                      <span className="inline-flex items-center text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-medium">✓ Verified</span>
+                    </p>
+                    <p className="testimonial-tag">Long-Term & Options Student</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="testimonial-card">
+                <div>
+                  <div className="testimonial-stars">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={15} fill="currentColor" />
+                    ))}
+                  </div>
+                  <p className="testimonial-text">
+                    "Options used to look like Greek to me. Sounia breaks down the mechanics so simply that within three weeks I was executing defined-risk spreads with total confidence."
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 pt-3 border-t border-[var(--e-line)]">
+                  <div className="w-9 h-9 rounded-full bg-[var(--e-gold-bg)] text-[var(--e-gold)] font-bold text-xs flex items-center justify-center flex-shrink-0">
+                    JM
+                  </div>
+                  <div>
+                    <p className="testimonial-author flex items-center gap-1.5">
+                      Jim M.
+                      <span className="inline-flex items-center text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-medium">✓ Verified</span>
+                    </p>
+                    <p className="testimonial-tag">Options Academy Graduate</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="testimonial-card">
+                <div>
+                  <div className="testimonial-stars">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={15} fill="currentColor" />
+                    ))}
+                  </div>
+                  <p className="testimonial-text">
+                    "The psychology module alone saved me thousands. She doesn't teach you how to gamble; she teaches you how to manage risk like a business."
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 pt-3 border-t border-[var(--e-line)]">
+                  <div className="w-9 h-9 rounded-full bg-[var(--e-gold-bg)] text-[var(--e-gold)] font-bold text-xs flex items-center justify-center flex-shrink-0">
+                    MS
+                  </div>
+                  <div>
+                    <p className="testimonial-author flex items-center gap-1.5">
+                      Matthew S.
+                      <span className="inline-flex items-center text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-medium">✓ Verified</span>
+                    </p>
+                    <p className="testimonial-tag">Stock Market Made Easy Student</p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Right: checklist */}
-            <div className="space-y-3">
-              {[
-                "Structured, self-paced curriculum",
-                "Recorded lessons — learn at your own pace",
-                "Lifetime access to all course materials",
-                "Real trade breakdowns and analysis",
-                "Comprehensive resources and guides",
-                "Risk management and investing psychology",
-                "Long-term wealth building strategies",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: "oklch(19% 0.055 255)", border: "1px solid oklch(28% 0.07 255)" }}>
-                  <CheckCircle size={16} style={{ color: "var(--gold)", flexShrink: 0 }} />
-                  <span className="text-sm" style={{ color: "oklch(78% 0.015 255)", fontFamily: "'Inter', sans-serif" }}>{item}</span>
-                </div>
-              ))}
+            <div style={{ textAlign: "center", marginTop: 40 }}>
+              <Link href="/success-stories">
+                <span className="btn-editorial-outline">
+                  Read More Student Stories <ArrowRight size={15} />
+                </span>
+              </Link>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Background texture */}
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, oklch(80% 0.05 80) 1px, transparent 0)",
-          backgroundSize: "40px 40px"
-        }} />
-      </section>
+        {/* ── SECTION 5: FAQS ── */}
+        <section id="faq" className="editorial-section" style={{ background: "#FFFFFF", borderTop: "1px solid var(--e-line)" }}>
+          <div className="editorial-wrap">
+            <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto" }}>
+              <p className="section-label-gold">Common Inquiries</p>
+              <h2 className="section-title-large">Frequently asked questions</h2>
+              <p className="section-subtitle" style={{ margin: "0 auto" }}>
+                Everything you need to know about our courses, pacing, and learning format.
+              </p>
+            </div>
 
-      {/* ══════════════════════════════════════════════════════════════
-          LIVE MARKET TICKER + NEWS
-      ══════════════════════════════════════════════════════════════ */}
-      <section className="section-py" style={{ background: "white" }}>
-        <div className="container">
-          <div className="text-center mb-10">
-            <p className="section-label mb-2">Live Market Data</p>
-            <h2 className="editorial-heading" style={{ fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}>
-              {t("home.marketsTitle")}
-            </h2>
-            <p className="body-muted mx-auto mt-3" style={{ maxWidth: 480 }}>
-              {t("home.marketsSubtitle")}
+            <div className="faq-wrap">
+              <details className="faq-detail">
+                <summary>Are the courses self-paced or live?</summary>
+                <div className="faq-answer">
+                  Our core courses (such as the Long-Term Investment Course and Stock Market Made Easy) are completely self-paced with pre-recorded modules and lifetime access, allowing you to learn at your own speed from anywhere.
+                </div>
+              </details>
+
+              <details className="faq-detail">
+                <summary>What if I have never traded a stock in my life?</summary>
+                <div className="faq-answer">
+                  All courses begin from square one. We assume zero prior finance knowledge, starting with how brokerages work, what a share is, and how to read basic price charts before progressing to advanced setups.
+                </div>
+              </details>
+
+              <details className="faq-detail">
+                <summary>Which brokerages or platforms do you teach?</summary>
+                <div className="faq-answer">
+                  We provide direct step-by-step setup guides for Interactive Brokers (IBKR), Webull, and TradingView so you can easily analyze charts and place orders from anywhere in the world.
+                </div>
+              </details>
+
+              <details className="faq-detail">
+                <summary>How do I access the materials after enrolling?</summary>
+                <div className="faq-answer">
+                  Once enrolled, you receive instant access through the Whop student portal, compatible across desktop, tablet, and mobile devices.
+                </div>
+              </details>
+
+              <details className="faq-detail">
+                <summary>When will the Sold Out courses reopen?</summary>
+                <div className="faq-answer">
+                  New cohorts for Stock Market Made Easy are released periodically. Join the waitlist using the buttons above to be the first notified when seats open.
+                </div>
+              </details>
+
+              <details className="faq-detail">
+                <summary>Do you offer investment or financial advice?</summary>
+                <div className="faq-answer">
+                  No. All content, webinars, and course materials are provided strictly for educational purposes. We teach technical analysis frameworks and market mechanics so you can make informed decisions independently.
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SECTION 6: FINANCIAL RISK DISCLAIMER ── */}
+        <section className="editorial-wrap" style={{ paddingBottom: 70 }}>
+          <div className="disclaimer-box">
+            <p>
+              <strong>Educational & Financial Disclaimer:</strong> Gift of Trading and Sounia Gill provide financial education, technical chart analysis training, and educational commentary only. We are not registered investment advisers, broker-dealers, or financial planners. Trading securities, equities, and options carries substantial risk of capital loss and is not suitable for all investors. Past performance is no guarantee of future returns. You alone are responsible for evaluating your risk tolerance and personal investment decisions.
             </p>
           </div>
+        </section>
 
-          {/* TradingView Market Overview Widget — free, no API key needed */}
-          <div
-            className="rounded-2xl overflow-hidden mb-10"
-            style={{ border: "1px solid oklch(88% 0.018 80)", boxShadow: "0 4px 24px oklch(15% 0.06 255 / 0.06)" }}
-          >
-            <iframe
-              src="https://s.tradingview.com/embed-widget/market-overview/?locale=en#%7B%22colorTheme%22%3A%22light%22%2C%22dateRange%22%3A%221D%22%2C%22showChart%22%3Atrue%2C%22isTransparent%22%3Afalse%2C%22showSymbolLogo%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22400%22%2C%22tabs%22%3A%5B%7B%22title%22%3A%22Indices%22%2C%22symbols%22%3A%5B%7B%22s%22%3A%22FOREXCOM%3ASPXUSD%22%2C%22d%22%3A%22S%26P+500%22%7D%2C%7B%22s%22%3A%22FOREXCOM%3ANSXUSD%22%2C%22d%22%3A%22Nasdaq+100%22%7D%2C%7B%22s%22%3A%22FOREXCOM%3ADJI%22%2C%22d%22%3A%22Dow+Jones%22%7D%2C%7B%22s%22%3A%22INDEX%3AVIX%22%2C%22d%22%3A%22VIX%22%7D%5D%7D%2C%7B%22title%22%3A%22Top+Stocks%22%2C%22symbols%22%3A%5B%7B%22s%22%3A%22NASDAQ%3AAAPL%22%7D%2C%7B%22s%22%3A%22NASDAQ%3AMSFT%22%7D%2C%7B%22s%22%3A%22NASDAQ%3ANVDA%22%7D%2C%7B%22s%22%3A%22NYSE%3ATSLA%22%7D%5D%7D%5D%7D"
-              title="TradingView Market Overview — S&P 500, Nasdaq, Dow Jones"
-              width="100%"
-              height="400"
-              style={{ border: "none", display: "block" }}
-              loading="lazy"
-            />
-          </div>
-
-          {/* Market News Cards */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <h3 className="text-lg font-bold" style={{ color: "var(--navy)", fontFamily: "'Montserrat', sans-serif" }}>
-              Latest Market News
-            </h3>
-            <a
-              href="https://finance.yahoo.com/topic/stock-market-news/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-semibold inline-flex items-center gap-1"
-              style={{ color: "var(--gold)" }}
-            >
-              More news <ArrowRight size={13} />
-            </a>
-          </div>
-          <div className="grid md:grid-cols-3 gap-5">
-            {[
-              {
-                category: "Options",
-                title: "How to trade options around earnings season: key strategies from Sounia's playbook",
-                desc: "Earnings season creates volatility spikes that options traders can capitalise on with the right setup.",
-                href: "https://finance.yahoo.com/topic/options/",
-                source: "Yahoo Finance",
-              },
-              {
-                category: "S&P 500",
-                title: "S&P 500 technical levels to watch: support, resistance, and what the charts are saying",
-                desc: "Key price levels every trader should have on their radar as the index navigates macro uncertainty.",
-                href: "https://finance.yahoo.com/quote/%5EGSPC/",
-                source: "Yahoo Finance",
-              },
-              {
-                category: "Market Outlook",
-                title: "Weekly market outlook: Nasdaq momentum, Fed watch, and sector rotation plays",
-                desc: "A breakdown of the week ahead — the sectors showing strength and the risks worth managing.",
-                href: "https://finance.yahoo.com/topic/stock-market-news/",
-                source: "Yahoo Finance",
-              },
-            ].map((item) => (
-              <a
-                key={item.title}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block p-5 rounded-2xl transition-all hover:shadow-lg group"
-                style={{ background: "var(--cream)", border: "1px solid oklch(88% 0.018 80)", textDecoration: "none" }}
+        {/* ── COURSE STORY & DETAILS MODAL ── */}
+        {courseStoryModalOpen && selectedStoryCourse && (
+          <div className="modal-backdrop" onClick={() => setCourseStoryModalOpen(false)}>
+            <div className="story-modal-card" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="modal-close"
+                onClick={() => setCourseStoryModalOpen(false)}
+                aria-label="Close"
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="tag-gold text-xs">{item.category}</span>
-                  <span className="text-xs" style={{ color: "var(--text-muted)" }}>{item.source}</span>
-                </div>
-                <h3 className="text-sm font-semibold leading-snug mb-2 group-hover:text-[var(--gold)] transition-colors" style={{ color: "var(--navy)", fontFamily: "'Inter', sans-serif" }}>
-                  {item.title}
-                </h3>
-                <p className="text-xs leading-relaxed mb-3" style={{ color: "var(--text-muted)", fontFamily: "'Inter', sans-serif" }}>
-                  {item.desc}
-                </p>
-                <div className="flex items-center gap-1" style={{ color: "var(--gold)" }}>
-                  <span className="text-xs font-semibold">Read more</span>
-                  <ArrowRight size={12} />
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+                ×
+              </button>
 
-      {/* INSTAGRAM REELS */}
-      <section className="section-py" style={{ background: "var(--navy)" }}>
-        <div className="container">
-          <div className="text-center mb-10">
-            <p className="section-label mb-3" style={{ color: "var(--gold)" }}>@giftoftrading • 82K Followers</p>
-            <h2 className="editorial-heading mb-4" style={{ color: "white" }}>
-              Watch on{" "}
-              <span style={{ color: "var(--gold)" }}>Instagram</span>
-            </h2>
-            <p className="body-muted mx-auto" style={{ maxWidth: 500, color: "oklch(85% 0.02 80)" }}>
-              Market insights, trade breakdowns, and mindset lessons — straight from Sounia's trading desk.
-            </p>
-          </div>
+              <div className="story-modal-header">
+                <span className="hero-strip-label">{selectedStoryCourse.stepLabel}</span>
+                <div className="flex items-center justify-between gap-3 mt-1 mb-2">
+                  <h2 className="story-modal-title">{selectedStoryCourse.title}</h2>
+                  <span className="story-modal-price">{selectedStoryCourse.price}</span>
+                </div>
+                <p className="story-modal-subtitle">{selectedStoryCourse.overview}</p>
+              </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { url: "https://www.instagram.com/reel/DVuWEMRD-1t/", label: "5 Biggest Options Trading Mistakes" },
-              { url: "https://www.instagram.com/reel/DVWM_VCkjkF/", label: "Your 20s Are for Building" },
-              { url: "https://www.instagram.com/reel/DVd77rLEhON/", label: "Risk Management Isn't Optional" },
-            ].map((reel, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden" style={{ background: "oklch(18% 0.04 255)", border: "1px solid oklch(28% 0.07 255)" }}>
-                <div style={{ position: "relative", paddingBottom: "177.78%", height: 0, overflow: "hidden" }}>
-                  <iframe
-                    src={`${reel.url}embed/`}
-                    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
-                    allowFullScreen
-                    scrolling="no"
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    title={reel.label}
-                  />
+              <div className="story-meta-row">
+                <div className="story-meta-pill">
+                  <Clock size={14} className="text-amber-600" />
+                  <span>{selectedStoryCourse.duration}</span>
+                </div>
+                <div className="story-meta-pill">
+                  <BookOpen size={14} className="text-amber-600" />
+                  <span>{selectedStoryCourse.format}</span>
+                </div>
+                <div className="story-meta-pill">
+                  <Shield size={14} className="text-amber-600" />
+                  <span>Zero Experience Needed</span>
                 </div>
               </div>
-            ))}
-          </div>
 
-          <div className="text-center mt-8">
-            <a
-              href="https://www.instagram.com/giftoftrading/reels/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-outline inline-flex items-center gap-2"
-              style={{ borderColor: "oklch(40% 0.06 255)", color: "var(--cream)" }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-              </svg>
-              See All Reels on Instagram
-            </a>
+              <div className="story-curriculum-box">
+                <h4 className="story-curriculum-heading">What You Will Learn</h4>
+                <div className="story-modules-grid">
+                  {selectedStoryCourse.modules.map((mod, idx) => (
+                    <div key={idx} className="story-module-item">
+                      <CheckCircle size={16} className="text-amber-600 flex-shrink-0 mt-0.5" />
+                      <span>{mod}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="story-modal-actions">
+                {selectedStoryCourse.actionType === "enroll" && selectedStoryCourse.whopUrl ? (
+                  <a
+                    href={selectedStoryCourse.whopUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-banner-gold w-full justify-center"
+                    onClick={() => trackButtonClick(`enroll_whop_story_${selectedStoryCourse.id}`)}
+                  >
+                    {selectedStoryCourse.actionLabel} <ArrowUpRight size={17} />
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setCourseStoryModalOpen(false);
+                      handleOpenWaitlist(selectedStoryCourse.title);
+                    }}
+                    className="btn-banner-gold w-full justify-center"
+                  >
+                    {selectedStoryCourse.actionLabel} <ArrowRight size={17} />
+                  </button>
+                )}
+
+                <div className="text-center mt-3">
+                  <Link href="/services">
+                    <span
+                      className="text-xs font-medium text-slate-500 hover:text-slate-800 underline underline-offset-4 cursor-pointer"
+                      onClick={() => setCourseStoryModalOpen(false)}
+                    >
+                      View complete syllabus & compare all courses on Courses page →
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        )}
+
+        {/* ── WAITLIST / NOTIFY MODAL ── */}
+        {notifyModalOpen && (
+          <div className="modal-backdrop" onClick={() => setNotifyModalOpen(false)}>
+            <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="modal-close"
+                onClick={() => setNotifyModalOpen(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+
+              {notifySubmitted ? (
+                <div style={{ textAlign: "center", padding: "20px 0" }}>
+                  <div
+                    style={{
+                      width: 52,
+                      height: 52,
+                      borderRadius: "50%",
+                      background: "var(--e-gold-bg)",
+                      color: "var(--e-gold)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto 16px",
+                    }}
+                  >
+                    <CheckCircle size={28} />
+                  </div>
+                  <h3 style={{ fontSize: "20px", marginBottom: "8px" }}>You're on the list!</h3>
+                  <p style={{ fontSize: "14px", color: "var(--e-muted)" }}>
+                    We'll email you at <strong>{notifyEmail}</strong> as soon as enrollment opens for <strong>{selectedCourseTitle}</strong>.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleWaitlistSubmit}>
+                  <p className="section-label-gold">Priority Notification</p>
+                  <h3 style={{ fontSize: "22px", marginBottom: "6px" }}>
+                    Join the {selectedCourseTitle} Waitlist
+                  </h3>
+                  <p style={{ fontSize: "13px", color: "var(--e-muted)", marginBottom: "20px" }}>
+                    Leave your details below. We'll send an exclusive early-bird notification with priority access when seats are available.
+                  </p>
+
+                  <div style={{ marginBottom: "14px" }}>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Sarah Jenkins"
+                      value={notifyName}
+                      onChange={(e) => setNotifyName(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "10px 14px",
+                        borderRadius: "6px",
+                        border: "1px solid var(--e-line)",
+                        fontSize: "14px",
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: "18px" }}>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+                      Email Address <span style={{ color: "var(--e-rust)" }}>*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="you@example.com"
+                      value={notifyEmail}
+                      onChange={(e) => setNotifyEmail(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "10px 14px",
+                        borderRadius: "6px",
+                        border: "1px solid var(--e-line)",
+                        fontSize: "14px",
+                      }}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn-hero-action"
+                    style={{ width: "100%", justifyContent: "center" }}
+                  >
+                    Confirm Waitlist Spot <ArrowRight size={15} />
+                  </button>
+
+                  <p style={{ fontSize: "11px", color: "var(--e-muted)", textAlign: "center", marginTop: "12px" }}>
+                    🔒 We respect your privacy. No spam, ever.
+                  </p>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </Layout>
   );
 }

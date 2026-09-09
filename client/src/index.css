@@ -85,6 +85,26 @@
   --charcoal:   oklch(20% 0.02 280);
   --text-body:  oklch(38% 0.02 255);
   --text-muted: oklch(55% 0.02 255);
+
+  /* Editorial Palette (Claude Design v3) */
+  --editorial-navy: #0B1E33;
+  --editorial-white: #FFFFFF;
+  --editorial-paper: #FAF9F6;
+  --editorial-gold: #9C6B14;
+  --editorial-gold-bg: #FBEFDA;
+  --editorial-green: #2E6B47;
+  --editorial-rust: #A03B2A;
+  --editorial-rust-bg: #FBEAE6;
+  --editorial-line: #DEDBD2;
+  --editorial-muted: #5B6472;
+}
+
+.font-editorial-serif {
+  font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+}
+
+.font-editorial-sans {
+  font-family: 'IBM Plex Sans', 'Inter', sans-serif;
 }
 
 .dark {
