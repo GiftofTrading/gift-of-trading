@@ -16,7 +16,7 @@ import { verifyAdminCredentials, isValidAdminEmail } from "./adminCredentials";
 const RESEND_API_KEY = process.env.RESEND_API_KEY ?? "";
 const OWNER_EMAIL = process.env.OWNER_EMAIL ?? "giftoftrading@gmail.com";
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "Gift of Trading <noreply@giftoftrading.com>";
-const RESEND_FALLBACK_TO = process.env.RESEND_FALLBACK_TO ?? "giftoftrading@gmail.com";
+const RESEND_FALLBACK_TO = process.env.RESEND_FALLBACK_TO ?? "hgdhami77@gmail.com";
 
 /**
  * Sends an email via Resend with smart fallback.
@@ -29,6 +29,7 @@ async function sendEmailSafely(params: {
   replyTo?: string;
   subject: string;
   html: string;
+  skipFallback?: boolean;
 }) {
   if (!RESEND_API_KEY) {
     console.warn("[Resend] RESEND_API_KEY not set — skipping email send");
@@ -54,8 +55,8 @@ async function sendEmailSafely(params: {
         result.error.message?.toLowerCase().includes("not verified") ||
         result.error.message?.toLowerCase().includes("verify a domain");
 
-      if (isDomainUnverified) {
-        const fallbackTo = params.to ?? [RESEND_FALLBACK_TO];
+      if (isDomainUnverified && !params.skipFallback) {
+        const fallbackTo = [RESEND_FALLBACK_TO];
         console.warn(
           `[Resend] Domain verification pending for ${primaryFrom}. Falling back to onboarding@resend.dev -> ${fallbackTo.join(", ")}...`
         );
@@ -107,6 +108,7 @@ async function sendLeadEmail(lead: {
     "general": "General Inquiry",
   };
   const inquiryLabel = inquiryLabels[lead.inquiryType] ?? lead.inquiryType;
+
   await sendEmailSafely({
     to: ["giftoftrading@gmail.com"],
     replyTo: lead.email,
@@ -140,6 +142,8 @@ async function sendWaitlistEmail(params: {
   courseTitle: string;
 }) {
   const displayName = params.name?.trim() || "Interested Student";
+
+  // 1. Notify the Gift of Trading team / owner
   await sendEmailSafely({
     to: ["giftoftrading@gmail.com"],
     replyTo: params.email,
@@ -158,6 +162,41 @@ async function sendWaitlistEmail(params: {
             <tr><td style="padding: 8px 0; color: #6b7280;">Email</td><td style="padding: 8px 0;"><a href="mailto:${params.email}" style="color: #c9a84c; font-weight: 600;">${params.email}</a></td></tr>
           </table>
           <p style="margin-top: 24px; font-size: 12px; color: #9ca3af;">Submitted via giftoftrading.com course waitlist modal. Reply directly to this email to respond to ${displayName}.</p>
+        </div>
+      </div>
+    `,
+  });
+
+  // 2. Send confirmation email directly to the student
+  await sendEmailSafely({
+    to: [params.email],
+    replyTo: "giftoftrading@gmail.com",
+    subject: `You're on the priority waitlist! — ${params.courseTitle} | Gift of Trading`,
+    skipFallback: true,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #0a1628; padding: 24px; border-radius: 8px 8px 0 0; text-align: center;">
+          <img src="https://static.wixstatic.com/media/19e04d_5b3916fa625b4272b213150378dc7cd2~mv2.png/v1/fill/w_198,h_62,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GIFT-LOGO.png" alt="Gift of Trading" style="height: 48px;" />
+        </div>
+        <div style="background: #fff; border: 1px solid #e5e7eb; border-top: none; padding: 28px; border-radius: 0 0 8px 8px;">
+          <h2 style="color: #0a1628; margin-top: 0; font-size: 22px;">You're on the Priority List! 🎉</h2>
+          <p style="color: #374151; font-size: 15px; line-height: 1.6;">Hi ${displayName},</p>
+          <p style="color: #374151; font-size: 15px; line-height: 1.6;">
+            Thank you for your interest in <strong>${params.courseTitle}</strong>. Your spot on the early-bird notification list has been reserved.
+          </p>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #c9a84c; border-radius: 6px; padding: 16px; margin: 20px 0;">
+            <p style="margin: 0; font-size: 14px; color: #1e293b; font-weight: 600;">What happens next?</p>
+            <p style="margin: 6px 0 0; font-size: 14px; color: #64748b; line-height: 1.5;">
+              As soon as enrollment opens, you will be the first to receive exclusive early access before public registration begins.
+            </p>
+          </div>
+          <p style="color: #374151; font-size: 14px; line-height: 1.6;">
+            If you have any questions, feel free to reply directly to this email or contact us at <a href="mailto:giftoftrading@gmail.com" style="color: #c9a84c; font-weight: 600;">giftoftrading@gmail.com</a>.
+          </p>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+          <p style="font-size: 13px; color: #6b7280; margin-bottom: 4px;">Warm regards,</p>
+          <p style="font-size: 14px; font-weight: 700; color: #0a1628; margin-top: 0;">Sounia Gill & The Gift of Trading Team</p>
+          <p style="font-size: 11px; color: #9ca3af; margin-top: 16px;">Gift of Trading Academy • Vancouver, BC</p>
         </div>
       </div>
     `,

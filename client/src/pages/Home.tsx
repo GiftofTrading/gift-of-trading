@@ -801,10 +801,10 @@ export default function Home() {
 
                   <button
                     type="submit"
-                    className="btn-hero-action"
-                    style={{ width: "100%", justifyContent: "center" }}
+                    className="btn-modal-submit"
+                    disabled={waitlistMutation.isPending}
                   >
-                    Confirm Waitlist Spot <ArrowRight size={15} />
+                    {waitlistMutation.isPending ? "Securing Your Spot..." : "Confirm Waitlist Spot"} <ArrowRight size={15} />
                   </button>
 
                   <p style={{ fontSize: "11px", color: "var(--e-muted)", textAlign: "center", marginTop: "12px" }}>

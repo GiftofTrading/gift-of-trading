@@ -792,6 +792,54 @@
   color: var(--e-navy);
 }
 
+.btn-modal-submit {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--e-gold-light, #c9a84c);
+  color: var(--e-navy, #06111d) !important;
+  padding: 13px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(201, 168, 76, 0.25);
+  margin-top: 4px;
+}
+
+.btn-modal-submit:hover {
+  background: #deb65b;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(201, 168, 76, 0.35);
+}
+
+.btn-modal-submit:active {
+  transform: translateY(0);
+}
+
+.btn-modal-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-hero-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
 /* ── STORY MODAL FOR HERO STRIP ── */
 .story-modal-card {
   background: #FFFFFF;
