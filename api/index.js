@@ -1028,6 +1028,54 @@ init_adminCredentials();
 import { TRPCError as TRPCError3 } from "@trpc/server";
 var RESEND_API_KEY = process.env.RESEND_API_KEY ?? "";
 var OWNER_EMAIL = process.env.OWNER_EMAIL ?? "giftoftrading@gmail.com";
+var RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "Gift of Trading <noreply@giftoftrading.com>";
+var RESEND_FALLBACK_TO = process.env.RESEND_FALLBACK_TO ?? "hgdhami77@gmail.com";
+async function sendEmailSafely(params) {
+  if (!RESEND_API_KEY) {
+    console.warn("[Resend] RESEND_API_KEY not set \u2014 skipping email send");
+    return null;
+  }
+  const resend = new Resend(RESEND_API_KEY);
+  const primaryFrom = params.from ?? RESEND_FROM_EMAIL;
+  const primaryTo = params.to ?? [OWNER_EMAIL];
+  try {
+    const result = await resend.emails.send({
+      from: primaryFrom,
+      to: primaryTo,
+      replyTo: params.replyTo,
+      subject: params.subject,
+      html: params.html
+    });
+    if (result.error) {
+      console.error("[Resend Primary Error]:", result.error);
+      const isDomainUnverified = result.error.statusCode === 403 || result.error.message?.toLowerCase().includes("not verified") || result.error.message?.toLowerCase().includes("verify a domain");
+      if (isDomainUnverified) {
+        console.warn(
+          `[Resend] Domain verification pending for ${primaryFrom}. Falling back to onboarding@resend.dev -> ${RESEND_FALLBACK_TO}...`
+        );
+        const fallbackResult = await resend.emails.send({
+          from: "Gift of Trading <onboarding@resend.dev>",
+          to: [RESEND_FALLBACK_TO],
+          replyTo: params.replyTo,
+          subject: `[Notification] ${params.subject}`,
+          html: params.html
+        });
+        if (fallbackResult.error) {
+          console.error("[Resend Fallback Error]:", fallbackResult.error);
+        } else {
+          console.log("[Resend] Successfully sent via fallback:", fallbackResult.data?.id);
+        }
+        return fallbackResult;
+      }
+      return result;
+    }
+    console.log("[Resend] Email sent successfully:", result.data?.id);
+    return result;
+  } catch (err) {
+    console.error("[Resend] Unexpected exception during send:", err);
+    return null;
+  }
+}
 var ownerOnlyProcedure = adminProcedure.use(({ ctx, next }) => {
   if (ctx.user.openId !== ENV.ownerOpenId) {
     throw new TRPCError3({ code: "FORBIDDEN", message: "Only the owner can perform this action" });
@@ -1035,20 +1083,13 @@ var ownerOnlyProcedure = adminProcedure.use(({ ctx, next }) => {
   return next({ ctx });
 });
 async function sendLeadEmail(lead) {
-  if (!RESEND_API_KEY) {
-    console.warn("[Resend] RESEND_API_KEY not set \u2014 skipping email notification");
-    return;
-  }
-  const resend = new Resend(RESEND_API_KEY);
   const inquiryLabels = {
     "stock-market-made-easy": "Stock Market Made Easy",
     "webinar": "Webinar",
     "general": "General Inquiry"
   };
   const inquiryLabel = inquiryLabels[lead.inquiryType] ?? lead.inquiryType;
-  await resend.emails.send({
-    from: "Gift of Trading <noreply@giftoftrading.com>",
-    to: [OWNER_EMAIL],
+  await sendEmailSafely({
     replyTo: lead.email,
     subject: `New Lead: ${lead.firstName} ${lead.lastName ?? ""} \u2014 ${inquiryLabel}`,
     html: `
@@ -1451,30 +1492,19 @@ var newsletterRouter = router({
     } catch (err) {
       console.warn("[Newsletter] Failed to save subscriber:", err);
     }
-    if (RESEND_API_KEY) {
-      const resend = new Resend(RESEND_API_KEY);
-      try {
-        await resend.emails.send({
-          from: "Gift of Trading <noreply@giftoftrading.com>",
-          to: [OWNER_EMAIL],
-          subject: `New Newsletter Subscriber: ${input.email}`,
-          html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-              <div style="background: #0a1628; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
-                <img src="https://static.wixstatic.com/media/19e04d_5b3916fa625b4272b213150378dc7cd2~mv2.png/v1/fill/w_198,h_62,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GIFT-LOGO.png" alt="Gift of Trading" style="height: 48px;" />
-              </div>
-              <div style="background: #fff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;">
-                <h2 style="color: #0a1628; margin-top: 0;">New Newsletter Subscriber</h2>
-                <p style="color: #374151;"><strong>${input.name || input.email}</strong> (${input.email}) has subscribed to your newsletter.</p>
-                <p style="font-size: 12px; color: #9ca3af;">Subscribed via giftoftrading.com</p>
-              </div>
-            </div>`
-        });
-      } catch (err) {
-        console.warn("[Newsletter] Failed to send owner notification:", err);
-      }
-    } else {
-      console.warn("[Newsletter] RESEND_API_KEY not set \u2014 skipping email notification");
-    }
+    await sendEmailSafely({
+      subject: `New Newsletter Subscriber: ${input.email}`,
+      html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: #0a1628; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+            <img src="https://static.wixstatic.com/media/19e04d_5b3916fa625b4272b213150378dc7cd2~mv2.png/v1/fill/w_198,h_62,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GIFT-LOGO.png" alt="Gift of Trading" style="height: 48px;" />
+          </div>
+          <div style="background: #fff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;">
+            <h2 style="color: #0a1628; margin-top: 0;">New Newsletter Subscriber</h2>
+            <p style="color: #374151;"><strong>${input.name || input.email}</strong> (${input.email}) has subscribed to your newsletter.</p>
+            <p style="font-size: 12px; color: #9ca3af;">Subscribed via giftoftrading.com</p>
+          </div>
+        </div>`
+    });
     return { success: true };
   }),
   list: ownerOnlyProcedure.query(async () => {
@@ -1560,20 +1590,11 @@ var masterclassRouter = router({
     } catch (err) {
       console.warn("[Masterclass] Failed to save application:", err);
     }
-    if (RESEND_API_KEY) {
-      const resend = new Resend(RESEND_API_KEY);
-      try {
-        await resend.emails.send({
-          from: "Gift of Trading <noreply@giftoftrading.com>",
-          to: [OWNER_EMAIL],
-          replyTo: input.email,
-          subject: `New Masterclass Application: ${input.firstName} ${input.lastName || ""} \u2014 ${input.experienceLevel}`,
-          html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="background: #0a1628; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;"><img src="https://static.wixstatic.com/media/19e04d_5b3916fa625b4272b213150378dc7cd2~mv2.png/v1/fill/w_198,h_62,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GIFT-LOGO.png" alt="Gift of Trading" style="height: 48px;" /></div><div style="background: #fff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;"><h2 style="color: #0a1628; margin-top: 0;">New Masterclass Application</h2><table style="width: 100%; border-collapse: collapse;"><tr><td style="padding: 8px 0; color: #6b7280; width: 120px;">Name</td><td style="padding: 8px 0; font-weight: 600; color: #111827;">${input.firstName} ${input.lastName || ""}</td></tr><tr><td style="padding: 8px 0; color: #6b7280;">Email</td><td style="padding: 8px 0;"><a href="mailto:${input.email}" style="color: #c9a84c;">${input.email}</a></td></tr><tr><td style="padding: 8px 0; color: #6b7280;">Phone</td><td style="padding: 8px 0; color: #111827;">${input.phone}</td></tr><tr><td style="padding: 8px 0; color: #6b7280;">Experience</td><td style="padding: 8px 0;"><span style="background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-size: 13px;">${input.experienceLevel}</span></td></tr></table><p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">Submitted via giftoftrading.com masterclass application form. Reply directly to this email to respond to ${input.firstName}.</p></div></div>`
-        });
-      } catch (err) {
-        console.warn("[Masterclass] Failed to send owner notification:", err);
-      }
-    }
+    await sendEmailSafely({
+      replyTo: input.email,
+      subject: `New Masterclass Application: ${input.firstName} ${input.lastName || ""} \u2014 ${input.experienceLevel}`,
+      html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="background: #0a1628; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;"><img src="https://static.wixstatic.com/media/19e04d_5b3916fa625b4272b213150378dc7cd2~mv2.png/v1/fill/w_198,h_62,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GIFT-LOGO.png" alt="Gift of Trading" style="height: 48px;" /></div><div style="background: #fff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;"><h2 style="color: #0a1628; margin-top: 0;">New Masterclass Application</h2><table style="width: 100%; border-collapse: collapse;"><tr><td style="padding: 8px 0; color: #6b7280; width: 120px;">Name</td><td style="padding: 8px 0; font-weight: 600; color: #111827;">${input.firstName} ${input.lastName || ""}</td></tr><tr><td style="padding: 8px 0; color: #6b7280;">Email</td><td style="padding: 8px 0;"><a href="mailto:${input.email}" style="color: #c9a84c;">${input.email}</a></td></tr><tr><td style="padding: 8px 0; color: #6b7280;">Phone</td><td style="padding: 8px 0; color: #111827;">${input.phone}</td></tr><tr><td style="padding: 8px 0; color: #6b7280;">Experience</td><td style="padding: 8px 0;"><span style="background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-size: 13px;">${input.experienceLevel}</span></td></tr></table><p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">Submitted via giftoftrading.com masterclass application form. Reply directly to this email to respond to ${input.firstName}.</p></div></div>`
+    });
     return { success: true, message: "Application submitted successfully. Someone will reach out to schedule a Zoom call." };
   }),
   list: ownerOnlyProcedure.query(async () => {
@@ -1614,15 +1635,11 @@ var appRouter = router({
       const verificationCode = Math.floor(1e5 + Math.random() * 9e5).toString();
       const expiryTime = new Date(Date.now() + 24 * 60 * 60 * 1e3);
       await db.update(users).set({ verificationToken: verificationCode, verificationTokenExpiry: expiryTime }).where(eq2(users.id, ctx.user.id));
-      if (RESEND_API_KEY) {
-        const resend = new Resend(RESEND_API_KEY);
-        await resend.emails.send({
-          from: "Gift of Trading <noreply@giftoftrading.com>",
-          to: [ctx.user.email],
-          subject: "Verify Your Email - Gift of Trading",
-          html: `<p>Your email verification code is: <strong>${verificationCode}</strong></p><p>This code expires in 24 hours.</p>`
-        });
-      }
+      await sendEmailSafely({
+        to: [ctx.user.email],
+        subject: "Verify Your Email - Gift of Trading",
+        html: `<p>Your email verification code is: <strong>${verificationCode}</strong></p><p>This code expires in 24 hours.</p>`
+      });
       return { success: true, message: "Verification code sent to your email" };
     }),
     verifyEmail: protectedProcedure.input(z2.object({ code: z2.string() })).mutation(async ({ input, ctx }) => {
