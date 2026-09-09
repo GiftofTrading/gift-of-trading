@@ -272,7 +272,7 @@ export default function Contact() {
             {[
               { value: "< 24hrs", label: "Average Response Time" },
               { value: "2,700+", label: "Students Helped" },
-              { value: "Free", label: "Initial Consultation" },
+              { value: "100%", label: "Dedicated Support" },
             ].map(({ value, label }) => (
               <div key={label} className="bg-[oklch(16%_0.05_255)] rounded-2xl p-6 border border-[oklch(26%_0.07_255)]">
                 <p className="text-[oklch(73%_0.14_72)] text-3xl font-black mb-2" style={{ fontFamily: "Montserrat, sans-serif" }}>{value}</p>

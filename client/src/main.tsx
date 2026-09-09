@@ -54,18 +54,33 @@ const trpcClient = trpc.createClient({
   ],
 });
 
-// Register service worker for PWA offline support
+// Handle service worker: in development unregister to prevent stale cache; in production register
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/sw.js')
-      .then((registration) => {
-        console.log('Service Worker registered:', registration);
-      })
-      .catch((error) => {
-        console.warn('Service Worker registration failed:', error);
+  if (import.meta.env.DEV) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+      }
+    });
+    if ('caches' in window) {
+      caches.keys().then((keys) => {
+        for (const key of keys) {
+          caches.delete(key);
+        }
       });
-  });
+    }
+  } else {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered:', registration);
+        })
+        .catch((error) => {
+          console.warn('Service Worker registration failed:', error);
+        });
+    });
+  }
 }
 
 // Track initial page view

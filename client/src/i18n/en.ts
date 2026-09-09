@@ -81,7 +81,7 @@ const en = {
   common: {
     enrollNow: "Enroll Now",
     learnMore: "Learn More",
-    bookConsultation: "Book Free Consultation",
+    bookConsultation: "Book Consultation",
     getStarted: "Get Started",
     viewAll: "View All",
     readMore: "Read More",

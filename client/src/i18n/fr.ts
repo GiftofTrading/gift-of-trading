@@ -81,7 +81,7 @@ const fr = {
   common: {
     enrollNow: "S'inscrire",
     learnMore: "En savoir plus",
-    bookConsultation: "Réserver une consultation gratuite",
+    bookConsultation: "Réserver une consultation",
     getStarted: "Commencer",
     viewAll: "Voir tout",
     readMore: "Lire la suite",

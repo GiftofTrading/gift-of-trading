@@ -1,7 +1,7 @@
 // Service Worker for Gift of Trading PWA
 // Provides offline support and caching strategies
 
-const CACHE_NAME = 'gift-of-trading-v1';
+const CACHE_NAME = 'gift-of-trading-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -19,7 +19,6 @@ self.addEventListener('install', (event) => {
       console.log('Caching static assets');
       return cache.addAll(STATIC_ASSETS).catch((err) => {
         console.warn('Some assets failed to cache:', err);
-        // Continue even if some assets fail to cache
         return Promise.resolve();
       });
     })
@@ -59,12 +58,34 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       fetch(request).catch(() => {
-        // Return offline response for API calls
         return new Response(
           JSON.stringify({ error: 'Offline - API unavailable' }),
           { status: 503, headers: { 'Content-Type': 'application/json' } }
         );
       })
+    );
+    return;
+  }
+
+  // Network-first for navigation and HTML requests so users always get fresh content
+  if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          return caches.match(request).then((cachedResponse) => {
+            if (cachedResponse) return cachedResponse;
+            return caches.match('/index.html');
+          });
+        })
     );
     return;
   }

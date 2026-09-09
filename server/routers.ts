@@ -16,7 +16,7 @@ import { verifyAdminCredentials, isValidAdminEmail } from "./adminCredentials";
 const RESEND_API_KEY = process.env.RESEND_API_KEY ?? "";
 const OWNER_EMAIL = process.env.OWNER_EMAIL ?? "giftoftrading@gmail.com";
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "Gift of Trading <noreply@giftoftrading.com>";
-const RESEND_FALLBACK_TO = process.env.RESEND_FALLBACK_TO ?? "hgdhami77@gmail.com";
+const RESEND_FALLBACK_TO = process.env.RESEND_FALLBACK_TO ?? "giftoftrading@gmail.com";
 
 /**
  * Sends an email via Resend with smart fallback.
@@ -55,12 +55,13 @@ async function sendEmailSafely(params: {
         result.error.message?.toLowerCase().includes("verify a domain");
 
       if (isDomainUnverified) {
+        const fallbackTo = params.to ?? [RESEND_FALLBACK_TO];
         console.warn(
-          `[Resend] Domain verification pending for ${primaryFrom}. Falling back to onboarding@resend.dev -> ${RESEND_FALLBACK_TO}...`
+          `[Resend] Domain verification pending for ${primaryFrom}. Falling back to onboarding@resend.dev -> ${fallbackTo.join(", ")}...`
         );
         const fallbackResult = await resend.emails.send({
           from: "Gift of Trading <onboarding@resend.dev>",
-          to: [RESEND_FALLBACK_TO],
+          to: fallbackTo,
           replyTo: params.replyTo,
           subject: `[Notification] ${params.subject}`,
           html: params.html,
@@ -107,6 +108,7 @@ async function sendLeadEmail(lead: {
   };
   const inquiryLabel = inquiryLabels[lead.inquiryType] ?? lead.inquiryType;
   await sendEmailSafely({
+    to: ["giftoftrading@gmail.com"],
     replyTo: lead.email,
     subject: `New Lead: ${lead.firstName} ${lead.lastName ?? ""} — ${inquiryLabel}`,
     html: `

@@ -8,6 +8,7 @@ import "./HomeEditorial.css";
 
 // External Whop URLs
 const WHOP_COMMUNITY = "https://whop.com/discover/options-academy-zero-to-pro-6/";
+const WHOP_SMME = "https://whop.com/discover/options-academy-zero-to-pro-6/stock-market-made-simple/";
 
 interface CourseDetail {
   id: string;
@@ -28,27 +29,31 @@ interface CourseDetail {
 
 const ALL_COURSES: CourseDetail[] = [
   {
-    id: "long-term",
-    title: "Long-Term Investment Course",
-    category: "📚 Self-Paced Course",
+    id: "stock-market-made-easy",
+    title: "Stock Market Made Easy",
+    category: "📚 Foundational Beginner Course",
     badge: "Enrolling Now",
     badgeType: "enrolling",
     price: "$349",
-    originalPrice: "$499",
-    duration: "Lifetime Access",
-    format: "Self-Paced Video Lessons + Community",
-    desc: "Build a lasting portfolio with foundational stock investing, ETFs, balance sheet analysis, and disciplined wealth creation strategies.",
+    originalPrice: "$436.25",
+    duration: "9 Modules • 39 Lessons • Lifetime Access",
+    format: "Self-Paced Video Curriculum + Community",
+    desc: "From Zero to Investor — Sounia's complete foundational beginner curriculum covering stock investing, ETFs, balance sheets, candlestick reading, supply & demand zones, and disciplined wealth building.",
     modules: [
       "Stock Market Fundamentals: How Capital Markets Work",
+      "How to Read Candlestick Charts & Price Action",
       "Analyzing Company Financials & 10-K Reports",
+      "Identifying High-Probability Supply & Demand Zones",
       "ETF Selection & Core/Satellite Portfolio Allocation",
       "Dividend Growth Investing & Compounding Systems",
-      "Macroeconomic Cycles & Market Valuation Metrics",
+      "Trendlines, Breakouts & Support/Resistance Levels",
+      "Moving Averages & Key Technical Momentum Indicators",
       "Risk Management, Position Sizing & Drawdown Rules",
+      "Interactive Brokers (IBKR) & Webull Setup Guides",
     ],
     actionType: "enroll",
     actionLabel: "Enroll on Whop ($349)",
-    whopUrl: WHOP_COMMUNITY,
+    whopUrl: WHOP_SMME,
   },
   {
     id: "options-beginner",
@@ -56,7 +61,7 @@ const ALL_COURSES: CourseDetail[] = [
     category: "🎯 Options Fundamentals",
     badge: "Coming Soon",
     badgeType: "coming_soon",
-    duration: "Self-Paced",
+    duration: "Self-Paced Video Lessons",
     format: "Video Lessons + Strategy Worksheets",
     desc: "Understand calls, puts, strike selection, and risk management from the ground up with zero confusing jargon.",
     modules: [
@@ -76,7 +81,7 @@ const ALL_COURSES: CourseDetail[] = [
     category: "⚡ Advanced Options",
     badge: "Coming Soon",
     badgeType: "coming_soon",
-    duration: "Self-Paced",
+    duration: "Self-Paced Video Lessons",
     format: "Video Lessons + Real Trade Case Studies",
     desc: "Advanced vertical spreads, iron condors, implied volatility rank analysis, and disciplined risk-to-reward frameworks.",
     modules: [
@@ -89,26 +94,6 @@ const ALL_COURSES: CourseDetail[] = [
     ],
     actionType: "waitlist",
     actionLabel: "Join Waitlist",
-  },
-  {
-    id: "stock-market-made-easy",
-    title: "Stock Market Made Easy",
-    category: "📈 Foundational Masterclass",
-    badge: "Sold Out",
-    badgeType: "sold_out",
-    duration: "9 Modules • 39 Lessons",
-    format: "Self-Paced Video Curriculum",
-    desc: "Sounia's complete signature curriculum taking beginners from zero to confident technical chart reading.",
-    modules: [
-      "How to Read Candlestick Charts & Price Action",
-      "Identifying High-Probability Supply & Demand Zones",
-      "Trendlines, Breakouts & Support/Resistance Levels",
-      "Moving Averages & Key Technical Momentum Indicators",
-      "Trading Psychology: Overcoming FOMO and Fear",
-      "Interactive Brokers (IBKR) & Webull Setup Guides",
-    ],
-    actionType: "waitlist",
-    actionLabel: "Join Next Cohort Waitlist",
   },
   {
     id: "recorded-masterclass",
@@ -135,11 +120,11 @@ const ALL_COURSES: CourseDetail[] = [
 const FAQS = [
   {
     q: "Which course should I take if I am a complete beginner?",
-    a: "If you are starting from zero, the Long-Term Investment Course is the best starting point. It provides foundational market literacy, teaches how businesses create value, and guides you through establishing your first portfolio safely.",
+    a: "If you are starting from zero, Stock Market Made Easy is the best starting point. It provides foundational market literacy, teaches how businesses create value, explains candlestick reading, and guides you through establishing your first portfolio safely.",
   },
   {
-    q: "Why are some courses listed as Sold Out or Coming Soon?",
-    a: "To ensure high instructional quality and attentive community support, Sounia limits cohort enrollments. You can join the priority waitlist for any course above to be first in line when seats open.",
+    q: "Why are some courses listed as Coming Soon?",
+    a: "Courses listed as Coming Soon are currently in curriculum preparation. You can join the priority waitlist for any course above to be notified first when enrollment opens.",
   },
   {
     q: "How does enrollment through Whop work?",
@@ -165,7 +150,7 @@ export default function Services() {
   useEffect(() => {
     updateMetaTags({
       title: "All Courses & Programs | Gift of Trading Academy",
-      description: "Explore all trading courses by Sounia Gill: Long-Term Investment, Options Beginner, Options Strategy, and Masterclasses.",
+      description: "Explore all trading courses by Sounia Gill: Stock Market Made Easy, Options Beginner, Options Strategy, and Masterclasses.",
       canonicalUrl: "https://giftoftrading.com/services",
     });
   }, []);
@@ -303,8 +288,8 @@ export default function Services() {
                         </div>
                       ) : (
                         <div style={{ marginBottom: "14px" }}>
-                          <span style={{ fontSize: "14px", fontWeight: 600, color: "var(--e-muted)" }}>
-                            {course.badgeType === "sold_out" ? "Cohort Full" : "Price Announced at Launch"}
+                          <span style={{ fontSize: "15px", fontWeight: 600, color: "var(--e-navy)" }}>
+                            Coming Soon
                           </span>
                           <p style={{ fontSize: "12px", color: "var(--e-muted)", marginTop: "2px" }}>
                             {course.duration}

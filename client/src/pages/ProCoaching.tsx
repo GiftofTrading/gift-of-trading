@@ -68,7 +68,7 @@ export default function ProCoaching() {
                   <span className="btn-gold">Apply for Coaching <ArrowRight size={16} /></span>
                 </Link>
                 <Link href="/contact">
-                  <span className="btn-ghost-light">Book Free Consultation</span>
+                  <span className="btn-ghost-light">Contact Us</span>
                 </Link>
               </div>
             </div>

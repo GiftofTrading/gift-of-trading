@@ -31,7 +31,7 @@ interface CourseStory {
   stepLabel: string;
   title: string;
   category: string;
-  price: string;
+  price?: string;
   originalPrice?: string;
   status: "enrolling" | "coming_soon";
   statusLabel: string;
@@ -51,7 +51,6 @@ const COURSE_STORIES: Record<string, CourseStory> = {
     stepLabel: "01 / START HERE",
     title: "Option Beginner Course",
     category: "🎯 Options Fundamentals",
-    price: "$199",
     status: "coming_soon",
     statusLabel: "Coming Soon",
     duration: "Self-Paced Video Lessons",
@@ -80,7 +79,6 @@ const COURSE_STORIES: Record<string, CourseStory> = {
     stepLabel: "02 / GO DEEPER",
     title: "Options Beginner + Strategy",
     category: "⚡ Advanced Options & Multi-Leg Spreads",
-    price: "$495",
     status: "coming_soon",
     statusLabel: "Coming Soon",
     duration: "Self-Paced Video Lessons",
@@ -104,52 +102,52 @@ const COURSE_STORIES: Record<string, CourseStory> = {
     actionType: "waitlist",
     actionLabel: "Join Priority Waitlist",
   },
-  "long-term": {
-    id: "long-term",
+  "stock-market-made-easy": {
+    id: "stock-market-made-easy",
     stepLabel: "03 / THINK LONG TERM",
-    title: "Long-Term Investment Course",
+    title: "Stock Market Made Easy",
     category: "📚 Wealth Creation & Portfolio Building",
     price: "$349",
-    originalPrice: "$499",
+    originalPrice: "$436.25",
     status: "enrolling",
     statusLabel: "Enrolling Now",
-    duration: "Lifetime Access",
+    duration: "9 Modules • Lifetime Access",
     format: "Comprehensive Video Lessons + Community",
     overview:
-      "Build a resilient, compound-growth stock portfolio. Master business fundamentals, 10-K financial reading, ETF selection, and disciplined wealth preservation strategies.",
+      "From zero to investor. Build a resilient, compound-growth stock portfolio. Master business fundamentals, 10-K financial reading, ETF selection, and disciplined wealth preservation strategies.",
     highlights: [
+      "Complete 9-module beginner-friendly curriculum",
       "Understand financial balance sheets & cash flow",
       "Smart ETF selection & sector diversification",
-      "Dividend reinvestment & compounding models",
       "Direct enrollment via Whop with instant access",
     ],
     modules: [
-      "Module 1: Capital Market Dynamics & Business Valuation",
+      "Module 1: Capital Market Dynamics & How Stocks Work",
       "Module 2: Decoding Company Financials, P/E & Free Cash Flow",
-      "Module 3: Core & Satellite Portfolio Allocation with Low-Cost ETFs",
-      "Module 4: Dividend Growth Investing & Compounding Mechanics",
-      "Module 5: Macroeconomic Cycles, Inflation & Interest Rate Impacts",
+      "Module 3: Candlestick Reading & Price Action Fundamentals",
+      "Module 4: Core & Satellite Portfolio Allocation with Low-Cost ETFs",
+      "Module 5: Dividend Growth Investing & Compounding Systems",
       "Module 6: Position Sizing, DCA Strategies & Drawdown Protection",
     ],
     actionType: "enroll",
     actionLabel: "Enroll on Whop ($349)",
-    whopUrl: WHOP_COMMUNITY,
+    whopUrl: WHOP_SMME,
   },
 };
 
 const COURSES: CourseItem[] = [
   {
-    id: "long-term",
-    title: "Long-Term Investment Course",
-    category: "📚 Self-Paced Course",
+    id: "stock-market-made-easy",
+    title: "Stock Market Made Easy",
+    category: "📚 Foundational Course",
     status: "enrolling",
     statusLabel: "Enrolling Now",
     price: "$349",
-    originalPrice: "$499",
-    description: "Build a resilient long-term portfolio. Master fundamental valuation, ETF selection, dividend investing, and sound risk discipline.",
+    originalPrice: "$436.25",
+    description: "From zero to investor — Sounia's signature 9-module curriculum covering market mechanics, candlestick patterns, supply & demand zones, ETF investing, and risk rules.",
     actionType: "enroll",
-    actionLabel: "Enroll on Whop",
-    url: WHOP_COMMUNITY,
+    actionLabel: "Enroll on Whop ($349)",
+    url: WHOP_SMME,
     featured: true,
   },
   {
@@ -171,16 +169,6 @@ const COURSES: CourseItem[] = [
     description: "Advanced options strategies for systematic execution: credit spreads, iron condors, implied volatility analysis, and defensive adjustments.",
     actionType: "waitlist",
     actionLabel: "Join Waitlist",
-  },
-  {
-    id: "stock-market-made-easy",
-    title: "Stock Market Made Easy",
-    category: "📈 Foundational Masterclass",
-    status: "sold_out",
-    statusLabel: "Sold Out",
-    description: "Sounia's foundational 9-module curriculum covering market dynamics, candlestick patterns, supply & demand zones, and chart psychology.",
-    actionType: "waitlist",
-    actionLabel: "Join Next Cohort Waitlist",
   },
   {
     id: "recorded-masterclass",
@@ -298,7 +286,7 @@ export default function Home() {
                   <span className="hero-strip-label">01 / START HERE</span>
                   <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Options beginner</h3>
                 </div>
-                <span className="hero-strip-price">$199 <ArrowUpRight size={16} /></span>
+                <span className="hero-strip-price" style={{ fontSize: "13px", fontWeight: 600 }}>Coming Soon <ArrowUpRight size={15} /></span>
               </div>
 
               <div
@@ -311,18 +299,18 @@ export default function Home() {
                   <span className="hero-strip-label">02 / GO DEEPER</span>
                   <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Options + strategy</h3>
                 </div>
-                <span className="hero-strip-price">$495 <ArrowUpRight size={16} /></span>
+                <span className="hero-strip-price" style={{ fontSize: "13px", fontWeight: 600 }}>Coming Soon <ArrowUpRight size={15} /></span>
               </div>
 
               <div
                 className="hero-strip-item"
-                onClick={() => handleOpenCourseStory("long-term")}
+                onClick={() => handleOpenCourseStory("stock-market-made-easy")}
                 role="button"
                 tabIndex={0}
               >
                 <div>
                   <span className="hero-strip-label">03 / THINK LONG TERM</span>
-                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Long term investing</h3>
+                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Stock market made easy</h3>
                 </div>
                 <span className="hero-strip-price">$349 <ArrowUpRight size={16} /></span>
               </div>
@@ -419,8 +407,8 @@ export default function Home() {
                       </div>
                     ) : (
                       <div className="course-price-wrap">
-                        <span className="text-sm font-medium text-slate-500">
-                          {course.status === "sold_out" ? "Cohort Filled" : "Price announced at launch"}
+                        <span className="text-sm font-semibold text-slate-700">
+                          {course.status === "sold_out" ? "Cohort Filled" : "Coming Soon"}
                         </span>
                       </div>
                     )}
@@ -579,7 +567,7 @@ export default function Home() {
               <details className="faq-detail">
                 <summary>Are the courses self-paced or live?</summary>
                 <div className="faq-answer">
-                  Our core courses (such as the Long-Term Investment Course and Stock Market Made Easy) are completely self-paced with pre-recorded modules and lifetime access, allowing you to learn at your own speed from anywhere.
+                  Our core course, Stock Market Made Easy, is completely self-paced with pre-recorded modules and lifetime access, allowing you to learn at your own speed from anywhere.
                 </div>
               </details>
 
@@ -646,7 +634,11 @@ export default function Home() {
                 <span className="hero-strip-label">{selectedStoryCourse.stepLabel}</span>
                 <div className="flex items-center justify-between gap-3 mt-1 mb-2">
                   <h2 className="story-modal-title">{selectedStoryCourse.title}</h2>
-                  <span className="story-modal-price">{selectedStoryCourse.price}</span>
+                  {selectedStoryCourse.price ? (
+                    <span className="story-modal-price">{selectedStoryCourse.price}</span>
+                  ) : (
+                    <span className="story-modal-price" style={{ fontSize: "16px", color: "var(--e-gold)" }}>Coming Soon</span>
+                  )}
                 </div>
                 <p className="story-modal-subtitle">{selectedStoryCourse.overview}</p>
               </div>

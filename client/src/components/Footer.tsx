@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Instagram, Youtube, Facebook, Mail, MapPin, ArrowRight } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
@@ -30,6 +30,8 @@ function TikTokColorIcon({ size = 19 }: { size?: number }) {
 const LOGO_URL = "/images/gift-logo_e37ab5cd.png";
 
 export default function Footer() {
+  const [location] = useLocation();
+  const isContactPage = location === "/contact";
   const currentYear = new Date().getFullYear();
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -46,23 +48,24 @@ export default function Footer() {
 
   return (
     <footer style={{ background: "var(--navy-deep)", fontFamily: "'Inter', sans-serif" }}>
-      {/* CTA Banner */}
-      <div style={{ background: "var(--navy)", borderBottom: "1px solid oklch(28% 0.07 255)" }}>
-        <div className="container py-14 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <p className="section-label-gold mb-2">Ready to start?</p>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 500, lineHeight: 1.15, color: "var(--cream)" }}>
-              Begin Your Trading Journey Today
-            </h2>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-            {/* Stock Market Made Easy Whop enrollment link removed */}
-            <Link href="/contact">
-              <span className="btn-ghost-light text-sm">Ask Questions</span>
-            </Link>
+      {/* CTA Banner - hidden on /contact page */}
+      {!isContactPage && (
+        <div style={{ background: "var(--navy)", borderBottom: "1px solid oklch(28% 0.07 255)" }}>
+          <div className="container py-14 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <p className="section-label-gold mb-2">Ready to start?</p>
+              <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 500, lineHeight: 1.15, color: "var(--cream)" }}>
+                Begin Your Trading Journey Today
+              </h2>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+              <Link href="/contact">
+                <span className="btn-ghost-light text-sm">Ask Questions</span>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main Footer Grid */}
       <div className="container py-14">

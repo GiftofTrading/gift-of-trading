@@ -237,7 +237,7 @@ export default function Portfolio() {
                 className="border-[oklch(73%_0.14_72)] text-[oklch(73%_0.14_72)] hover:bg-[oklch(93%_0.025_80)] px-8"
                 style={{ fontFamily: "Montserrat, sans-serif" }}
               >
-                Get a Free Consultation
+                Get in Touch
               </Button>
             </Link>
           </div>
