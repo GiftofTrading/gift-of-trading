@@ -1116,6 +1116,31 @@ async function sendLeadEmail(lead) {
     `
   });
 }
+async function sendWaitlistEmail(params) {
+  const displayName = params.name?.trim() || "Interested Student";
+  await sendEmailSafely({
+    to: ["giftoftrading@gmail.com"],
+    replyTo: params.email,
+    subject: `New Waitlist Signup: ${displayName} \u2014 ${params.courseTitle}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #0a1628; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+          <img src="https://static.wixstatic.com/media/19e04d_5b3916fa625b4272b213150378dc7cd2~mv2.png/v1/fill/w_198,h_62,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GIFT-LOGO.png" alt="Gift of Trading" style="height: 48px;" />
+        </div>
+        <div style="background: #fff; border: 1px solid #e5e7eb; border-top: none; padding: 24px; border-radius: 0 0 8px 8px;">
+          <h2 style="color: #0a1628; margin-top: 0;">New Priority Waitlist Signup \u{1F389}</h2>
+          <p style="color: #4b5563; font-size: 14px; margin-bottom: 20px;">A student just joined the priority waitlist for an upcoming course.</p>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr><td style="padding: 8px 0; color: #6b7280; width: 120px;">Course</td><td style="padding: 8px 0; font-weight: 700; color: #111827;"><span style="background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-size: 14px;">${params.courseTitle}</span></td></tr>
+            <tr><td style="padding: 8px 0; color: #6b7280;">Name</td><td style="padding: 8px 0; font-weight: 600; color: #111827;">${displayName}</td></tr>
+            <tr><td style="padding: 8px 0; color: #6b7280;">Email</td><td style="padding: 8px 0;"><a href="mailto:${params.email}" style="color: #c9a84c; font-weight: 600;">${params.email}</a></td></tr>
+          </table>
+          <p style="margin-top: 24px; font-size: 12px; color: #9ca3af;">Submitted via giftoftrading.com course waitlist modal. Reply directly to this email to respond to ${displayName}.</p>
+        </div>
+      </div>
+    `
+  });
+}
 var blogRouter = router({
   list: publicProcedure.input(z2.object({ published: z2.boolean().optional() }).optional()).query(async ({ input }) => {
     const db = await getDb();
@@ -1352,6 +1377,37 @@ var leadsRouter = router({
     if (ctx.user?.role !== "admin") throw new Error("Admin only");
     const rows = await db.select().from(leads).orderBy(desc(leads.createdAt));
     return rows;
+  }),
+  joinWaitlist: publicProcedure.input(
+    z2.object({
+      name: z2.string().optional(),
+      email: z2.string().email(),
+      courseTitle: z2.string().min(1)
+    })
+  ).mutation(async ({ input }) => {
+    const db = await getDb();
+    let insertId;
+    if (db) {
+      try {
+        const result = await db.insert(leads).values({
+          firstName: input.name?.trim() || "Waitlist Member",
+          email: input.email.trim(),
+          inquiryType: "general",
+          source: "course-waitlist",
+          message: `Priority Waitlist: ${input.courseTitle}`,
+          status: "new"
+        });
+        insertId = result.insertId;
+      } catch (dbErr) {
+        console.error("[Waitlist DB Error]:", dbErr);
+      }
+    }
+    await sendWaitlistEmail({
+      name: input.name,
+      email: input.email,
+      courseTitle: input.courseTitle
+    });
+    return { success: true, id: insertId };
   })
 });
 var testimonialsRouter = router({

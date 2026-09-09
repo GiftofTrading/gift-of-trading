@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import { updateMetaTags } from "@/lib/meta";
 import { trackButtonClick } from "@/lib/analytics";
+import { trpc } from "@/lib/trpc";
 import { ArrowRight, ArrowUpRight, Star, CheckCircle, Shield, Users, Clock, BookOpen } from "lucide-react";
 import "./HomeEditorial.css";
 
@@ -220,11 +221,18 @@ export default function Home() {
     }
   };
 
+  const waitlistMutation = trpc.leads.joinWaitlist.useMutation();
+
   const handleWaitlistSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!notifyEmail) return;
     setNotifySubmitted(true);
     trackButtonClick(`waitlist_submitted_${selectedCourseTitle}`);
+    waitlistMutation.mutate({
+      name: notifyName.trim() || undefined,
+      email: notifyEmail.trim(),
+      courseTitle: selectedCourseTitle,
+    });
     setTimeout(() => {
       setNotifyModalOpen(false);
       setNotifySubmitted(false);

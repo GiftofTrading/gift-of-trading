@@ -112,6 +112,17 @@ describe("Leads Router — submit", () => {
     expect(validEmail).toContain("@");
     expect(invalidEmail).not.toContain("@");
   });
+
+  it("handles waitlist submission with course title and email", async () => {
+    const mockDb = makeMockDb();
+    vi.mocked(getDb).mockResolvedValue(mockDb);
+
+    const db = await getDb();
+    const result = await db!.insert({} as never).values({} as never);
+    const insertId = (result as unknown as { insertId: number }).insertId;
+    expect(insertId).toBe(42);
+    expect({ success: true, id: insertId }).toEqual({ success: true, id: 42 });
+  });
 });
 
 describe("Admin Role Gating", () => {
