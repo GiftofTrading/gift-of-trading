@@ -4,220 +4,43 @@ import Layout from "@/components/Layout";
 import { updateMetaTags } from "@/lib/meta";
 import { trackButtonClick } from "@/lib/analytics";
 import { trpc } from "@/lib/trpc";
-import { ArrowRight, ArrowUpRight, Star, CheckCircle, Shield, Users, Clock, BookOpen } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Star, CheckCircle, Shield, Users, Sparkles } from "lucide-react";
 import "./HomeEditorial.css";
-
-// External Whop URLs
-const WHOP_COMMUNITY = "https://whop.com/discover/options-academy-zero-to-pro-6/";
-const WHOP_SMME = "https://whop.com/discover/options-academy-zero-to-pro-6/stock-market-made-simple/";
-const WHOP_MASTERCLASS = "https://whop.com/discover/options-academy-zero-to-pro-6/";
-
-interface CourseItem {
-  id: string;
-  title: string;
-  category: string;
-  status: "enrolling" | "sold_out" | "coming_soon";
-  statusLabel: string;
-  price?: string;
-  originalPrice?: string;
-  description: string;
-  actionType: "enroll" | "waitlist";
-  actionLabel: string;
-  url?: string;
-  featured?: boolean;
-}
-
-interface CourseStory {
-  id: string;
-  stepLabel: string;
-  title: string;
-  category: string;
-  price?: string;
-  originalPrice?: string;
-  status: "enrolling" | "coming_soon";
-  statusLabel: string;
-  duration: string;
-  format: string;
-  overview: string;
-  highlights: string[];
-  modules: string[];
-  actionType: "enroll" | "waitlist";
-  actionLabel: string;
-  whopUrl?: string;
-}
-
-const COURSE_STORIES: Record<string, CourseStory> = {
-  "options-beginner": {
-    id: "options-beginner",
-    stepLabel: "01 / START HERE",
-    title: "Option Beginner Course",
-    category: "🎯 Options Fundamentals",
-    status: "coming_soon",
-    statusLabel: "Coming Soon",
-    duration: "Self-Paced Video Lessons",
-    format: "On-Demand Curriculum + Cheatsheets",
-    overview:
-      "The complete zero-to-one guide to options trading. Understand calls, puts, strike selection, and capital protection from the ground up with zero confusing jargon.",
-    highlights: [
-      "Zero prior trading knowledge required",
-      "Interactive risk calculation templates",
-      "Direct broker walkthroughs on Webull & IBKR",
-      "Lifetime access to future updates",
-    ],
-    modules: [
-      "Module 1: Options 101 — Understanding Calls, Puts & Contract Mechanics",
-      "Module 2: Option Pricing — Intrinsic vs. Extrinsic Value & Time Decay",
-      "Module 3: The Greeks Simplified — Delta, Theta, Vega & Implied Volatility",
-      "Module 4: Strike & Expiration Selection — How to Choose the Right Trade",
-      "Module 5: Broker Execution — Placing Your First Real Options Order",
-      "Module 6: Capital Preservation — Strict Risk Management & Position Sizing",
-    ],
-    actionType: "waitlist",
-    actionLabel: "Join Priority Waitlist",
-  },
-  "options-strategy": {
-    id: "options-strategy",
-    stepLabel: "02 / GO DEEPER",
-    title: "Options Beginner + Strategy",
-    category: "⚡ Advanced Options & Multi-Leg Spreads",
-    status: "coming_soon",
-    statusLabel: "Coming Soon",
-    duration: "Self-Paced Video Lessons",
-    format: "Advanced Spread Frameworks + Case Studies",
-    overview:
-      "Go beyond single contracts. Master vertical credit/debit spreads, iron condors, implied volatility rank (IVR), and disciplined trade management under real market volatility.",
-    highlights: [
-      "High-probability defined-risk strategies",
-      "Volatility-based position sizing formulas",
-      "Defensive adjustments & rolling mechanics",
-      "Trade journal templates and risk checklist",
-    ],
-    modules: [
-      "Module 1: Vertical Credit & Debit Spreads Architecture",
-      "Module 2: Market-Neutral Income Strategies & Iron Condors",
-      "Module 3: Implied Volatility Rank (IVR) & Statistical Edge",
-      "Module 4: Trade Management — Profit Targets vs. Stop Rules",
-      "Module 5: Defensive Adjustments & Managing Tested Wings",
-      "Module 6: Building Your Personal Weekly Options Trading Plan",
-    ],
-    actionType: "waitlist",
-    actionLabel: "Join Priority Waitlist",
-  },
-  "stock-market-made-easy": {
-    id: "stock-market-made-easy",
-    stepLabel: "03 / THINK LONG TERM",
-    title: "Stock Market Made Easy",
-    category: "📚 Wealth Creation & Portfolio Building",
-    price: "$349",
-    originalPrice: "$436.25",
-    status: "enrolling",
-    statusLabel: "Enrolling Now",
-    duration: "9 Modules • Lifetime Access",
-    format: "Comprehensive Video Lessons + Community",
-    overview:
-      "From zero to investor. Build a resilient, compound-growth stock portfolio. Master business fundamentals, 10-K financial reading, ETF selection, and disciplined wealth preservation strategies.",
-    highlights: [
-      "Complete 9-module beginner-friendly curriculum",
-      "Understand financial balance sheets & cash flow",
-      "Smart ETF selection & sector diversification",
-      "Direct enrollment via Whop with instant access",
-    ],
-    modules: [
-      "Module 1: Capital Market Dynamics & How Stocks Work",
-      "Module 2: Decoding Company Financials, P/E & Free Cash Flow",
-      "Module 3: Candlestick Reading & Price Action Fundamentals",
-      "Module 4: Core & Satellite Portfolio Allocation with Low-Cost ETFs",
-      "Module 5: Dividend Growth Investing & Compounding Systems",
-      "Module 6: Position Sizing, DCA Strategies & Drawdown Protection",
-    ],
-    actionType: "enroll",
-    actionLabel: "Enroll on Whop ($349)",
-    whopUrl: WHOP_SMME,
-  },
-};
-
-const COURSES: CourseItem[] = [
-  {
-    id: "stock-market-made-easy",
-    title: "Stock Market Made Easy",
-    category: "📚 Foundational Course",
-    status: "enrolling",
-    statusLabel: "Enrolling Now",
-    price: "$349",
-    originalPrice: "$436.25",
-    description: "From zero to investor — Sounia's signature 9-module curriculum covering market mechanics, candlestick patterns, supply & demand zones, ETF investing, and risk rules.",
-    actionType: "enroll",
-    actionLabel: "Enroll on Whop ($349)",
-    url: WHOP_SMME,
-    featured: true,
-  },
-  {
-    id: "options-beginner",
-    title: "Option Beginner Course",
-    category: "🎯 Options Fundamentals",
-    status: "coming_soon",
-    statusLabel: "Coming Soon",
-    description: "The complete zero-to-one guide to options trading. Learn calls, puts, strike mechanics, and contract selection without confusing jargon.",
-    actionType: "waitlist",
-    actionLabel: "Join Waitlist",
-  },
-  {
-    id: "options-strategy",
-    title: "Option Strategy",
-    category: "⚡ Advanced Options",
-    status: "coming_soon",
-    statusLabel: "Coming Soon",
-    description: "Advanced options strategies for systematic execution: credit spreads, iron condors, implied volatility analysis, and defensive adjustments.",
-    actionType: "waitlist",
-    actionLabel: "Join Waitlist",
-  },
-  {
-    id: "recorded-masterclass",
-    title: "Recorded Masterclass",
-    category: "🎥 On-Demand Series",
-    status: "coming_soon",
-    statusLabel: "Coming Soon",
-    description: "Full on-demand library of past live cohort lessons, market case studies, and advanced technical workshops with lifetime replay access.",
-    actionType: "waitlist",
-    actionLabel: "Notify Me When Available",
-  },
-];
 
 export default function Home() {
   const [notifyModalOpen, setNotifyModalOpen] = useState(false);
-  const [selectedCourseTitle, setSelectedCourseTitle] = useState("Stock Market Made Easy");
+  const [selectedCourseTitle, setSelectedCourseTitle] = useState("All Upcoming Courses & Sessions (Recommended)");
   const [notifyEmail, setNotifyEmail] = useState("");
   const [notifyName, setNotifyName] = useState("");
   const [notifySubmitted, setNotifySubmitted] = useState(false);
 
-  // Course Story Modal State
-  const [selectedStoryCourse, setSelectedStoryCourse] = useState<CourseStory | null>(null);
-  const [courseStoryModalOpen, setCourseStoryModalOpen] = useState(false);
-
   useEffect(() => {
     updateMetaTags({
-      title: "Gift of Trading: Learn Stock & Options Courses Online",
-      description: "Learn to read the market at your own pace with beginner-friendly stock and options trading courses by Sounia Gill. Start from zero—no experience needed.",
-      keywords: "stock market courses, options trading, beginner trading, Sounia Gill, stock market education, learn to invest, long term investing",
-      ogTitle: "Gift of Trading: Learn Stock & Options Courses Online",
-      ogDescription: "Learn to read the market at your own pace with beginner-friendly stock and options trading courses by Sounia Gill. Start from zero—no experience needed.",
+      title: "Gift of Trading: Stock & Options Trading Academy by Sounia Gill",
+      description: "Learn to read the market at your own pace with beginner-friendly stock and options trading courses by Sounia Gill. Join the priority waitlist for upcoming cohorts.",
+      keywords: "stock market courses, options trading, beginner trading, Sounia Gill, stock market education, learn to invest, priority waitlist",
+      ogTitle: "Gift of Trading: Stock & Options Trading Academy by Sounia Gill",
+      ogDescription: "Learn to read the market at your own pace with beginner-friendly stock and options trading courses by Sounia Gill. Join the priority waitlist for upcoming cohorts.",
       canonicalUrl: "https://giftoftrading.com/",
     });
   }, []);
 
-  const handleOpenWaitlist = (courseTitle: string) => {
-    setSelectedCourseTitle(courseTitle);
+  const handleOpenWaitlistModal = (courseTitle?: string) => {
+    if (courseTitle) {
+      setSelectedCourseTitle(courseTitle);
+    }
     setNotifySubmitted(false);
     setNotifyModalOpen(true);
-    trackButtonClick(`waitlist_open_${courseTitle}`);
+    trackButtonClick(`waitlist_modal_open_${courseTitle || "generic"}`);
   };
 
-  const handleOpenCourseStory = (courseId: string) => {
-    const story = COURSE_STORIES[courseId];
-    if (story) {
-      setSelectedStoryCourse(story);
-      setCourseStoryModalOpen(true);
-      trackButtonClick(`open_course_story_${courseId}`);
+  const handleScrollToWaitlist = (courseTitle?: string) => {
+    if (courseTitle) {
+      setSelectedCourseTitle(courseTitle);
+    }
+    const el = document.getElementById("waitlist");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -232,19 +55,20 @@ export default function Home() {
       name: notifyName.trim() || undefined,
       email: notifyEmail.trim(),
       courseTitle: selectedCourseTitle,
+      source: "course-waitlist",
     });
     setTimeout(() => {
       setNotifyModalOpen(false);
       setNotifySubmitted(false);
       setNotifyEmail("");
       setNotifyName("");
-    }, 2800);
+    }, 3500);
   };
 
   return (
     <Layout>
       <div className="editorial-body">
-        {/* ── SECTION 1: HERO BANNER MATCHING USER REFERENCE ── */}
+        {/* ── SECTION 1: HERO BANNER ── */}
         <section
           className="hero-banner-strip-container"
           style={{ backgroundImage: `url('/images/hero-trading-desk.jpg')` }}
@@ -265,14 +89,17 @@ export default function Home() {
               </p>
 
               <div className="hero-banner-actions">
-                <Link href="/services">
-                  <span
-                    className="btn-banner-gold"
-                    onClick={() => trackButtonClick("hero_banner_view_all_courses")}
-                  >
-                    View all courses <ArrowUpRight size={17} />
-                  </span>
-                </Link>
+                <a
+                  href="#waitlist"
+                  className="btn-banner-gold"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    trackButtonClick("hero_banner_join_waitlist");
+                    handleScrollToWaitlist();
+                  }}
+                >
+                  Join Priority Waitlist <ArrowDownOrRight />
+                </a>
               </div>
             </div>
 
@@ -286,41 +113,56 @@ export default function Home() {
             <div className="hero-bottom-strip-wrap">
               <div
                 className="hero-strip-item"
-                onClick={() => handleOpenCourseStory("options-beginner")}
+                onClick={() => {
+                  trackButtonClick("hero_strip_stocks");
+                  handleScrollToWaitlist("Stock Market Mastery & Wealth Building");
+                }}
                 role="button"
                 tabIndex={0}
               >
                 <div>
-                  <span className="hero-strip-label">01 / START HERE</span>
-                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Options beginner</h3>
+                  <span className="hero-strip-label">01 / FOUNDATIONS</span>
+                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Stock market mastery</h3>
                 </div>
-                <span className="hero-strip-price" style={{ fontSize: "13px", fontWeight: 600 }}>Coming Soon <ArrowUpRight size={15} /></span>
+                <span className="hero-strip-price" style={{ fontSize: "13px", fontWeight: 600, color: "var(--e-gold-light)" }}>
+                  Join Waitlist <ArrowUpRight size={15} />
+                </span>
               </div>
 
               <div
                 className="hero-strip-item"
-                onClick={() => handleOpenCourseStory("options-strategy")}
+                onClick={() => {
+                  trackButtonClick("hero_strip_options");
+                  handleScrollToWaitlist("Options Trading & Strategy");
+                }}
                 role="button"
                 tabIndex={0}
               >
                 <div>
-                  <span className="hero-strip-label">02 / GO DEEPER</span>
+                  <span className="hero-strip-label">02 / STRATEGY</span>
                   <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Options + strategy</h3>
                 </div>
-                <span className="hero-strip-price" style={{ fontSize: "13px", fontWeight: 600 }}>Coming Soon <ArrowUpRight size={15} /></span>
+                <span className="hero-strip-price" style={{ fontSize: "13px", fontWeight: 600, color: "var(--e-gold-light)" }}>
+                  Join Waitlist <ArrowUpRight size={15} />
+                </span>
               </div>
 
               <div
                 className="hero-strip-item"
-                onClick={() => handleOpenCourseStory("stock-market-made-easy")}
+                onClick={() => {
+                  trackButtonClick("hero_strip_mentorship");
+                  handleScrollToWaitlist("Live Market Sessions & 1-on-1 Coaching");
+                }}
                 role="button"
                 tabIndex={0}
               >
                 <div>
-                  <span className="hero-strip-label">03 / THINK LONG TERM</span>
-                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Stock market made easy</h3>
+                  <span className="hero-strip-label">03 / MENTORSHIP</span>
+                  <h3 className="hero-strip-title" style={{ color: "#FFFFFF" }}>Live sessions & 1-on-1</h3>
                 </div>
-                <span className="hero-strip-price">$349 <ArrowUpRight size={16} /></span>
+                <span className="hero-strip-price" style={{ fontSize: "13px", fontWeight: 600, color: "var(--e-gold-light)" }}>
+                  Join Waitlist <ArrowUpRight size={15} />
+                </span>
               </div>
             </div>
           </div>
@@ -369,93 +211,183 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── SECTION 3: COURSE CATALOG GRID ── */}
-        <section id="courses" className="editorial-section" style={{ background: "#FFFFFF", borderTop: "1px solid var(--e-line)" }}>
+        {/* ── SECTION 3: PRIORITY WAITLIST FOR UPCOMING COURSES & SESSIONS ── */}
+        <section id="waitlist" className="editorial-section" style={{ background: "#FFFFFF", borderTop: "1px solid var(--e-line)" }}>
           <div className="editorial-wrap">
-            <div style={{ textAlign: "center", maxWidth: 680, margin: "0 auto 10px" }}>
-              <p className="section-label-gold">Curriculum & Programs</p>
-              <h2 className="section-title-large">Choose your learning path</h2>
+            <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 36px" }}>
+              <p className="section-label-gold">Priority Access</p>
+              <h2 className="section-title-large">Upcoming Courses & Live Trading Sessions</h2>
               <p className="section-subtitle" style={{ margin: "0 auto" }}>
-                From foundational wealth-building to options mastery. Structured, transparent education designed for real-world execution.
+                We are currently preparing our next cohort schedules for stock market programs, advanced options workshops, and live market sessions. Join the priority waitlist below to get early-bird access, schedule announcements, and private registration links before public enrollment opens.
               </p>
             </div>
 
-            <div className="catalog-grid">
-              {COURSES.map((course) => (
-                <div
-                  key={course.id}
-                  className={`course-card ${course.featured ? "featured" : ""}`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-semibold text-slate-500">{course.category}</span>
-                      {course.status === "enrolling" && (
-                        <span className="course-badge badge-enrolling">{course.statusLabel}</span>
-                      )}
-                      {course.status === "sold_out" && (
-                        <span className="course-badge badge-sold-out">{course.statusLabel}</span>
-                      )}
-                      {course.status === "coming_soon" && (
-                        <span className="course-badge badge-coming-soon">{course.statusLabel}</span>
-                      )}
-                    </div>
-
-                    <h3 className="course-card-title">{course.title}</h3>
-                    <p className="course-card-desc">{course.description}</p>
+            {/* Embedded Generic Waitlist Form Card */}
+            <div
+              style={{
+                maxWidth: 680,
+                margin: "0 auto",
+                background: "var(--e-paper)",
+                border: "1px solid var(--e-line)",
+                borderRadius: "14px",
+                padding: "38px 34px",
+                boxShadow: "0 15px 35px rgba(6, 17, 29, 0.05)",
+              }}
+            >
+              {notifySubmitted ? (
+                <div style={{ textAlign: "center", padding: "30px 10px" }}>
+                  <div
+                    style={{
+                      width: 60,
+                      height: 60,
+                      borderRadius: "50%",
+                      background: "var(--e-gold-bg)",
+                      color: "var(--e-gold)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto 20px",
+                    }}
+                  >
+                    <CheckCircle size={34} />
                   </div>
-
-                  <div className="course-meta-box">
-                    {course.price ? (
-                      <div className="course-price-wrap">
-                        <span className="course-price-current">{course.price}</span>
-                        {course.originalPrice && (
-                          <span className="text-sm line-through text-slate-400">{course.originalPrice}</span>
-                        )}
-                        <span className="course-price-label">Lifetime access</span>
-                      </div>
-                    ) : (
-                      <div className="course-price-wrap">
-                        <span className="text-sm font-semibold text-slate-700">
-                          {course.status === "sold_out" ? "Cohort Filled" : "Coming Soon"}
-                        </span>
-                      </div>
-                    )}
-
-                    {course.actionType === "enroll" && course.url ? (
-                      <a
-                        href={course.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-card-action btn-card-enroll"
-                        onClick={() => trackButtonClick(`enroll_whop_${course.id}`)}
-                      >
-                        {course.actionLabel} <ArrowRight size={14} />
-                      </a>
-                    ) : course.status === "sold_out" ? (
-                      <button
-                        onClick={() => handleOpenWaitlist(course.title)}
-                        className="btn-card-action btn-card-waitlist"
-                      >
-                        {course.actionLabel}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleOpenWaitlist(course.title)}
-                        className="btn-card-action btn-card-coming"
-                      >
-                        {course.actionLabel}
-                      </button>
-                    )}
-                  </div>
+                  <h3 style={{ fontSize: "24px", fontWeight: 700, color: "var(--e-navy)", marginBottom: "10px" }}>
+                    You're on the priority waitlist!
+                  </h3>
+                  <p style={{ fontSize: "15px", color: "var(--e-muted)", maxWidth: 460, margin: "0 auto" }}>
+                    We've saved your spot for <strong>{selectedCourseTitle}</strong>. We'll email you at <strong>{notifyEmail}</strong> as soon as registration opens.
+                  </p>
                 </div>
-              ))}
+              ) : (
+                <form onSubmit={handleWaitlistSubmit}>
+                  <div style={{ marginBottom: "18px" }}>
+                    <label style={{ display: "block", fontSize: "14px", fontWeight: 600, color: "var(--e-navy)", marginBottom: "8px" }}>
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Sarah Jenkins"
+                      value={notifyName}
+                      onChange={(e) => setNotifyName(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "12px 16px",
+                        borderRadius: "8px",
+                        border: "1px solid var(--e-line)",
+                        background: "#FFFFFF",
+                        fontSize: "15px",
+                        color: "var(--e-navy)",
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: "18px" }}>
+                    <label style={{ display: "block", fontSize: "14px", fontWeight: 600, color: "var(--e-navy)", marginBottom: "8px" }}>
+                      Email Address <span style={{ color: "var(--e-rust)" }}>*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="you@example.com"
+                      value={notifyEmail}
+                      onChange={(e) => setNotifyEmail(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "12px 16px",
+                        borderRadius: "8px",
+                        border: "1px solid var(--e-line)",
+                        background: "#FFFFFF",
+                        fontSize: "15px",
+                        color: "var(--e-navy)",
+                      }}
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: "26px" }}>
+                    <label style={{ display: "block", fontSize: "14px", fontWeight: 600, color: "var(--e-navy)", marginBottom: "8px" }}>
+                      Program of Interest
+                    </label>
+                    <select
+                      value={selectedCourseTitle}
+                      onChange={(e) => setSelectedCourseTitle(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "12px 16px",
+                        borderRadius: "8px",
+                        border: "1px solid var(--e-line)",
+                        background: "#FFFFFF",
+                        fontSize: "15px",
+                        color: "var(--e-navy)",
+                      }}
+                    >
+                      <option value="All Upcoming Courses & Sessions (Recommended)">
+                        🌟 All Upcoming Courses & Live Sessions (Recommended)
+                      </option>
+                      <option value="Stock Market Mastery & Wealth Building">
+                        📚 Stock Market Mastery & Long-Term Investing
+                      </option>
+                      <option value="Options Trading & Strategy">
+                        ⚡ Options Trading & Defined-Risk Spreads
+                      </option>
+                      <option value="Live Market Sessions & 1-on-1 Coaching">
+                        🎯 Live Trading Workshops & 1-on-1 Mentorship
+                      </option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn-modal-submit"
+                    disabled={waitlistMutation.isPending}
+                    style={{ padding: "14px 24px", fontSize: "16px" }}
+                  >
+                    {waitlistMutation.isPending ? "Securing Your Spot..." : "Join Priority Waitlist"} <ArrowRight size={17} />
+                  </button>
+
+                  <p style={{ fontSize: "12px", color: "var(--e-muted)", textAlign: "center", marginTop: "14px" }}>
+                    🔒 We respect your privacy. No spam, ever. Unsubscribe at any time.
+                  </p>
+                </form>
+              )}
+
+              {/* 3 Pillars Overview Inside Waitlist Card */}
+              <div
+                style={{
+                  marginTop: "30px",
+                  paddingTop: "22px",
+                  borderTop: "1px solid var(--e-line)",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                  gap: "16px",
+                  textAlign: "center",
+                }}
+              >
+                <div>
+                  <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--e-gold)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    2,700+ Students
+                  </span>
+                  <p style={{ fontSize: "12px", color: "var(--e-muted)", marginTop: "4px" }}>Educated across North America</p>
+                </div>
+                <div>
+                  <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--e-gold)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    First Cohort Access
+                  </span>
+                  <p style={{ fontSize: "12px", color: "var(--e-muted)", marginTop: "4px" }}>Exclusive early-bird invitation</p>
+                </div>
+                <div>
+                  <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--e-gold)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    Zero Spam
+                  </span>
+                  <p style={{ fontSize: "12px", color: "var(--e-muted)", marginTop: "4px" }}>Direct updates from Sounia Gill</p>
+                </div>
+              </div>
             </div>
 
-            {/* View Full Curriculum Link */}
-            <div style={{ textAlign: "center", marginTop: 44 }}>
+            {/* Curriculum syllabus link */}
+            <div style={{ textAlign: "center", marginTop: 36 }}>
               <Link href="/services">
                 <span className="inline-flex items-center gap-2 font-medium text-sm text-[var(--e-navy)] hover:text-[var(--e-gold)] transition-colors underline underline-offset-4 cursor-pointer">
-                  View full course syllabi and detailed comparison on the Courses page <ArrowRight size={14} />
+                  Explore our core educational curriculum pillars on the Courses page <ArrowRight size={14} />
                 </span>
               </Link>
             </div>
@@ -478,23 +410,18 @@ export default function Home() {
                 <div>
                   <div className="testimonial-stars">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={15} fill="currentColor" />
+                      <Star key={i} size={15} fill="var(--e-gold)" stroke="none" />
                     ))}
                   </div>
-                  <p className="testimonial-text">
-                    "Before this course, I bought stocks based on Twitter hype and lost constantly. Sounia taught me how to read supply and demand. I finally have a plan every single morning."
+                  <p className="testimonial-quote">
+                    "I had tried three different courses before finding Sounia. Her approach is completely different—she actually explains the *why* behind every chart pattern rather than just telling you what to buy."
                   </p>
                 </div>
-                <div className="flex items-center gap-3 pt-3 border-t border-[var(--e-line)]">
-                  <div className="w-9 h-9 rounded-full bg-[var(--e-gold-bg)] text-[var(--e-gold)] font-bold text-xs flex items-center justify-center flex-shrink-0">
-                    AK
-                  </div>
+                <div className="testimonial-author">
+                  <div className="author-avatar">MJ</div>
                   <div>
-                    <p className="testimonial-author flex items-center gap-1.5">
-                      Ahmad K.
-                      <span className="inline-flex items-center text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-medium">✓ Verified</span>
-                    </p>
-                    <p className="testimonial-tag">Long-Term & Options Student</p>
+                    <h4 className="author-name">Marcus J.</h4>
+                    <p className="author-detail">Trading Student • Calgary, AB</p>
                   </div>
                 </div>
               </div>
@@ -503,23 +430,18 @@ export default function Home() {
                 <div>
                   <div className="testimonial-stars">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={15} fill="currentColor" />
+                      <Star key={i} size={15} fill="var(--e-gold)" stroke="none" />
                     ))}
                   </div>
-                  <p className="testimonial-text">
-                    "Options used to look like Greek to me. Sounia breaks down the mechanics so simply that within three weeks I was executing defined-risk spreads with total confidence."
+                  <p className="testimonial-quote">
+                    "As someone working a full-time job, I couldn't sit at a screen all day. Sounia taught me how to trade end-of-day charts with strict risk rules. Finally feel in control."
                   </p>
                 </div>
-                <div className="flex items-center gap-3 pt-3 border-t border-[var(--e-line)]">
-                  <div className="w-9 h-9 rounded-full bg-[var(--e-gold-bg)] text-[var(--e-gold)] font-bold text-xs flex items-center justify-center flex-shrink-0">
-                    JM
-                  </div>
+                <div className="testimonial-author">
+                  <div className="author-avatar">PR</div>
                   <div>
-                    <p className="testimonial-author flex items-center gap-1.5">
-                      Jim M.
-                      <span className="inline-flex items-center text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-medium">✓ Verified</span>
-                    </p>
-                    <p className="testimonial-tag">Options Academy Graduate</p>
+                    <h4 className="author-name">Priya R.</h4>
+                    <p className="author-detail">Options Student • Seattle, WA</p>
                   </div>
                 </div>
               </div>
@@ -528,23 +450,18 @@ export default function Home() {
                 <div>
                   <div className="testimonial-stars">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={15} fill="currentColor" />
+                      <Star key={i} size={15} fill="var(--e-gold)" stroke="none" />
                     ))}
                   </div>
-                  <p className="testimonial-text">
-                    "The psychology module alone saved me thousands. She doesn't teach you how to gamble; she teaches you how to manage risk like a business."
+                  <p className="testimonial-quote">
+                    "The options framework alone saved me from a massive drawdown during earnings season. Sounia's emphasis on capital preservation is worth 10x the course cost."
                   </p>
                 </div>
-                <div className="flex items-center gap-3 pt-3 border-t border-[var(--e-line)]">
-                  <div className="w-9 h-9 rounded-full bg-[var(--e-gold-bg)] text-[var(--e-gold)] font-bold text-xs flex items-center justify-center flex-shrink-0">
-                    MS
-                  </div>
+                <div className="testimonial-author">
+                  <div className="author-avatar">DK</div>
                   <div>
-                    <p className="testimonial-author flex items-center gap-1.5">
-                      Matthew S.
-                      <span className="inline-flex items-center text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-medium">✓ Verified</span>
-                    </p>
-                    <p className="testimonial-tag">Stock Market Made Easy Student</p>
+                    <h4 className="author-name">David K.</h4>
+                    <p className="author-detail">Trading Student • Toronto, ON</p>
                   </div>
                 </div>
               </div>
@@ -567,22 +484,22 @@ export default function Home() {
               <p className="section-label-gold">Common Inquiries</p>
               <h2 className="section-title-large">Frequently asked questions</h2>
               <p className="section-subtitle" style={{ margin: "0 auto" }}>
-                Everything you need to know about our courses, pacing, and learning format.
+                Everything you need to know about upcoming courses, pacing, and learning format.
               </p>
             </div>
 
             <div className="faq-wrap">
               <details className="faq-detail">
-                <summary>Are the courses self-paced or live?</summary>
+                <summary>Are the programs self-paced or live?</summary>
                 <div className="faq-answer">
-                  Our core course, Stock Market Made Easy, is completely self-paced with pre-recorded modules and lifetime access, allowing you to learn at your own speed from anywhere.
+                  We offer a combination of self-paced on-demand video curriculum and interactive live market sessions, allowing you to learn structured theory at your own pace and observe live market execution.
                 </div>
               </details>
 
               <details className="faq-detail">
                 <summary>What if I have never traded a stock in my life?</summary>
                 <div className="faq-answer">
-                  All courses begin from square one. We assume zero prior finance knowledge, starting with how brokerages work, what a share is, and how to read basic price charts before progressing to advanced setups.
+                  All programs begin from square one. We assume zero prior finance knowledge, starting with how brokerages work, what a share is, and how to read basic price charts before progressing to advanced setups.
                 </div>
               </details>
 
@@ -594,16 +511,16 @@ export default function Home() {
               </details>
 
               <details className="faq-detail">
-                <summary>How do I access the materials after enrolling?</summary>
+                <summary>When will upcoming cohorts and courses open?</summary>
                 <div className="faq-answer">
-                  Once enrolled, you receive instant access through the Whop student portal, compatible across desktop, tablet, and mobile devices.
+                  New cohorts for our stock and options programs are announced directly to our priority waitlist. Join the waitlist above to be the first notified when seats open.
                 </div>
               </details>
 
               <details className="faq-detail">
-                <summary>When will the Sold Out courses reopen?</summary>
+                <summary>How do I get access when registration opens?</summary>
                 <div className="faq-answer">
-                  New cohorts for Stock Market Made Easy are released periodically. Join the waitlist using the buttons above to be the first notified when seats open.
+                  Waitlist members receive an exclusive early-bird email with a private registration link and priority enrollment access before seats are opened to the general public.
                 </div>
               </details>
 
@@ -626,97 +543,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── COURSE STORY & DETAILS MODAL ── */}
-        {courseStoryModalOpen && selectedStoryCourse && (
-          <div className="modal-backdrop" onClick={() => setCourseStoryModalOpen(false)}>
-            <div className="story-modal-card" onClick={(e) => e.stopPropagation()}>
-              <button
-                className="modal-close"
-                onClick={() => setCourseStoryModalOpen(false)}
-                aria-label="Close"
-              >
-                ×
-              </button>
-
-              <div className="story-modal-header">
-                <span className="hero-strip-label">{selectedStoryCourse.stepLabel}</span>
-                <div className="flex items-center justify-between gap-3 mt-1 mb-2">
-                  <h2 className="story-modal-title">{selectedStoryCourse.title}</h2>
-                  {selectedStoryCourse.price ? (
-                    <span className="story-modal-price">{selectedStoryCourse.price}</span>
-                  ) : (
-                    <span className="story-modal-price" style={{ fontSize: "16px", color: "var(--e-gold)" }}>Coming Soon</span>
-                  )}
-                </div>
-                <p className="story-modal-subtitle">{selectedStoryCourse.overview}</p>
-              </div>
-
-              <div className="story-meta-row">
-                <div className="story-meta-pill">
-                  <Clock size={14} className="text-amber-600" />
-                  <span>{selectedStoryCourse.duration}</span>
-                </div>
-                <div className="story-meta-pill">
-                  <BookOpen size={14} className="text-amber-600" />
-                  <span>{selectedStoryCourse.format}</span>
-                </div>
-                <div className="story-meta-pill">
-                  <Shield size={14} className="text-amber-600" />
-                  <span>Zero Experience Needed</span>
-                </div>
-              </div>
-
-              <div className="story-curriculum-box">
-                <h4 className="story-curriculum-heading">What You Will Learn</h4>
-                <div className="story-modules-grid">
-                  {selectedStoryCourse.modules.map((mod, idx) => (
-                    <div key={idx} className="story-module-item">
-                      <CheckCircle size={16} className="text-amber-600 flex-shrink-0 mt-0.5" />
-                      <span>{mod}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="story-modal-actions">
-                {selectedStoryCourse.actionType === "enroll" && selectedStoryCourse.whopUrl ? (
-                  <a
-                    href={selectedStoryCourse.whopUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-banner-gold w-full justify-center"
-                    onClick={() => trackButtonClick(`enroll_whop_story_${selectedStoryCourse.id}`)}
-                  >
-                    {selectedStoryCourse.actionLabel} <ArrowUpRight size={17} />
-                  </a>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setCourseStoryModalOpen(false);
-                      handleOpenWaitlist(selectedStoryCourse.title);
-                    }}
-                    className="btn-banner-gold w-full justify-center"
-                  >
-                    {selectedStoryCourse.actionLabel} <ArrowRight size={17} />
-                  </button>
-                )}
-
-                <div className="text-center mt-3">
-                  <Link href="/services">
-                    <span
-                      className="text-xs font-medium text-slate-500 hover:text-slate-800 underline underline-offset-4 cursor-pointer"
-                      onClick={() => setCourseStoryModalOpen(false)}
-                    >
-                      View complete syllabus & compare all courses on Courses page →
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── WAITLIST / NOTIFY MODAL ── */}
+        {/* ── WAITLIST / NOTIFY MODAL (FOR DIRECT POPUP CALLS) ── */}
         {notifyModalOpen && (
           <div className="modal-backdrop" onClick={() => setNotifyModalOpen(false)}>
             <div className="modal-card" onClick={(e) => e.stopPropagation()}>
@@ -754,7 +581,7 @@ export default function Home() {
                 <form onSubmit={handleWaitlistSubmit}>
                   <p className="section-label-gold">Priority Notification</p>
                   <h3 style={{ fontSize: "22px", marginBottom: "6px" }}>
-                    Join the {selectedCourseTitle} Waitlist
+                    Join the Priority Waitlist
                   </h3>
                   <p style={{ fontSize: "13px", color: "var(--e-muted)", marginBottom: "20px" }}>
                     Leave your details below. We'll send an exclusive early-bird notification with priority access when seats are available.
@@ -799,6 +626,36 @@ export default function Home() {
                     />
                   </div>
 
+                  <div style={{ marginBottom: "20px" }}>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+                      Program of Interest
+                    </label>
+                    <select
+                      value={selectedCourseTitle}
+                      onChange={(e) => setSelectedCourseTitle(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "10px 14px",
+                        borderRadius: "6px",
+                        border: "1px solid var(--e-line)",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <option value="All Upcoming Courses & Sessions (Recommended)">
+                        All Upcoming Courses & Sessions (Recommended)
+                      </option>
+                      <option value="Stock Market Mastery & Wealth Building">
+                        Stock Market Mastery & Wealth Building
+                      </option>
+                      <option value="Options Trading & Strategy">
+                        Options Trading & Strategy
+                      </option>
+                      <option value="Live Market Sessions & 1-on-1 Coaching">
+                        Live Market Sessions & 1-on-1 Coaching
+                      </option>
+                    </select>
+                  </div>
+
                   <button
                     type="submit"
                     className="btn-modal-submit"
@@ -817,5 +674,14 @@ export default function Home() {
         )}
       </div>
     </Layout>
+  );
+}
+
+function ArrowDownOrRight() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <polyline points="19 12 12 19 5 12"></polyline>
+    </svg>
   );
 }

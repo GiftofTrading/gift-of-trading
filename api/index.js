@@ -1415,7 +1415,8 @@ var leadsRouter = router({
     z2.object({
       name: z2.string().optional(),
       email: z2.string().email(),
-      courseTitle: z2.string().min(1)
+      courseTitle: z2.string().min(1),
+      source: z2.string().optional()
     })
   ).mutation(async ({ input }) => {
     const db = await getDb();
@@ -1426,7 +1427,7 @@ var leadsRouter = router({
           firstName: input.name?.trim() || "Waitlist Member",
           email: input.email.trim(),
           inquiryType: "general",
-          source: "course-waitlist",
+          source: input.source || "course-waitlist",
           message: `Priority Waitlist: ${input.courseTitle}`,
           status: "new"
         });

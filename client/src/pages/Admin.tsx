@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { PlusCircle, FileText, Video, Users, TrendingUp, LogOut, Eye, Sparkles, Pencil, Trash2, ExternalLink, UploadCloud, FileUp } from "lucide-react";
+import { PlusCircle, FileText, Video, Users, TrendingUp, LogOut, Eye, Sparkles, Pencil, Trash2, ExternalLink, UploadCloud, FileUp, Download } from "lucide-react";
 import { getLoginUrl } from "@/const";
 import Layout from "@/components/Layout";
 import { Link } from "wouter";
@@ -107,6 +107,63 @@ export default function Admin() {
   const { data: posts, refetch: refetchPosts } = trpc.blog.list.useQuery({ published: undefined });
   const { data: webinars, refetch: refetchWebinars } = trpc.webinars.list.useQuery();
   const { data: leads } = trpc.leads.list.useQuery();
+  const [leadsFilter, setLeadsFilter] = useState<"all" | "waitlist" | "contact">("all");
+
+  const handleExportLeadsCSV = () => {
+    if (!leads || leads.length === 0) {
+      toast.error("No leads available to export");
+      return;
+    }
+
+    const headers = [
+      "ID",
+      "First Name",
+      "Last Name",
+      "Email",
+      "Phone",
+      "Source",
+      "Inquiry Type",
+      "Message / Course",
+      "Status",
+      "Created At",
+    ];
+
+    const escapeCsv = (val: any) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/"/g, '""');
+      return `"${str}"`;
+    };
+
+    const rows = leads.map((lead: any) => [
+      lead.id,
+      lead.firstName || "",
+      lead.lastName || "",
+      lead.email || "",
+      lead.phone || "",
+      lead.source || "contact-form",
+      lead.inquiryType || "general",
+      lead.message || "",
+      lead.status || "new",
+      new Date(lead.createdAt).toLocaleString(),
+    ]);
+
+    const csvContent = [
+      headers.map(escapeCsv).join(","),
+      ...rows.map((row) => row.map(escapeCsv).join(",")),
+    ].join("\r\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const dateStr = new Date().toISOString().slice(0, 10);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `gift-of-trading-leads-${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${leads.length} leads to CSV`);
+  };
 
   const createPost = trpc.blog.create.useMutation({
     onSuccess: () => {
@@ -720,25 +777,107 @@ export default function Admin() {
           {/* Leads Tab */}
           {activeTab === "leads" && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-[oklch(13%_0.04_255)]" style={{ fontFamily: "Montserrat, sans-serif" }}>Leads</h2>
-              <div className="space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-[oklch(13%_0.04_255)]" style={{ fontFamily: "Montserrat, sans-serif" }}>
+                    Leads & Waitlists
+                  </h2>
+                  <p className="text-sm text-[oklch(55%_0.04_255)] mt-1">
+                    Manage course waitlist signups and contact inquiries
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={handleExportLeadsCSV}
+                    variant="outline"
+                    disabled={!leads || leads.length === 0}
+                    className="flex items-center gap-2 border-[oklch(88%_0.025_80)] bg-white hover:bg-slate-50 text-slate-800 font-medium"
+                  >
+                    <Download size={16} /> Download Leads as CSV ({leads?.length ?? 0})
+                  </Button>
+                </div>
+              </div>
+
+              {/* Filter Pills */}
+              {leads && leads.length > 0 && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setLeadsFilter("all")}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                      leadsFilter === "all"
+                        ? "bg-slate-900 text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    All ({leads.length})
+                  </button>
+                  <button
+                    onClick={() => setLeadsFilter("waitlist")}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                      leadsFilter === "waitlist"
+                        ? "bg-blue-600 text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    Waitlist ({leads.filter((l: any) => (l.source && l.source.includes("waitlist")) || (l.message && l.message.startsWith("Priority Waitlist"))).length})
+                  </button>
+                  <button
+                    onClick={() => setLeadsFilter("contact")}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                      leadsFilter === "contact"
+                        ? "bg-amber-600 text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    Contact Inquiries ({leads.filter((l: any) => !((l.source && l.source.includes("waitlist")) || (l.message && l.message.startsWith("Priority Waitlist")))).length})
+                  </button>
+                </div>
+              )}
+
+              <div className="space-y-3">
                 {leads?.length === 0 && (
-                  <div className="text-center py-12 text-[oklch(55%_0.04_255)]">No leads yet.</div>
-                )}
-                {leads?.map((lead: any) => (
-                  <div key={lead.id} className="bg-white rounded-lg border border-[oklch(88%_0.025_80)] p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-semibold text-[oklch(13%_0.04_255)]">{lead.firstName} {lead.lastName}</h3>
-                        <p className="text-sm text-[oklch(55%_0.04_255)]">{lead.email}</p>
-                        {lead.phone && <p className="text-sm text-[oklch(55%_0.04_255)]">{lead.phone}</p>}
-                      </div>
-                      <span className="px-2 py-1 bg-[oklch(88%_0.025_80)] text-xs rounded">{lead.inquiryType}</span>
-                    </div>
-                    <p className="text-sm text-[oklch(55%_0.04_255)] mt-2">{lead.message}</p>
-                    <p className="text-xs text-[oklch(65%_0.04_255)] mt-2">{new Date(lead.createdAt).toLocaleString()}</p>
+                  <div className="text-center py-12 text-[oklch(55%_0.04_255)] bg-white rounded-lg border border-[oklch(88%_0.025_80)]">
+                    No leads recorded yet.
                   </div>
-                ))}
+                )}
+                {leads
+                  ?.filter((lead: any) => {
+                    const isWaitlist = (lead.source && lead.source.includes("waitlist")) || (lead.message && lead.message.startsWith("Priority Waitlist"));
+                    if (leadsFilter === "waitlist") return isWaitlist;
+                    if (leadsFilter === "contact") return !isWaitlist;
+                    return true;
+                  })
+                  .map((lead: any) => {
+                    const isWaitlist = (lead.source && lead.source.includes("waitlist")) || (lead.message && lead.message.startsWith("Priority Waitlist"));
+                    return (
+                      <div key={lead.id} className="bg-white rounded-lg border border-[oklch(88%_0.025_80)] p-5 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex flex-wrap justify-between items-start gap-2 mb-2">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="font-semibold text-base text-[oklch(13%_0.04_255)]">{lead.firstName} {lead.lastName ?? ""}</h3>
+                              <span className={`px-2 py-0.5 text-xs font-bold rounded-full uppercase tracking-wider ${
+                                isWaitlist ? "bg-blue-100 text-blue-800" : "bg-amber-100 text-amber-800"
+                              }`}>
+                                {isWaitlist ? "Waitlist" : "Inquiry"}
+                              </span>
+                            </div>
+                            <p className="text-sm text-[oklch(55%_0.04_255)] mt-0.5">
+                              <a href={`mailto:${lead.email}`} className="text-blue-600 hover:underline">{lead.email}</a>
+                              {lead.phone && <span className="ml-3 text-slate-500">• {lead.phone}</span>}
+                            </p>
+                          </div>
+                          <span className="px-2.5 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded">
+                            {lead.inquiryType}
+                          </span>
+                        </div>
+                        <div className="mt-3 p-3 bg-slate-50 rounded text-sm text-slate-800 border-l-2 border-slate-300">
+                          {lead.message}
+                        </div>
+                        <p className="text-xs text-slate-400 mt-2.5 text-right">{new Date(lead.createdAt).toLocaleString()}</p>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           )}
