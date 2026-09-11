@@ -225,12 +225,12 @@ export default function SuccessStories() {
             Start your journey to financial independence with Gift of Trading. Learn step-by-step from Sounia Gill and build disciplined market confidence.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/services">
+            <Link href="/about">
               <Button
                 size="lg"
                 className="bg-[var(--navy)] text-white hover:bg-[var(--navy-deep)] px-8"
               >
-                Explore Courses
+                About Sounia
               </Button>
             </Link>
             <Link href="/contact">

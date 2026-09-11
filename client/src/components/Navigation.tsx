@@ -35,7 +35,6 @@ const hiddenStockMarketLink = { label: "Stock Market Made Easy", href: "/stock-m
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Courses", href: "/services" },
   { label: "About", href: "/about" },
   { label: "Success Stories", href: "/success-stories" },
   { label: "Webinars", href: "/webinars" },

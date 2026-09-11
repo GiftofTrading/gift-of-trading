@@ -210,8 +210,8 @@ export default function ProCoaching() {
               <Link href="/contact">
                 <span className="btn-primary">Apply for Coaching <ArrowRight size={16} /></span>
               </Link>
-              <Link href="/services">
-                <span className="btn-ghost">Compare All Programs</span>
+              <Link href="/webinars">
+                <span className="btn-ghost">Upcoming Webinars</span>
               </Link>
             </div>
           </div>

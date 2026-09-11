@@ -42,13 +42,13 @@
 .hero-banner-strip-container {
   position: relative;
   width: 100%;
-  min-height: 640px;
+  min-height: 520px;
   background-size: cover;
   background-position: center right;
   background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   overflow: hidden;
 }
 
@@ -82,7 +82,7 @@
   width: 100%;
   max-width: 1140px;
   margin: 0 auto;
-  padding: 85px 24px 30px;
+  padding: 95px 24px 75px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;

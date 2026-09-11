@@ -1,52 +1,67 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import { updateMetaTags } from "@/lib/meta";
 import { trackButtonClick } from "@/lib/analytics";
-import { trpc } from "@/lib/trpc";
-import { ArrowRight, CheckCircle, BookOpen, Shield, Users, Sparkles, TrendingUp, Compass, Award } from "lucide-react";
+import { ArrowRight, CheckCircle, Shield } from "lucide-react";
 import "./HomeEditorial.css";
 
-const CURRICULUM_PILLARS = [
+interface Pillar {
+  id: string;
+  step: string;
+  badge: string;
+  title: string;
+  headline: string;
+  description: string;
+  topics: string[];
+}
+
+const PILLARS: Pillar[] = [
   {
     id: "stocks",
-    number: "01",
-    label: "FOUNDATIONS",
+    step: "PILLAR 01",
+    badge: "FOUNDATIONS & WEALTH BUILDING",
     title: "Stock Market Mastery & Long-Term Investing",
-    desc: "From zero to self-sufficient investor. Master capital market dynamics, balance sheet reading, low-cost ETF portfolio design, and technical price-action fundamentals.",
+    headline: "Build sustainable wealth without staring at screens all day.",
+    description:
+      "A complete ground-up framework for equities, index ETFs, compound growth, and corporate valuation. Learn how to identify blue-chip opportunities, build a resilient portfolio, and protect your capital in volatile market regimes.",
     topics: [
-      "Capital Markets & Exchange Mechanics",
-      "Candlestick Reading, Trends & Support/Resistance",
-      "Decoding Balance Sheets, Free Cash Flow & 10-K Reports",
-      "Supply & Demand Zone Mapping",
-      "Core & Satellite ETF Portfolio Allocation",
-      "Dividend Compounding & Wealth Preservation Systems",
+      "Market Fundamentals: Shares, Exchanges, Orders & Brokerage Setup",
+      "ETF & Index Investing: Dollar-Cost Averaging & Asset Allocation",
+      "Technical Charting: Support, Resistance, Moving Averages & Volume",
+      "Fundamental Screening: P/E Ratios, Free Cash Flow & Sector Cycles",
+      "Risk Mitigation: Position Sizing, Stop Rules & Drawdown Defense",
+      "Tax-Advantaged Growth: TFSA, RRSP, 401(k) & Long-Term Compound Growth",
     ],
   },
   {
     id: "options",
-    number: "02",
-    label: "STRATEGY",
+    step: "PILLAR 02",
+    badge: "ADVANCED STRATEGY & INCOME",
     title: "Options Trading & Defined-Risk Spreads",
-    desc: "Understand options contracts from the ground up without confusing jargon. Learn high-probability vertical credit and debit spreads, volatility rank, and strict capital protection rules.",
+    headline: "Generate consistent income and hedge volatility with mathematical edge.",
+    description:
+      "Demystify calls, puts, credit spreads, and the Greeks with zero jargon. Learn how defined-risk structures allow you to profit whether the market goes up, down, or sideways—while keeping maximum risk strictly capped.",
     topics: [
-      "Calls & Puts Mechanics Demystified",
-      "Intrinsic vs. Extrinsic Value & Time Decay (Theta)",
-      "The Option Greeks Explained (Delta, Gamma, Vega, IV)",
-      "Vertical Credit & Debit Spreads Architecture",
-      "Implied Volatility Rank (IVR) & Edge Identification",
-      "Defensive Trade Management & Risk Checklists",
+      "Options Mechanics: Contract Specs, Calls vs. Puts & Exercise Rules",
+      "The Greeks Simplified: Delta, Theta, Vega & Implied Volatility (IVR)",
+      "Defined-Risk Credit Spreads: Bull Put & Bear Call Spreads",
+      "Market-Neutral Cashflow: Iron Condors & Strangle Alterations",
+      "Earnings Season Frameworks & High Volatility Playbooks",
+      "Defensive Trade Management: Rolling, Adjusting & Wing Defense",
     ],
   },
   {
     id: "mentorship",
-    number: "03",
-    label: "MENTORSHIP",
+    step: "PILLAR 03",
+    badge: "PRACTICAL EXECUTION & MENTORSHIP",
     title: "Live Market Sessions & 1-on-1 Mentorship",
-    desc: "Observe real-time market analysis and execution with Sounia Gill. Review real trades, refine personal trading psychology, and build a repeatable trading routine.",
+    headline: "Bridge the gap between theoretical knowledge and real-time execution.",
+    description:
+      "Observe live market tape, trade setups, and execution breakdowns directly with Sounia Gill. Receive direct feedback, build a personalized trading journal, and develop the emotional discipline required for lifetime trading success.",
     topics: [
-      "Live Pre-Market Preparation & Chart Scans",
-      "Real-Time Technical Level Identification",
+      "Live Chart Breakdown & Pre-Market Routine Walkthroughs",
+      "Real-Time Trade Ideation & Risk-to-Reward Structuring",
       "Trade Journaling & Post-Trade Analysis",
       "Emotional Discipline & Psychology Management",
       "One-on-One Portfolio & Strategy Alignment",
@@ -57,20 +72,16 @@ const CURRICULUM_PILLARS = [
 
 const FAQS = [
   {
-    q: "Why are individual course registrations currently waitlisted?",
-    a: "We periodically update our educational curriculum, live case studies, and trading software walkthroughs between cohorts to ensure students receive the highest quality education. Join the priority waitlist below to get early access when the next cohort opens.",
-  },
-  {
-    q: "Do I need any prior finance or trading experience to join?",
-    a: "Not at all. Sounia Gill designs all curriculum starting from first principles. We assume zero prior finance knowledge, beginning with platform basics, market terminology, and candlestick reading before moving to advanced strategy.",
+    q: "Are the educational programs suitable for complete beginners?",
+    a: "Yes. Sounia Gill designs all curriculum starting from first principles. We assume zero prior finance knowledge, beginning with platform basics, market terminology, and candlestick reading before moving to advanced strategy.",
   },
   {
     q: "Which charting and broker platforms do you teach?",
-    a: "We provide comprehensive step-by-step walkthroughs for TradingView (free version works great), Interactive Brokers (IBKR), and Webull, so students can analyze and trade seamlessly from anywhere in the world.",
+    a: "We provide comprehensive step-by-step walkthroughs for TradingView, Interactive Brokers (IBKR), and Webull, so students can analyze and trade seamlessly from anywhere in the world.",
   },
   {
-    q: "How will I be notified when registration opens?",
-    a: "Waitlist members receive an exclusive email notification with early enrollment access and private registration details before cohort seats are released to the public.",
+    q: "How can I inquire about upcoming learning opportunities?",
+    a: "Reach out directly through our Contact Us page or join one of our live webinars. We'll be happy to provide guidance on upcoming sessions.",
   },
   {
     q: "Do you offer investment or financial advice?",
@@ -79,36 +90,16 @@ const FAQS = [
 ];
 
 export default function Services() {
-  const [selectedTrack, setSelectedTrack] = useState("All Upcoming Courses & Sessions (Recommended)");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
   useEffect(() => {
     updateMetaTags({
-      title: "Upcoming Courses & Sessions — Gift of Trading Academy",
-      description: "Explore the Gift of Trading curriculum pillars and join the priority waitlist for upcoming beginner-friendly stock and options courses with Sounia Gill.",
-      keywords: "trading courses, stock market education, options waitlist, learn options trading, Sounia Gill",
-      ogTitle: "Upcoming Courses & Sessions — Gift of Trading Academy",
-      ogDescription: "Explore the Gift of Trading curriculum pillars and join the priority waitlist for upcoming beginner-friendly stock and options courses with Sounia Gill.",
+      title: "Educational Curriculum Pillars — Gift of Trading Academy",
+      description: "Explore the Gift of Trading curriculum pillars and foundational frameworks for stocks and options education with Sounia Gill.",
+      keywords: "trading education, stock market education, options strategy, Sounia Gill",
+      ogTitle: "Educational Curriculum Pillars — Gift of Trading Academy",
+      ogDescription: "Explore the Gift of Trading curriculum pillars and foundational frameworks for stocks and options education with Sounia Gill.",
       canonicalUrl: "https://giftoftrading.com/services",
     });
   }, []);
-
-  const waitlistMutation = trpc.leads.joinWaitlist.useMutation();
-
-  const handleWaitlistSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-    trackButtonClick(`services_waitlist_submit_${selectedTrack}`);
-    waitlistMutation.mutate({
-      name: name.trim() || undefined,
-      email: email.trim(),
-      courseTitle: selectedTrack,
-      source: "course-waitlist",
-    });
-  };
 
   return (
     <Layout>
@@ -118,7 +109,7 @@ export default function Services() {
           className="services-hero-banner"
           style={{
             background: "#091c2d",
-            padding: "80px 20px 70px",
+            padding: "85px 20px 75px",
             textAlign: "center",
             borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
           }}
@@ -159,234 +150,92 @@ export default function Services() {
                 margin: "0 auto 28px",
               }}
             >
-              Explore our core curriculum pillars below and join the priority waitlist to get early-bird registration and syllabus announcements before upcoming cohort seats open.
+              Explore our core educational curriculum pillars and foundational frameworks taught step by step by Sounia Gill.
             </p>
 
-            <a
-              href="#waitlist-form"
-              className="btn-banner-gold"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              style={{ display: "inline-flex" }}
-            >
-              Join Priority Waitlist <ArrowRight size={16} />
-            </a>
+            <Link href="/contact">
+              <span
+                className="btn-banner-gold cursor-pointer"
+                onClick={() => trackButtonClick("services_hero_contact")}
+                style={{ display: "inline-flex" }}
+              >
+                Get In Touch <ArrowRight size={16} />
+              </span>
+            </Link>
           </div>
         </section>
 
         {/* ── CURRICULUM PILLARS SECTION ── */}
         <section className="editorial-section" style={{ background: "#FFFFFF", padding: "70px 20px" }}>
           <div className="editorial-wrap">
-            <div style={{ textAlign: "center", maxWidth: 680, margin: "0 auto 50px" }}>
-              <p className="section-label-gold">Core Pillars</p>
-              <h2 className="section-title-large">What you will master</h2>
+            <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 50px" }}>
+              <p className="section-label-gold">Core Learning Structure</p>
+              <h2 className="section-title-large">Three Pillars of Trading Literacy</h2>
               <p className="section-subtitle" style={{ margin: "0 auto" }}>
-                A structured, disciplined pathway designed to take you from market uncertainty to confident execution.
+                Our educational framework is engineered to transition students from complete market novices into calm, mathematically disciplined market participants.
               </p>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "28px" }}>
-              {CURRICULUM_PILLARS.map((pillar) => (
+            <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
+              {PILLARS.map((pillar) => (
                 <div
                   key={pillar.id}
                   style={{
                     background: "var(--e-paper)",
                     border: "1px solid var(--e-line)",
-                    borderRadius: "12px",
-                    padding: "32px 28px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    boxShadow: "0 4px 14px rgba(6, 17, 29, 0.04)",
+                    borderRadius: "14px",
+                    padding: "36px 32px",
+                    boxShadow: "0 10px 30px rgba(6, 17, 29, 0.04)",
                   }}
                 >
-                  <div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "12px", marginBottom: "16px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                       <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", color: "var(--e-gold)" }}>
-                        {pillar.number} / {pillar.label}
+                        {pillar.step}
                       </span>
-                      <span style={{ fontSize: "11px", fontWeight: 600, color: "var(--e-muted)", background: "#FFFFFF", padding: "3px 8px", borderRadius: "4px", border: "1px solid var(--e-line)" }}>
-                        Upcoming Cohort
+                      <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 8px", background: "var(--e-gold-bg)", color: "var(--e-gold)", borderRadius: "4px" }}>
+                        {pillar.badge}
                       </span>
                     </div>
+                  </div>
 
-                    <h3 style={{ fontSize: "20px", fontWeight: 700, color: "var(--e-navy)", marginBottom: "10px", lineHeight: 1.3 }}>
-                      {pillar.title}
-                    </h3>
-                    <p style={{ fontSize: "14px", color: "var(--e-muted)", lineHeight: 1.5, marginBottom: "20px" }}>
-                      {pillar.desc}
-                    </p>
+                  <h3 style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "28px", fontWeight: 500, color: "var(--e-navy)", marginBottom: "8px" }}>
+                    {pillar.title}
+                  </h3>
+                  <p style={{ fontSize: "16px", fontWeight: 600, color: "var(--e-gold)", marginBottom: "12px" }}>
+                    {pillar.headline}
+                  </p>
+                  <p style={{ fontSize: "15px", color: "var(--e-muted)", lineHeight: 1.6, marginBottom: "24px" }}>
+                    {pillar.description}
+                  </p>
 
-                    <div style={{ borderTop: "1px solid var(--e-line)", paddingTop: "18px" }}>
-                      <h4 style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--e-navy)", marginBottom: "12px" }}>
-                        Key Curriculum Modules
-                      </h4>
-                      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "9px" }}>
-                        {pillar.topics.map((t, idx) => (
-                          <li key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "13px", color: "#374151" }}>
-                            <CheckCircle size={15} style={{ color: "var(--e-gold)", flexShrink: 0, marginTop: "2px" }} />
-                            <span>{t}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  <div style={{ background: "#FFFFFF", border: "1px solid var(--e-line)", borderRadius: "10px", padding: "24px" }}>
+                    <h4 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--e-navy)", marginBottom: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
+                      <Shield size={15} style={{ color: "var(--e-gold)" }} /> Core Syllabus Topics
+                    </h4>
+                    <ul style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "12px", padding: 0, margin: 0, listStyle: "none" }}>
+                      {pillar.topics.map((t, idx) => (
+                        <li key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "14px", color: "var(--e-navy)" }}>
+                          <CheckCircle size={16} style={{ color: "var(--e-gold)", flexShrink: 0, marginTop: "2px" }} />
+                          <span>{t}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
                   <div style={{ marginTop: "28px" }}>
-                    <button
-                      onClick={() => {
-                        setSelectedTrack(pillar.title);
-                        document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                      className="btn-card-action btn-card-enroll"
-                      style={{ width: "100%" }}
-                    >
-                      Join Waitlist for this Track <ArrowRight size={14} />
-                    </button>
+                    <Link href="/contact">
+                      <span
+                        className="btn-card-action btn-card-enroll cursor-pointer"
+                        style={{ width: "100%", display: "inline-flex", justifyContent: "center", alignItems: "center", gap: "8px" }}
+                        onClick={() => trackButtonClick(`services_inquire_${pillar.id}`)}
+                      >
+                        Inquire About This Track <ArrowRight size={14} />
+                      </span>
+                    </Link>
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── PRIORITY WAITLIST FORM SECTION ── */}
-        <section id="waitlist-form" className="editorial-section" style={{ background: "var(--e-paper)", borderTop: "1px solid var(--e-line)", borderBottom: "1px solid var(--e-line)" }}>
-          <div className="editorial-wrap">
-            <div style={{ textAlign: "center", maxWidth: 680, margin: "0 auto 36px" }}>
-              <p className="section-label-gold">Early-Bird Access</p>
-              <h2 className="section-title-large">Join the Upcoming Cohort Waitlist</h2>
-              <p className="section-subtitle" style={{ margin: "0 auto" }}>
-                Reserve your spot on the priority list. You will receive exclusive early access, curriculum previews, and special early-bird enrollment options.
-              </p>
-            </div>
-
-            <div
-              style={{
-                maxWidth: 640,
-                margin: "0 auto",
-                background: "#FFFFFF",
-                border: "1px solid var(--e-line)",
-                borderRadius: "14px",
-                padding: "36px 32px",
-                boxShadow: "0 15px 35px rgba(6, 17, 29, 0.05)",
-              }}
-            >
-              {submitted ? (
-                <div style={{ textAlign: "center", padding: "28px 10px" }}>
-                  <div
-                    style={{
-                      width: 56,
-                      height: 56,
-                      borderRadius: "50%",
-                      background: "var(--e-gold-bg)",
-                      color: "var(--e-gold)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      margin: "0 auto 16px",
-                    }}
-                  >
-                    <CheckCircle size={30} />
-                  </div>
-                  <h3 style={{ fontSize: "22px", fontWeight: 700, color: "var(--e-navy)", marginBottom: "8px" }}>
-                    You're on the priority waitlist!
-                  </h3>
-                  <p style={{ fontSize: "14px", color: "var(--e-muted)", maxWidth: 440, margin: "0 auto" }}>
-                    We've saved your spot for <strong>{selectedTrack}</strong>. We'll email you at <strong>{email}</strong> the moment registration opens.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleWaitlistSubmit}>
-                  <div style={{ marginBottom: "18px" }}>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "var(--e-navy)", marginBottom: "6px" }}>
-                      Your Full Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Alex Morgan"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      style={{
-                        width: "100%",
-                        padding: "11px 14px",
-                        borderRadius: "6px",
-                        border: "1px solid var(--e-line)",
-                        fontSize: "14px",
-                        color: "var(--e-navy)",
-                      }}
-                    />
-                  </div>
-
-                  <div style={{ marginBottom: "18px" }}>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "var(--e-navy)", marginBottom: "6px" }}>
-                      Email Address <span style={{ color: "var(--e-rust)" }}>*</span>
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      style={{
-                        width: "100%",
-                        padding: "11px 14px",
-                        borderRadius: "6px",
-                        border: "1px solid var(--e-line)",
-                        fontSize: "14px",
-                        color: "var(--e-navy)",
-                      }}
-                    />
-                  </div>
-
-                  <div style={{ marginBottom: "24px" }}>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "var(--e-navy)", marginBottom: "6px" }}>
-                      Preferred Program / Interest
-                    </label>
-                    <select
-                      value={selectedTrack}
-                      onChange={(e) => setSelectedTrack(e.target.value)}
-                      style={{
-                        width: "100%",
-                        padding: "11px 14px",
-                        borderRadius: "6px",
-                        border: "1px solid var(--e-line)",
-                        fontSize: "14px",
-                        color: "var(--e-navy)",
-                        background: "#FFFFFF",
-                      }}
-                    >
-                      <option value="All Upcoming Courses & Sessions (Recommended)">
-                        🌟 All Upcoming Courses & Live Sessions (Recommended)
-                      </option>
-                      <option value="Stock Market Mastery & Long-Term Investing">
-                        📚 Stock Market Mastery & Long-Term Investing
-                      </option>
-                      <option value="Options Trading & Defined-Risk Spreads">
-                        ⚡ Options Trading & Defined-Risk Spreads
-                      </option>
-                      <option value="Live Market Sessions & 1-on-1 Mentorship">
-                        🎯 Live Trading Sessions & 1-on-1 Mentorship
-                      </option>
-                    </select>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="btn-modal-submit"
-                    disabled={waitlistMutation.isPending}
-                    style={{ padding: "14px 20px", fontSize: "15px" }}
-                  >
-                    {waitlistMutation.isPending ? "Securing Your Spot..." : "Join Priority Waitlist"} <ArrowRight size={16} />
-                  </button>
-
-                  <p style={{ fontSize: "11px", color: "var(--e-muted)", textAlign: "center", marginTop: "12px" }}>
-                    🔒 We respect your privacy. No spam, ever. Unsubscribe at any time.
-                  </p>
-                </form>
-              )}
             </div>
           </div>
         </section>
@@ -413,7 +262,7 @@ export default function Services() {
                 Have specific questions about curriculum prerequisites or formats?
               </p>
               <Link href="/contact">
-                <span className="btn-hero-action" style={{ background: "transparent", border: "1px solid var(--e-navy)", color: "var(--e-navy)", boxShadow: "none" }}>
+                <span className="btn-hero-action cursor-pointer" style={{ background: "transparent", border: "1px solid var(--e-navy)", color: "var(--e-navy)", boxShadow: "none" }}>
                   Contact Our Student Support Team <ArrowRight size={15} />
                 </span>
               </Link>

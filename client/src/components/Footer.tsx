@@ -33,18 +33,6 @@ export default function Footer() {
   const [location] = useLocation();
   const isContactPage = location === "/contact";
   const currentYear = new Date().getFullYear();
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const subscribeMutation = trpc.newsletter.subscribe.useMutation({
-    onSuccess: () => { setNewsletterStatus("success"); setNewsletterEmail(""); },
-    onError: () => setNewsletterStatus("error"),
-  });
-  function handleNewsletterSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!newsletterEmail.trim()) return;
-    setNewsletterStatus("loading");
-    subscribeMutation.mutate({ email: newsletterEmail });
-  }
 
   return (
     <footer style={{ background: "var(--navy-deep)", fontFamily: "'Inter', sans-serif" }}>
@@ -148,15 +136,15 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Course */}
+          {/* Learning */}
           <div>
             <h4 className="text-xs font-semibold mb-5 tracking-widest uppercase" style={{ color: "var(--gold)" }}>
-              Programs
+              Learning
             </h4>
             <ul className="space-y-3">
               {[
-                { label: "Courses & Curriculum", href: "/services" },
                 { label: "Webinars & Sessions", href: "/webinars" },
+                { label: "Success Stories", href: "/success-stories" },
               ].map((item) => (
                 <li key={item.href}>
                   <Link href={item.href}>
@@ -204,7 +192,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact + Newsletter */}
+          {/* Contact */}
           <div>
             <h4 className="text-xs font-semibold mb-5 tracking-widest uppercase" style={{ color: "var(--gold)" }}>
               Get In Touch
@@ -230,40 +218,14 @@ export default function Footer() {
               </li>
             </ul>
 
-            {/* Newsletter */}
-            <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "oklch(50% 0.02 255)" }}>
-              Market Insights Newsletter
-            </p>
-            {newsletterStatus === "success" ? (
-              <p className="text-sm" style={{ color: "var(--gold)" }}>✓ You're subscribed! We'll be in touch.</p>
-            ) : (
-              <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
-                <input
-                  type="email"
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  placeholder="Your email"
-                  required
-                  className="flex-1 text-sm px-3 py-2.5 rounded-xl outline-none"
-                  style={{
-                    background: "oklch(20% 0.06 255)",
-                    border: `1px solid ${newsletterStatus === "error" ? "#ef4444" : "oklch(28% 0.07 255)"}`,
-                    color: "var(--cream)",
-                  }}
-                />
-                <button
-                  type="submit"
-                  disabled={newsletterStatus === "loading"}
-                  className="px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors"
-                  style={{ background: "var(--gold)", color: "var(--navy)", opacity: newsletterStatus === "loading" ? 0.7 : 1 }}
-                >
-                  {newsletterStatus === "loading" ? "..." : "Join"}
-                </button>
-              </form>
-            )}
-            {newsletterStatus === "error" && (
-              <p className="text-xs mt-1" style={{ color: "#ef4444" }}>Something went wrong. Please try again.</p>
-            )}
+            <Link href="/contact">
+              <span
+                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                style={{ color: "var(--gold)" }}
+              >
+                Send Us a Message <ArrowRight size={13} />
+              </span>
+            </Link>
           </div>
         </div>
       </div>
