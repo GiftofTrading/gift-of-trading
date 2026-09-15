@@ -205,9 +205,11 @@ export default function Webinars() {
                     </span>
                   </div>
 
-                  <h3 className="text-3xl lg:text-4xl font-bold text-white mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                    Beyond 9 to 5 By Sounia
-                  </h3>
+                  <Link href="/beyond-9-to-5">
+                    <h3 className="text-3xl lg:text-4xl font-bold text-white hover:text-[#E5B84A] transition-colors cursor-pointer mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                      Beyond 9 to 5 By Sounia
+                    </h3>
+                  </Link>
                   <p className="text-base text-[#E5B84A] font-semibold mb-3">
                     Build. Trade. Create. Grow.
                   </p>
@@ -253,20 +255,22 @@ export default function Webinars() {
                     <CountdownTimer targetDate={new Date("2026-09-30T17:00:00-07:00")} />
                   </div>
 
-                  <a
-                    href="https://whop.com/checkout/plan_JkSf0M7mT7mrA"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-[#091C2D] bg-[#D4AF37] hover:bg-[#E5C358] transition-colors shadow-lg hover:shadow-xl text-sm"
-                  >
-                    RESERVE MY FREE SPOT <ArrowRight className="w-4 h-4" />
-                  </a>
+                  <div className="space-y-2.5">
+                    <a
+                      href="https://whop.com/checkout/plan_JkSf0M7mT7mrA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-[#091C2D] bg-[#D4AF37] hover:bg-[#E5C358] transition-colors shadow-lg hover:shadow-xl text-sm"
+                    >
+                      RESERVE MY FREE SPOT <ArrowRight className="w-4 h-4" />
+                    </a>
 
-                  <Link href="/beyond-9-to-5">
-                    <span className="mt-3 block text-xs text-[#E5B84A] hover:underline cursor-pointer">
-                      View Full Session Details & FAQ →
-                    </span>
-                  </Link>
+                    <Link href="/beyond-9-to-5">
+                      <span className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl font-semibold text-white/90 bg-white/10 hover:bg-white/15 border border-white/20 transition-colors text-xs cursor-pointer">
+                        View Full Session Details <ArrowRight className="w-3.5 h-3.5 text-[#E5B84A]" />
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
