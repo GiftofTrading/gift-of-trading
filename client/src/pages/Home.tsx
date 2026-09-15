@@ -22,10 +22,10 @@ export default function Home() {
     updateMetaTags({
       title: "Beyond 9 to 5 By Sounia — FREE Live Session | Gift of Trading",
       description:
-        "Join Sonia Gill from Gift of Trading on September 30, 2026 at 5:00 PM Pacific for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
+        "Join Sounia Gill from Gift of Trading on September 30, 2026 at 5:00 PM Pacific for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
       keywords:
-        "Beyond 9 to 5, Sonia Gill, Sounia Gill, Gift of Trading, free live session, trading education, stock market, options trading, beginner trading",
-      ogTitle: "Beyond 9 to 5 By Sounia — FREE Live Session with Sonia Gill",
+        "Beyond 9 to 5, Sounia Gill, Gift of Trading, free live session, trading education, stock market, options trading, beginner trading",
+      ogTitle: "Beyond 9 to 5 By Sounia — FREE Live Session with Sounia Gill",
       ogDescription:
         "Build. Trade. Create. Grow. Reserve your free spot for September 30, 2026 at 5:00 PM Pacific Time.",
       ogImage: "https://giftoftrading.com/images/gift-logo_e37ab5cd.png",
@@ -35,10 +35,10 @@ export default function Home() {
     const eventSchema = createEventSchema({
       name: "Beyond 9 to 5 By Sounia",
       description:
-        "Join Sonia Gill from Gift of Trading for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
+        "Join Sounia Gill from Gift of Trading for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
       startDate: EVENT_DATE.toISOString(),
       url: "https://giftoftrading.com/",
-      organizer: "Sonia Gill | Gift of Trading",
+      organizer: "Sounia Gill | Gift of Trading",
     });
     addJsonLdSchema(eventSchema);
   }, []);
@@ -78,7 +78,7 @@ export default function Home() {
               </h1>
 
               <p className="hero-banner-desc">
-                Join Sonia Gill from Gift of Trading for a <strong>FREE live session</strong> about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.
+                Join Sounia Gill from Gift of Trading for a <strong>FREE live session</strong> about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.
               </p>
 
               {/* Date & Time Highlights Strip */}
@@ -292,7 +292,7 @@ export default function Home() {
               <details className="faq-detail">
                 <summary>Do I need trading experience?</summary>
                 <div className="faq-answer">
-                  No. The session is designed to be fully accessible to complete beginners. Sonia breaks down concepts into simple, everyday language without complex financial jargon.
+                  No. The session is designed to be fully accessible to complete beginners. Sounia breaks down concepts into simple, everyday language without complex financial jargon.
                 </div>
               </details>
 

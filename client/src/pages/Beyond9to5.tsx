@@ -94,10 +94,10 @@ function CountdownTimer() {
 export default function Beyond9to5() {
   useEffect(() => {
     updateMetaTags({
-      title: "Beyond 9 to 5 By Sounia | FREE Live Session with Sonia Gill",
-      description: "Join Sonia Gill from Gift of Trading on September 30, 2026 at 5:00 PM Pacific for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
-      keywords: "Beyond 9 to 5, Sonia Gill, Sounia Gill, Gift of Trading, free trading webinar, side hustle, stock trading for beginners, wealth building, trading live session",
-      ogTitle: "Beyond 9 to 5 By Sounia — FREE Live Session with Sonia Gill",
+      title: "Beyond 9 to 5 By Sounia | FREE Live Session with Sounia Gill",
+      description: "Join Sounia Gill from Gift of Trading on September 30, 2026 at 5:00 PM Pacific for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
+      keywords: "Beyond 9 to 5, Sounia Gill, Gift of Trading, free trading webinar, side hustle, stock trading for beginners, wealth building, trading live session",
+      ogTitle: "Beyond 9 to 5 By Sounia — FREE Live Session with Sounia Gill",
       ogDescription: "Build. Trade. Create. Grow. Reserve your free spot for September 30, 2026 at 5:00 PM Pacific Time.",
       ogImage: "https://giftoftrading.com/images/gift-logo_e37ab5cd.png",
       canonicalUrl: "https://giftoftrading.com/beyond-9-to-5",
@@ -105,10 +105,10 @@ export default function Beyond9to5() {
 
     const eventSchema = createEventSchema({
       name: "Beyond 9 to 5 By Sounia",
-      description: "Join Sonia Gill from Gift of Trading for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
+      description: "Join Sounia Gill from Gift of Trading for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
       startDate: EVENT_DATE.toISOString(),
       url: "https://giftoftrading.com/beyond-9-to-5",
-      organizer: "Sonia Gill | Gift of Trading",
+      organizer: "Sounia Gill | Gift of Trading",
     });
     addJsonLdSchema(eventSchema);
   }, []);
@@ -182,7 +182,7 @@ export default function Beyond9to5() {
                   boxShadow: "0 0 8px #10B981",
                 }}
               />
-              FREE LIVE SESSION • HOSTED BY SONIA GILL
+              FREE LIVE SESSION • HOSTED BY SOUNIA GILL
             </div>
 
             {/* Eyebrow & Headline */}
@@ -223,7 +223,7 @@ export default function Beyond9to5() {
                 margin: "0 auto 24px",
               }}
             >
-              Join Sonia Gill from Gift of Trading for a <strong>FREE live session</strong> about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.
+              Join Sounia Gill from Gift of Trading for a <strong>FREE live session</strong> about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.
             </p>
 
             {/* Date & Time Highlights Strip */}
@@ -300,7 +300,7 @@ export default function Beyond9to5() {
                 <Users size={16} style={{ color: "#E5B84A" }} /> Beginners Welcome
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Sparkles size={16} style={{ color: "#E5B84A" }} /> Live Q&A with Sonia
+                <Sparkles size={16} style={{ color: "#E5B84A" }} /> Live Q&A with Sounia
               </span>
             </div>
           </div>
@@ -742,7 +742,7 @@ export default function Beyond9to5() {
                 />
                 <img
                   src="/images/sounia-desk.jpg"
-                  alt="Sonia Gill at trading desk"
+                  alt="Sounia Gill at trading desk"
                   style={{
                     position: "relative",
                     zIndex: 1,
@@ -780,13 +780,13 @@ export default function Beyond9to5() {
                     marginBottom: "14px",
                   }}
                 >
-                  Sonia Gill <span style={{ fontSize: "20px", color: "rgba(255,255,255,0.5)", fontWeight: 400 }}>| Gift of Trading</span>
+                  Sounia Gill <span style={{ fontSize: "20px", color: "rgba(255,255,255,0.5)", fontWeight: 400 }}>| Gift of Trading</span>
                 </h2>
                 <p style={{ fontSize: "15px", lineHeight: 1.65, color: "rgba(255, 255, 255, 0.8)", marginBottom: "16px" }}>
-                  Sonia Gill is the founder of Gift of Trading and has taught more than 2,700 students across North America how to navigate financial markets with clarity, structured risk rules, and emotional discipline.
+                  Sounia Gill is the founder of Gift of Trading and has taught more than 2,700 students across North America how to navigate financial markets with clarity, structured risk rules, and emotional discipline.
                 </p>
                 <p style={{ fontSize: "15px", lineHeight: 1.65, color: "rgba(255, 255, 255, 0.8)", marginBottom: "24px" }}>
-                  In "Beyond 9 to 5", Sonia shares the exact mental shifts and practical frameworks that allowed her to build real financial freedom—showing everyday professionals how to think beyond a single paycheck.
+                  In "Beyond 9 to 5", Sounia shares the exact mental shifts and practical frameworks that allowed her to build real financial freedom—showing everyday professionals how to think beyond a single paycheck.
                 </p>
 
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
@@ -871,7 +871,7 @@ export default function Beyond9to5() {
                 },
                 {
                   q: "Do I need trading experience?",
-                  a: "No. The session is designed to be fully accessible to complete beginners. Sonia breaks down concepts into simple, everyday language without complex financial jargon.",
+                  a: "No. The session is designed to be fully accessible to complete beginners. Sounia breaks down concepts into simple, everyday language without complex financial jargon.",
                 },
                 {
                   q: "When is the session?",

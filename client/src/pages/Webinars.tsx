@@ -201,7 +201,7 @@ export default function Webinars() {
                     </span>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D4AF37]/20 text-[#E5B84A] border border-[#D4AF37]/40">
                       <Video className="w-3 h-3" />
-                      HOSTED BY SONIA GILL
+                      HOSTED BY SOUNIA GILL
                     </span>
                   </div>
 
@@ -214,7 +214,7 @@ export default function Webinars() {
                     Build. Trade. Create. Grow.
                   </p>
                   <p className="text-white/80 leading-relaxed mb-6 text-base">
-                    Join Sonia Gill from Gift of Trading for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5. Complete beginners welcome.
+                    Join Sounia Gill from Gift of Trading for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5. Complete beginners welcome.
                   </p>
 
                   <div className="flex flex-wrap gap-5 text-sm text-white/75 mb-6">
