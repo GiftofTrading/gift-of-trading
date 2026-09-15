@@ -190,6 +190,87 @@ export default function Webinars() {
           </div>
 
           <div className="space-y-8">
+            {/* FEATURED LIVE EVENT: Beyond 9 to 5 By Sounia */}
+            <div className="bg-gradient-to-br from-[#091C2D] to-[#040C15] text-white rounded-3xl border-2 border-[#D4AF37] overflow-hidden shadow-xl p-8 lg:p-10">
+              <div className="grid lg:grid-cols-3 gap-8 items-center">
+                <div className="lg:col-span-2">
+                  <div className="flex flex-wrap gap-2.5 mb-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      100% FREE LIVE SESSION
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D4AF37]/20 text-[#E5B84A] border border-[#D4AF37]/40">
+                      <Video className="w-3 h-3" />
+                      HOSTED BY SONIA GILL
+                    </span>
+                  </div>
+
+                  <h3 className="text-3xl lg:text-4xl font-bold text-white mb-2" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
+                    Beyond 9 to 5 By Sounia
+                  </h3>
+                  <p className="text-base text-[#E5B84A] font-semibold mb-3">
+                    Build. Trade. Create. Grow.
+                  </p>
+                  <p className="text-white/80 leading-relaxed mb-6 text-base">
+                    Join Sonia Gill from Gift of Trading for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5. Complete beginners welcome.
+                  </p>
+
+                  <div className="flex flex-wrap gap-5 text-sm text-white/75 mb-6">
+                    <span className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-[#E5B84A]" />
+                      Wednesday, September 30, 2026
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-[#E5B84A]" />
+                      5:00 PM Pacific Time (Vancouver time)
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Users className="w-4 h-4 text-[#E5B84A]" />
+                      Beginner-Friendly • Live Q&A
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {["Trading Fundamentals", "Side Hustles", "Psychology & Mindset", "Actionable Next Steps"].map((topic) => (
+                      <span key={topic} className="flex items-center gap-1.5 px-3 py-1 bg-white/10 border border-white/15 rounded-full text-xs text-white/90">
+                        <CheckCircle2 className="w-3 h-3 text-[#E5B84A]" />
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Registration Box */}
+                <div className="bg-white/5 border border-[#D4AF37]/30 rounded-2xl p-6 text-center backdrop-blur-sm">
+                  <p className="text-xs uppercase tracking-widest text-[#E5B84A] font-bold mb-2">
+                    Free Instant Registration
+                  </p>
+                  <p className="text-sm text-white/70 mb-4">
+                    Reserve your spot on Whop. No credit card required.
+                  </p>
+
+                  <div className="mb-5 flex justify-center">
+                    <CountdownTimer targetDate={new Date("2026-09-30T17:00:00-07:00")} />
+                  </div>
+
+                  <a
+                    href="https://whop.com/checkout/plan_JkSf0M7mT7mrA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-[#091C2D] bg-[#D4AF37] hover:bg-[#E5C358] transition-colors shadow-lg hover:shadow-xl text-sm"
+                  >
+                    RESERVE MY FREE SPOT <ArrowRight className="w-4 h-4" />
+                  </a>
+
+                  <Link href="/beyond-9-to-5">
+                    <span className="mt-3 block text-xs text-[#E5B84A] hover:underline cursor-pointer">
+                      View Full Session Details & FAQ →
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
             {allUpcoming.map((webinar) => (
               <div key={webinar.id} className="bg-white rounded-3xl border border-[oklch(88%_0.025_80)] overflow-hidden shadow-sm">
                 <div className="grid lg:grid-cols-3">

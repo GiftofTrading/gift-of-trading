@@ -20,6 +20,7 @@ import StockMarketMadeEasy from "./pages/StockMarketMadeEasy";
 import Masterclass from "./pages/Masterclass";
 import SuccessStories from "./pages/SuccessStories";
 import Login from "./pages/Login";
+import Beyond9to5 from "./pages/Beyond9to5";
 
 // Manus Analytics page view tracking
 function AnalyticsTracker() {
@@ -56,6 +57,9 @@ function Router() {
         <Route path="/stock-market-made-easy" component={StockMarketMadeEasy} />
         <Route path="/masterclass" component={Masterclass} />
         <Route path="/success-stories" component={SuccessStories} />
+        <Route path="/beyond-9-to-5" component={Beyond9to5} />
+        <Route path="/free-session" component={Beyond9to5} />
+        <Route path="/live" component={Beyond9to5} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
