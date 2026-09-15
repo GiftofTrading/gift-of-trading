@@ -96,12 +96,12 @@ export default function Navigation() {
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-0.5">
+            <div className="hidden lg:flex items-center gap-1">
               {navLinks.map((link: any) => (
                 <div key={link.label} className="relative group">
                   <Link href={link.href}>
                     <span
-                      className={`px-3.5 py-2 text-sm font-medium rounded-full transition-colors cursor-pointer ${
+                      className={`px-3 py-2 text-sm font-medium rounded-full transition-colors cursor-pointer whitespace-nowrap ${
                         isActive(link.href)
                           ? "text-[var(--navy)] font-semibold"
                           : "text-[var(--text-body)] hover:text-[var(--navy)]"
@@ -112,11 +112,14 @@ export default function Navigation() {
                   </Link>
                 </div>
               ))}
+            </div>
 
+            {/* Social Media Icons & Language Switcher (Desktop) */}
+            <div className="hidden lg:flex items-center gap-3">
               {/* Free Live Session CTA badge */}
               <Link href="/beyond-9-to-5">
                 <span
-                  className="ml-2 px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-sm hover:scale-105"
+                  className="px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-sm hover:scale-105 whitespace-nowrap"
                   style={{
                     background: "linear-gradient(135deg, #102A43 0%, #091C2D 100%)",
                     border: "1px solid #D4AF37",
@@ -128,10 +131,7 @@ export default function Navigation() {
                   FREE SESSION: SEPT 30
                 </span>
               </Link>
-            </div>
 
-            {/* Social Media Icons & Language Switcher (Desktop) */}
-            <div className="hidden lg:flex items-center gap-3">
               <div className="flex items-center gap-2 border-r border-gray-200 pr-3 mr-1">
                 {/* Instagram */}
                 <a

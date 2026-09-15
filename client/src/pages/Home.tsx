@@ -1,23 +1,53 @@
 import { useEffect } from "react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
-import { updateMetaTags } from "@/lib/meta";
+import { updateMetaTags, addJsonLdSchema, createEventSchema } from "@/lib/meta";
 import { trackButtonClick } from "@/lib/analytics";
-import { ArrowRight, Star, Shield, Users, Calendar, Clock, Video, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Star,
+  Shield,
+  Users,
+  Calendar,
+  Clock,
+  Video,
+  CheckCircle2,
+  TrendingUp,
+  Briefcase,
+  Brain,
+  Compass,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import "./HomeEditorial.css";
 
 const WHOP_CHECKOUT_URL = "https://whop.com/checkout/plan_JkSf0M7mT7mrA";
+const EVENT_DATE = new Date("2026-09-30T17:00:00-07:00");
 
 export default function Home() {
   useEffect(() => {
     updateMetaTags({
-      title: "Gift of Trading: Stock & Options Trading Academy by Sounia Gill",
-      description: "Learn to read the market at your own pace with beginner-friendly stock and options trading education by Sounia Gill. Ethical, structured, and zero-jargon.",
-      keywords: "trading education, stock market, options trading, beginner trading, Sounia Gill, learn to invest, trading webinars",
-      ogTitle: "Gift of Trading: Stock & Options Trading Academy by Sounia Gill",
-      ogDescription: "Learn to read the market at your own pace with beginner-friendly stock and options trading education by Sounia Gill.",
+      title: "Beyond 9 to 5 By Sounia — FREE Live Session | Gift of Trading",
+      description:
+        "Join Sonia Gill from Gift of Trading on September 30, 2026 at 5:00 PM Pacific for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
+      keywords:
+        "Beyond 9 to 5, Sonia Gill, Sounia Gill, Gift of Trading, free live session, trading education, stock market, options trading, beginner trading",
+      ogTitle: "Beyond 9 to 5 By Sounia — FREE Live Session with Sonia Gill",
+      ogDescription:
+        "Build. Trade. Create. Grow. Reserve your free spot for September 30, 2026 at 5:00 PM Pacific Time.",
+      ogImage: "https://giftoftrading.com/images/gift-logo_e37ab5cd.png",
       canonicalUrl: "https://giftoftrading.com/",
     });
+
+    const eventSchema = createEventSchema({
+      name: "Beyond 9 to 5 By Sounia",
+      description:
+        "Join Sonia Gill from Gift of Trading for a FREE live session about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.",
+      startDate: EVENT_DATE.toISOString(),
+      url: "https://giftoftrading.com/",
+      organizer: "Sonia Gill | Gift of Trading",
+    });
+    addJsonLdSchema(eventSchema);
   }, []);
 
   return (
@@ -34,33 +64,58 @@ export default function Home() {
           <div className="hero-banner-body">
             <div className="hero-banner-left">
               {/* Event Announcement Badge */}
-              <Link href="/beyond-9-to-5">
-                <div
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold cursor-pointer transition-all hover:scale-105 mb-4"
-                  style={{
-                    background: "rgba(212, 175, 55, 0.2)",
-                    border: "1px solid rgba(212, 175, 55, 0.55)",
-                    color: "#E5B84A",
-                    letterSpacing: "0.05em",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-                  }}
-                  onClick={() => trackButtonClick("home_hero_event_pill")}
-                >
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  FREE LIVE SESSION • SEPT 30: BEYOND 9 TO 5
-                  <ArrowRight size={13} />
-                </div>
-              </Link>
+              <div
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold mb-4"
+                style={{
+                  background: "rgba(212, 175, 55, 0.22)",
+                  border: "1px solid rgba(212, 175, 55, 0.55)",
+                  color: "#E5B84A",
+                  letterSpacing: "0.08em",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                FREE LIVE ONLINE SESSION
+              </div>
 
-              <span className="hero-banner-eyebrow">LEARN, PRACTICE, TRADE, GROW</span>
+              <span className="hero-banner-eyebrow">BEYOND 9 TO 5 BY SOUNIA</span>
               <h1 className="hero-banner-title">
-                Learn to read the<br />
-                market, <em className="gold-italic">at your own</em><br />
-                pace.
+                Build. Trade. Create.<br />
+                <em className="gold-italic">Grow.</em>
               </h1>
+
               <p className="hero-banner-desc">
-                Beginner-friendly stock and options education taught step by step by Sounia Gill. No experience needed — start exactly where you are.
+                Join Sonia Gill from Gift of Trading for a <strong>FREE live session</strong> about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.
               </p>
+
+              {/* Date & Time Highlights Strip */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  gap: "12px",
+                  background: "rgba(255, 255, 255, 0.08)",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                  borderRadius: "8px",
+                  padding: "8px 16px",
+                  fontSize: "13px",
+                  color: "#FFFFFF",
+                  marginBottom: "22px",
+                }}
+              >
+                <span className="inline-flex items-center gap-1.5" style={{ color: "#E5B84A", fontWeight: 600 }}>
+                  <Calendar size={14} /> Sept 30, 2026
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
+                <span className="inline-flex items-center gap-1.5 text-white/90">
+                  <Clock size={14} style={{ color: "#E5B84A" }} /> 5:00 PM Pacific Time (Vancouver)
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
+                <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
+                  <Video size={14} /> 100% Free
+                </span>
+              </div>
 
               <div className="hero-banner-actions">
                 <a
@@ -68,206 +123,430 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-banner-gold cursor-pointer"
-                  onClick={() => trackButtonClick("hero_banner_reserve_spot")}
+                  style={{
+                    fontSize: "15px",
+                    padding: "15px 32px",
+                    fontWeight: 700,
+                    letterSpacing: "0.04em",
+                  }}
+                  onClick={() => trackButtonClick("home_hero_reserve_spot")}
                 >
-                  RESERVE MY FREE SPOT <ArrowRight size={16} />
+                  RESERVE MY FREE SPOT <ArrowRight size={17} />
                 </a>
-                <Link href="/beyond-9-to-5">
-                  <span
-                    className="cursor-pointer font-medium text-sm text-white/90 hover:text-white transition-colors underline underline-offset-4"
-                    style={{ padding: "12px 18px" }}
-                    onClick={() => trackButtonClick("hero_banner_session_details")}
-                  >
-                    Event Details
-                  </span>
-                </Link>
+                <a
+                  href="#explore"
+                  className="cursor-pointer font-medium text-sm text-white/90 hover:text-white transition-colors underline underline-offset-4"
+                  style={{ padding: "12px 18px" }}
+                >
+                  What You'll Explore ↓
+                </a>
               </div>
             </div>
 
             <div className="hero-desk-quote">
-              A LITTLE LEARNING. A NEW PERSPECTIVE.
+              SEPTEMBER 30, 2026 • 5:00 PM PACIFIC TIME
             </div>
           </div>
         </section>
 
-        {/* ── FEATURED EVENT: BEYOND 9 TO 5 ── */}
+        {/* ── SECTION 2: WHAT YOU'LL EXPLORE ── */}
         <section
-          style={{
-            background: "linear-gradient(180deg, #091C2D 0%, #06111D 100%)",
-            borderTop: "2px solid rgba(212, 175, 55, 0.4)",
-            borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-            padding: "54px 20px",
-            color: "#FFFFFF",
-          }}
+          id="explore"
+          className="editorial-section"
+          style={{ background: "#081624", color: "#FFFFFF", borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}
         >
-          <div className="editorial-wrap" style={{ maxWidth: "1080px", margin: "0 auto" }}>
+          <div className="editorial-wrap" style={{ maxWidth: "1100px" }}>
+            <div style={{ textAlign: "center", maxWidth: "700px", margin: "0 auto 48px" }}>
+              <span
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "#E5B84A",
+                  display: "block",
+                  marginBottom: "10px",
+                }}
+              >
+                SESSION AGENDA
+              </span>
+              <h2
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontSize: "clamp(30px, 4.5vw, 44px)",
+                  fontWeight: 500,
+                  color: "#FFFFFF",
+                  letterSpacing: "-0.01em",
+                  marginBottom: "14px",
+                }}
+              >
+                What You’ll Explore
+              </h2>
+              <p style={{ fontSize: "16px", color: "rgba(255, 255, 255, 0.75)", lineHeight: 1.6 }}>
+                A structured, high-energy session designed to give you practical clarity without confusing financial jargon or get-rich-quick hype.
+              </p>
+            </div>
+
+            {/* 4 Visual Cards Grid */}
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-                gap: "36px",
-                alignItems: "center",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "24px",
               }}
             >
-              <div>
+              {/* Card 1: TRADING */}
+              <div
+                style={{
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(212, 175, 55, 0.25)",
+                  borderRadius: "14px",
+                  padding: "32px 24px",
+                }}
+              >
                 <div
                   style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "8px",
+                    width: "46px",
+                    height: "46px",
+                    borderRadius: "12px",
                     background: "rgba(212, 175, 55, 0.15)",
-                    border: "1px solid rgba(212, 175, 55, 0.4)",
-                    borderRadius: "9999px",
-                    padding: "4px 14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#E5B84A",
+                    marginBottom: "18px",
+                  }}
+                >
+                  <TrendingUp size={24} />
+                </div>
+                <span
+                  style={{
                     fontSize: "11px",
                     fontWeight: 700,
-                    letterSpacing: "0.12em",
+                    letterSpacing: "0.14em",
                     textTransform: "uppercase",
                     color: "#E5B84A",
-                    marginBottom: "14px",
+                    display: "block",
+                    marginBottom: "8px",
                   }}
                 >
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  UPCOMING FREE LIVE SESSION
-                </div>
-
-                <p
-                  style={{
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "rgba(255, 255, 255, 0.6)",
-                    marginBottom: "6px",
-                  }}
-                >
-                  BEYOND 9 TO 5 BY SOUNIA
-                </p>
-
-                <h2
+                  01 • FOUNDATIONAL SKILL
+                </span>
+                <h3
                   style={{
                     fontFamily: "'Newsreader', Georgia, serif",
-                    fontSize: "clamp(32px, 4.5vw, 44px)",
-                    fontWeight: 500,
-                    lineHeight: 1.15,
+                    fontSize: "24px",
+                    fontWeight: 600,
                     color: "#FFFFFF",
                     marginBottom: "12px",
                   }}
                 >
-                  Build. Trade. Create.{" "}
-                  <em style={{ fontStyle: "italic", color: "#E5B84A" }}>Grow.</em>
-                </h2>
-
-                <p
-                  style={{
-                    fontSize: "15px",
-                    color: "rgba(255, 255, 255, 0.8)",
-                    lineHeight: 1.6,
-                    marginBottom: "20px",
-                  }}
-                >
-                  Join Sonia Gill from Gift of Trading for a <strong>FREE live session</strong> about exploring trading and side-hustle opportunities beyond your traditional 9-to-5.
+                  TRADING
+                </h3>
+                <p style={{ fontSize: "15px", lineHeight: 1.6, color: "rgba(255, 255, 255, 0.75)" }}>
+                  Understand the basics of trading and how people approach it as a potential additional income skill with structured risk control.
                 </p>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "14px",
-                    fontSize: "13px",
-                    marginBottom: "26px",
-                  }}
-                >
-                  <span className="inline-flex items-center gap-1.5" style={{ color: "#E5B84A" }}>
-                    <Calendar size={15} /> Sept 30, 2026
-                  </span>
-                  <span style={{ color: "rgba(255, 255, 255, 0.3)" }}>•</span>
-                  <span className="inline-flex items-center gap-1.5 text-white/90">
-                    <Clock size={15} style={{ color: "#E5B84A" }} /> 5:00 PM Pacific Time
-                  </span>
-                  <span style={{ color: "rgba(255, 255, 255, 0.3)" }}>•</span>
-                  <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
-                    <Video size={15} /> 100% Free
-                  </span>
-                </div>
-
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", alignItems: "center" }}>
-                  <a
-                    href={WHOP_CHECKOUT_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-banner-gold"
-                    style={{
-                      fontSize: "15px",
-                      padding: "14px 28px",
-                      borderRadius: "6px",
-                      fontWeight: 700,
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "8px",
-                    }}
-                    onClick={() => trackButtonClick("home_featured_reserve_spot")}
-                  >
-                    RESERVE MY FREE SPOT <ArrowRight size={17} />
-                  </a>
-
-                  <Link href="/beyond-9-to-5">
-                    <span
-                      className="cursor-pointer text-sm font-semibold transition-colors underline underline-offset-4"
-                      style={{ color: "#E5B84A" }}
-                      onClick={() => trackButtonClick("home_featured_details")}
-                    >
-                      View Session Agenda & Details →
-                    </span>
-                  </Link>
-                </div>
               </div>
 
-              {/* 4 Pillars preview */}
+              {/* Card 2: SIDE HUSTLES */}
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "14px",
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(212, 175, 55, 0.25)",
+                  borderRadius: "14px",
+                  padding: "32px 24px",
                 }}
               >
-                {[
-                  { title: "Trading", desc: "Foundational rules for additional income skills." },
-                  { title: "Side Hustles", desc: "Leveraging skills outside your traditional job." },
-                  { title: "Mindset", desc: "Psychology & thinking beyond a single paycheck." },
-                  { title: "Next Steps", desc: "Concrete roadmap you can implement right away." },
-                ].map((pill, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      background: "rgba(255, 255, 255, 0.04)",
-                      border: "1px solid rgba(212, 175, 55, 0.2)",
-                      borderRadius: "10px",
-                      padding: "16px 14px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: "'Newsreader', Georgia, serif",
-                        fontSize: "17px",
-                        fontWeight: 600,
-                        color: "#E5B84A",
-                        marginBottom: "4px",
-                      }}
-                    >
-                      {pill.title}
-                    </div>
-                    <div style={{ fontSize: "12px", color: "rgba(255, 255, 255, 0.7)", lineHeight: 1.4 }}>
-                      {pill.desc}
-                    </div>
-                  </div>
-                ))}
+                <div
+                  style={{
+                    width: "46px",
+                    height: "46px",
+                    borderRadius: "12px",
+                    background: "rgba(212, 175, 55, 0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#E5B84A",
+                    marginBottom: "18px",
+                  }}
+                >
+                  <Briefcase size={24} />
+                </div>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "#E5B84A",
+                    display: "block",
+                    marginBottom: "8px",
+                  }}
+                >
+                  02 • DIVERSIFICATION
+                </span>
+                <h3
+                  style={{
+                    fontFamily: "'Newsreader', Georgia, serif",
+                    fontSize: "24px",
+                    fontWeight: 600,
+                    color: "#FFFFFF",
+                    marginBottom: "12px",
+                  }}
+                >
+                  SIDE HUSTLES
+                </h3>
+                <p style={{ fontSize: "15px", lineHeight: 1.6, color: "rgba(255, 255, 255, 0.75)" }}>
+                  Explore different ways to develop skills and income opportunities outside your traditional job that fit into everyday schedules.
+                </p>
               </div>
+
+              {/* Card 3: MINDSET */}
+              <div
+                style={{
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(212, 175, 55, 0.25)",
+                  borderRadius: "14px",
+                  padding: "32px 24px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "46px",
+                    height: "46px",
+                    borderRadius: "12px",
+                    background: "rgba(212, 175, 55, 0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#E5B84A",
+                    marginBottom: "18px",
+                  }}
+                >
+                  <Brain size={24} />
+                </div>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "#E5B84A",
+                    display: "block",
+                    marginBottom: "8px",
+                  }}
+                >
+                  03 • PSYCHOLOGY & CLARITY
+                </span>
+                <h3
+                  style={{
+                    fontFamily: "'Newsreader', Georgia, serif",
+                    fontSize: "24px",
+                    fontWeight: 600,
+                    color: "#FFFFFF",
+                    marginBottom: "12px",
+                  }}
+                >
+                  MINDSET
+                </h3>
+                <p style={{ fontSize: "15px", lineHeight: 1.6, color: "rgba(255, 255, 255, 0.75)" }}>
+                  Learn how to start thinking beyond a single source of income and cultivate the emotional discipline required for wealth expansion.
+                </p>
+              </div>
+
+              {/* Card 4: NEXT STEPS */}
+              <div
+                style={{
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(212, 175, 55, 0.25)",
+                  borderRadius: "14px",
+                  padding: "32px 24px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "46px",
+                    height: "46px",
+                    borderRadius: "12px",
+                    background: "rgba(212, 175, 55, 0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#E5B84A",
+                    marginBottom: "18px",
+                  }}
+                >
+                  <Compass size={24} />
+                </div>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "#E5B84A",
+                    display: "block",
+                    marginBottom: "8px",
+                  }}
+                >
+                  04 • ACTIONABLE ROADMAP
+                </span>
+                <h3
+                  style={{
+                    fontFamily: "'Newsreader', Georgia, serif",
+                    fontSize: "24px",
+                    fontWeight: 600,
+                    color: "#FFFFFF",
+                    marginBottom: "12px",
+                  }}
+                >
+                  NEXT STEPS
+                </h3>
+                <p style={{ fontSize: "15px", lineHeight: 1.6, color: "rgba(255, 255, 255, 0.75)" }}>
+                  Walk away with concrete, practical ideas and actionable steps you can explore immediately after the session concludes.
+                </p>
+              </div>
+            </div>
+
+            {/* Mid-page RSVP CTA */}
+            <div style={{ textAlign: "center", marginTop: "44px" }}>
+              <a
+                href={WHOP_CHECKOUT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-banner-gold"
+                style={{
+                  fontSize: "16px",
+                  padding: "16px 36px",
+                  borderRadius: "8px",
+                  fontWeight: 700,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+                onClick={() => trackButtonClick("home_explore_reserve_spot")}
+              >
+                RESERVE MY FREE SPOT <ArrowRight size={18} />
+              </a>
             </div>
           </div>
         </section>
 
-        {/* ── SECTION 2: THE TEACHER STORY ── */}
+        {/* ── SECTION 3: WHO IS THIS FOR? ── */}
+        <section
+          style={{
+            padding: "85px 20px",
+            background: "#06111D",
+            color: "#FFFFFF",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+          }}
+        >
+          <div className="editorial-wrap" style={{ maxWidth: "960px" }}>
+            <div style={{ textAlign: "center", marginBottom: "44px" }}>
+              <span
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "#E5B84A",
+                  display: "block",
+                  marginBottom: "10px",
+                }}
+              >
+                IS THIS FOR YOU?
+              </span>
+              <h2
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontSize: "clamp(30px, 4.5vw, 42px)",
+                  fontWeight: 500,
+                  color: "#FFFFFF",
+                }}
+              >
+                Who Is This Session For?
+              </h2>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "18px",
+              }}
+            >
+              {[
+                {
+                  title: "People Working a Traditional 9-to-5",
+                  desc: "Looking for sustainable ways to build financial security without quitting their primary career.",
+                },
+                {
+                  title: "Anyone Curious About Trading",
+                  desc: "Intrigued by the stock and options market but overwhelmed by jargon, formulas, and bad online advice.",
+                },
+                {
+                  title: "People Exploring Side-Hustle Ideas",
+                  desc: "Ready to develop high-leverage digital and investment skills that scale over time.",
+                },
+                {
+                  title: "Beginners Who Want to Learn",
+                  desc: "Starting with zero prior finance background and desiring a calm, step-by-step mentor.",
+                },
+                {
+                  title: "Anyone Seeking Additional Income",
+                  desc: "Committed to creating multiple streams of revenue and achieving personal financial independence.",
+                },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: "rgba(255, 255, 255, 0.03)",
+                    border: "1px solid rgba(255, 255, 255, 0.09)",
+                    borderRadius: "12px",
+                    padding: "24px 22px",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "14px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "50%",
+                      background: "rgba(212, 175, 55, 0.2)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#E5B84A",
+                      flexShrink: 0,
+                      marginTop: "2px",
+                    }}
+                  >
+                    <CheckCircle2 size={16} />
+                  </div>
+                  <div>
+                    <h4
+                      style={{
+                        fontSize: "17px",
+                        fontWeight: 600,
+                        color: "#FFFFFF",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      {item.title}
+                    </h4>
+                    <p style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.65)", lineHeight: 1.5 }}>
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── SECTION 4: THE TEACHER STORY ── */}
         <section id="teacher" className="editorial-section" style={{ background: "var(--e-paper)" }}>
           <div className="editorial-wrap">
             <div className="teacher-grid">
@@ -310,7 +589,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── SECTION 3: STUDENT TESTIMONIALS ── */}
+        {/* ── SECTION 5: STUDENT TESTIMONIALS ── */}
         <section id="testimonials" className="editorial-section" style={{ background: "#FFFFFF", borderTop: "1px solid var(--e-line)" }}>
           <div className="editorial-wrap">
             <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto" }}>
@@ -385,7 +664,7 @@ export default function Home() {
 
             <div style={{ textAlign: "center", marginTop: 40 }}>
               <Link href="/success-stories">
-                <span className="btn-editorial-outline">
+                <span className="btn-editorial-outline cursor-pointer">
                   Read More Student Stories <ArrowRight size={15} />
                 </span>
               </Link>
@@ -393,65 +672,133 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── SECTION 4: FAQS ── */}
+        {/* ── SECTION 6: FAQS ── */}
         <section id="faq" className="editorial-section" style={{ background: "var(--e-paper)", borderTop: "1px solid var(--e-line)" }}>
-          <div className="editorial-wrap">
-            <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto" }}>
+          <div className="editorial-wrap" style={{ maxWidth: 780 }}>
+            <div style={{ textAlign: "center", marginBottom: "40px" }}>
               <p className="section-label-gold">Common Inquiries</p>
-              <h2 className="section-title-large">Frequently asked questions</h2>
+              <h2 className="section-title-large">Frequently Asked Questions</h2>
               <p className="section-subtitle" style={{ margin: "0 auto" }}>
-                Everything you need to know about our trading education, pacing, and approach.
+                Everything you need to know about the upcoming live session.
               </p>
             </div>
 
             <div className="faq-wrap">
               <details className="faq-detail">
-                <summary>Are the sessions self-paced or live?</summary>
+                <summary>Is the session free?</summary>
                 <div className="faq-answer">
-                  We offer a combination of self-paced on-demand curriculum and interactive live market sessions, allowing you to learn structured theory at your own pace and observe live market execution.
+                  Yes. Beyond 9 to 5 is a FREE live session. There is no cost, no credit card required, and no hidden obligation to attend.
                 </div>
               </details>
 
               <details className="faq-detail">
-                <summary>What if I have never traded a stock in my life?</summary>
+                <summary>Do I need trading experience?</summary>
                 <div className="faq-answer">
-                  All teaching begins from square one. We assume zero prior finance knowledge, starting with how brokerages work, what a share is, and how to read basic price charts before progressing to advanced setups.
+                  No. The session is designed to be fully accessible to complete beginners. Sonia breaks down concepts into simple, everyday language without complex financial jargon.
                 </div>
               </details>
 
               <details className="faq-detail">
-                <summary>Which brokerages or platforms do you teach?</summary>
+                <summary>When is the session?</summary>
                 <div className="faq-answer">
-                  We provide step-by-step guidance for Interactive Brokers (IBKR), Webull, and TradingView so you can easily analyze charts and execute orders from anywhere in the world.
+                  September 30, 2026 at 5:00 PM Pacific Time (Vancouver time). We recommend adding it to your calendar immediately after registering.
                 </div>
               </details>
 
               <details className="faq-detail">
-                <summary>How can I get started or ask questions?</summary>
+                <summary>How do I attend?</summary>
                 <div className="faq-answer">
-                  Reach out directly via our Contact page or join one of our upcoming live webinars. Sounia and the team will help you determine the best path forward for your experience level.
-                </div>
-              </details>
-
-              <details className="faq-detail">
-                <summary>Do you offer 1-on-1 mentorship or coaching?</summary>
-                <div className="faq-answer">
-                  Yes, personalized 1-on-1 coaching and private sessions are available. Contact us directly to inquire about scheduling and availability.
-                </div>
-              </details>
-
-              <details className="faq-detail">
-                <summary>Do you offer investment or financial advice?</summary>
-                <div className="faq-answer">
-                  No. All content, webinars, and educational materials are provided strictly for educational purposes. We teach technical analysis frameworks and market mechanics so you can make informed decisions independently.
+                  Register through the link to reserve your spot on Whop. Your access link and calendar invitation will be provided immediately upon reserving your spot.
                 </div>
               </details>
             </div>
           </div>
         </section>
 
-        {/* ── SECTION 5: FINANCIAL RISK DISCLAIMER ── */}
-        <section className="editorial-wrap" style={{ paddingBottom: 70 }}>
+        {/* ── SECTION 7: FINAL CALL TO ACTION BANNER ── */}
+        <section
+          style={{
+            padding: "85px 20px",
+            background: "linear-gradient(180deg, #091C2D 0%, #040C15 100%)",
+            textAlign: "center",
+            position: "relative",
+            color: "#FFFFFF",
+          }}
+        >
+          <div className="editorial-wrap" style={{ maxWidth: "740px", margin: "0 auto" }}>
+            <span
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "#E5B84A",
+                display: "block",
+                marginBottom: "12px",
+              }}
+            >
+              LIMITED LIVE CAPACITY
+            </span>
+
+            <h2
+              style={{
+                fontFamily: "'Newsreader', Georgia, serif",
+                fontSize: "clamp(32px, 5vw, 48px)",
+                fontWeight: 500,
+                color: "#FFFFFF",
+                lineHeight: 1.15,
+                marginBottom: "16px",
+              }}
+            >
+              Ready to Explore What’s Possible Beyond 9 to 5?
+            </h2>
+
+            <p
+              style={{
+                fontSize: "17px",
+                color: "rgba(255, 255, 255, 0.8)",
+                lineHeight: 1.6,
+                marginBottom: "32px",
+              }}
+            >
+              Seats for the live interactive Q&A are limited. Click below to lock in your free spot on Whop today.
+            </p>
+
+            <a
+              href={WHOP_CHECKOUT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-banner-gold"
+              style={{
+                fontSize: "18px",
+                padding: "20px 48px",
+                borderRadius: "8px",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
+                boxShadow: "0 8px 32px rgba(212, 168, 71, 0.5)",
+              }}
+              onClick={() => trackButtonClick("home_bottom_reserve_spot")}
+            >
+              RESERVE MY FREE SPOT <ArrowRight size={22} />
+            </a>
+
+            <p
+              style={{
+                fontSize: "13px",
+                color: "rgba(255, 255, 255, 0.5)",
+                marginTop: "18px",
+              }}
+            >
+              September 30, 2026 | 5:00 PM Pacific Time | Free Registration via Whop
+            </p>
+          </div>
+        </section>
+
+        {/* ── SECTION 8: FINANCIAL RISK DISCLAIMER ── */}
+        <section className="editorial-wrap" style={{ padding: "50px 24px 70px" }}>
           <div className="disclaimer-box">
             <p>
               <strong>Educational & Financial Disclaimer:</strong> Gift of Trading and Sounia Gill provide financial education, technical chart analysis training, and educational commentary only. We are not registered investment advisers, broker-dealers, or financial planners. Trading securities, equities, and options carries substantial risk of capital loss and is not suitable for all investors. Past performance is no guarantee of future returns. You alone are responsible for evaluating your risk tolerance and personal investment decisions.
