@@ -3,6 +3,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Instagram, Youtube, Facebook } from "lucide-react";
 import { FraudAlert } from "./FraudAlert";
+import { WaitlistModal } from "./WaitlistModal";
 
 function TikTokColorIcon({ size = 19 }: { size?: number }) {
   return (
@@ -35,6 +36,7 @@ const hiddenStockMarketLink = { label: "Stock Market Made Easy", href: "/stock-m
 
 const navLinks = [
   { label: "Home", href: "/" },
+  { label: "Courses", href: "/#courses" },
   { label: "About", href: "/about" },
   { label: "Success Stories", href: "/success-stories" },
   { label: "Webinars", href: "/webinars" },
@@ -44,6 +46,7 @@ const navLinks = [
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [fraudAlertVisible, setFraudAlertVisible] = useState(true);
   const [location] = useLocation();
@@ -116,21 +119,20 @@ export default function Navigation() {
 
             {/* Social Media Icons & Language Switcher (Desktop) */}
             <div className="hidden lg:flex items-center gap-3">
-              {/* Free Live Session CTA badge */}
-              <Link href="/beyond-9-to-5">
-                <span
-                  className="px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-sm hover:scale-105 whitespace-nowrap"
-                  style={{
-                    background: "linear-gradient(135deg, #102A43 0%, #091C2D 100%)",
-                    border: "1px solid #D4AF37",
-                    color: "#E5B84A",
-                    letterSpacing: "0.03em",
-                  }}
-                >
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  FREE SESSION: SEPT 30
-                </span>
-              </Link>
+              {/* Courses Waitlist CTA badge */}
+              <button
+                onClick={() => setWaitlistOpen(true)}
+                className="px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-sm hover:scale-105 whitespace-nowrap"
+                style={{
+                  background: "linear-gradient(135deg, #102A43 0%, #091C2D 100%)",
+                  border: "1px solid #D4AF37",
+                  color: "#E5B84A",
+                  letterSpacing: "0.03em",
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                JOIN WAITLIST
+              </button>
 
               <div className="flex items-center gap-2 border-r border-gray-200 pr-3 mr-1">
                 {/* Instagram */}
@@ -273,29 +275,28 @@ export default function Navigation() {
             overflowY: "auto"
           }}>
             <div className="container py-5 space-y-1">
-              {/* Mobile Free Session Callout */}
-              <Link href="/beyond-9-to-5">
-                <div
-                  className="mx-1 mb-3 p-3 rounded-xl cursor-pointer text-white flex items-center justify-between"
-                  style={{
-                    background: "linear-gradient(135deg, #091C2D 0%, #102A43 100%)",
-                    border: "1px solid rgba(212, 175, 55, 0.4)",
-                  }}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <div>
-                      <div className="text-xs font-bold" style={{ color: "#E5B84A" }}>
-                        FREE LIVE SESSION • SEPT 30
-                      </div>
-                      <div className="text-[11px] text-white/80">Beyond 9 to 5 By Sounia</div>
+              {/* Mobile Waitlist Callout */}
+              <div
+                onClick={() => { setIsOpen(false); setWaitlistOpen(true); }}
+                className="mx-1 mb-3 p-3 rounded-xl cursor-pointer text-white flex items-center justify-between"
+                style={{
+                  background: "linear-gradient(135deg, #091C2D 0%, #102A43 100%)",
+                  border: "1px solid rgba(212, 175, 55, 0.4)",
+                }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <div>
+                    <div className="text-xs font-bold" style={{ color: "#E5B84A" }}>
+                      NEW COURSES • WAITLIST OPEN
                     </div>
+                    <div className="text-[11px] text-white/80">Options & Long-Term Investing (Price TBD)</div>
                   </div>
-                  <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#D4AF37] text-[#091C2D]">
-                    RSVP
-                  </span>
                 </div>
-              </Link>
+                <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#D4AF37] text-[#091C2D]">
+                  JOIN
+                </span>
+              </div>
 
               {navLinks.map((link: any) => (
                 <Link key={link.href} href={link.href}>
@@ -375,6 +376,8 @@ export default function Navigation() {
           </div>
         </div>
       )}
+
+      <WaitlistModal open={waitlistOpen} onOpenChange={setWaitlistOpen} />
     </>
   );
 }

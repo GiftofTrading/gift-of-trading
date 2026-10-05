@@ -57,9 +57,9 @@ function Router() {
         <Route path="/stock-market-made-easy" component={StockMarketMadeEasy} />
         <Route path="/masterclass" component={Masterclass} />
         <Route path="/success-stories" component={SuccessStories} />
-        <Route path="/beyond-9-to-5" component={Beyond9to5} />
-        <Route path="/free-session" component={Beyond9to5} />
-        <Route path="/live" component={Beyond9to5} />
+        <Route path="/beyond-9-to-5">{() => { useEffect(() => { window.location.replace("/#courses"); }, []); return null; }}</Route>
+        <Route path="/free-session">{() => { useEffect(() => { window.location.replace("/#courses"); }, []); return null; }}</Route>
+        <Route path="/live">{() => { useEffect(() => { window.location.replace("/#courses"); }, []); return null; }}</Route>
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
