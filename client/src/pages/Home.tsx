@@ -93,12 +93,16 @@ export default function Home() {
                   <BookOpen size={14} /> Options & Investing
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
+                <span className="inline-flex items-center gap-1.5 text-white/90">
+                  <Sparkles size={14} style={{ color: "#E5B84A" }} /> 100% Pre-Recorded
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
                 <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
                   Price: TBD
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
                 <span className="inline-flex items-center gap-1.5 text-white/90">
-                  <Users size={14} style={{ color: "#E5B84A" }} /> Waitlist Open
+                  <Users size={14} style={{ color: "#E5B84A" }} /> Learn At Your Own Pace
                 </span>
               </div>
 
@@ -141,13 +145,13 @@ export default function Home() {
             <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 48px" }}>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D4AF37]/15 text-[#9C6B14] border border-[#D4AF37]/35 mb-3 uppercase tracking-wider">
                 <Sparkles size={13} />
-                UPCOMING EDUCATIONAL COHORTS
+                100% PRE-RECORDED VIDEO COURSES
               </div>
               <h2 className="section-title-large" style={{ marginBottom: "14px" }}>
-                Curated Courses • Open for Waitlist
+                Pre-Recorded Courses • Learn at Your Own Pace
               </h2>
               <p className="section-subtitle" style={{ margin: "0 auto", fontSize: "16px", color: "var(--e-muted)" }}>
-                Our next intakes are currently in preparation. Join the priority waitlist to secure early notification, limited cohort access, and special early-bird tuition rates.
+                All classes are completely pre-recorded video modules — no live classes and no Q&amp;A sessions. Watch on demand, rewatch anytime, and learn at your own pace without scheduling constraints. Join the priority waitlist to secure early access and special early-bird tuition.
               </p>
             </div>
 
@@ -162,7 +166,7 @@ export default function Home() {
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-emerald-500/15 text-emerald-800 border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      WAITLIST OPEN
+                      100% RECORDED • WAITLIST OPEN
                     </span>
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-[#D4AF37]/20 text-[#9C6B14] border border-[#D4AF37]/40">
                       PRICE: TBD
@@ -177,7 +181,7 @@ export default function Home() {
                   </h3>
 
                   <p className="text-sm text-[#5B6472] leading-relaxed mb-6">
-                    A comprehensive, step-by-step options curriculum tailored for beginners. Master calls, puts, and defined-risk spread strategies to generate income and hedge capital without speculative guesswork.
+                    A comprehensive, pre-recorded options curriculum tailored for beginners. Master calls, puts, and defined-risk spread strategies at your own speed — without live scheduling pressure or speculative guesswork.
                   </p>
 
                   {/* Highlights Box */}
@@ -187,6 +191,10 @@ export default function Home() {
                       What You'll Master:
                     </div>
                     <ul className="space-y-2 text-xs text-[#0B1E33]">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
+                        <span><strong>100% Pre-Recorded Video:</strong> Learn at your own pace with unlimited on-demand rewatches (no live classes, no Q&amp;A).</span>
+                      </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
                         <span><strong>Options Fundamentals:</strong> Calls, puts, strike prices, expiration dates & exercise mechanics.</span>
@@ -201,11 +209,11 @@ export default function Home() {
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Brokerage Execution:</strong> Step-by-step order entry walkthroughs on IBKR and Webull.</span>
+                        <span><strong>Brokerage Execution:</strong> Step-by-step order entry walkthrough recordings on IBKR and Webull.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Live Case Studies:</strong> Real-market analysis and direct interactive Q&A with Sounia.</span>
+                        <span><strong>Recorded Case Studies:</strong> Real-market chart breakdowns analyzed step-by-step by Sounia.</span>
                       </li>
                     </ul>
                   </div>
@@ -215,7 +223,7 @@ export default function Home() {
                 <div className="pt-4 border-t border-[#E5E2D9] space-y-3">
                   <div className="flex items-baseline justify-between">
                     <div>
-                      <div className="text-xs text-[#5B6472] uppercase font-semibold">Cohort Tuition</div>
+                      <div className="text-xs text-[#5B6472] uppercase font-semibold">Course Tuition</div>
                       <div className="text-2xl font-bold text-[#0B1E33]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         Price: TBD
                       </div>
@@ -247,7 +255,7 @@ export default function Home() {
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-emerald-500/15 text-emerald-800 border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      WAITLIST OPEN
+                      100% RECORDED • WAITLIST OPEN
                     </span>
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-[#D4AF37]/20 text-[#9C6B14] border border-[#D4AF37]/40">
                       PRICE: TBD
@@ -262,7 +270,7 @@ export default function Home() {
                   </h3>
 
                   <p className="text-sm text-[#5B6472] leading-relaxed mb-6">
-                    Build a resilient, generational investment portfolio engineered to compound wealth across all market cycles. Learn fundamental stock screening, index allocation, and dividend growth strategies.
+                    A self-paced, pre-recorded video masterclass engineered to help you compound wealth across all market cycles. Learn fundamental stock screening, index allocation, and dividend growth on your own schedule.
                   </p>
 
                   {/* Highlights Box */}
@@ -272,6 +280,10 @@ export default function Home() {
                       What You'll Master:
                     </div>
                     <ul className="space-y-2 text-xs text-[#0B1E33]">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
+                        <span><strong>100% Pre-Recorded Video:</strong> Complete self-paced access to all video lessons with zero scheduling conflicts or live Q&amp;A.</span>
+                      </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
                         <span><strong>Fundamental Valuation:</strong> Reading corporate balance sheets, cash flows, and P/E ratios.</span>
@@ -300,7 +312,7 @@ export default function Home() {
                 <div className="pt-4 border-t border-[#E5E2D9] space-y-3">
                   <div className="flex items-baseline justify-between">
                     <div>
-                      <div className="text-xs text-[#5B6472] uppercase font-semibold">Cohort Tuition</div>
+                      <div className="text-xs text-[#5B6472] uppercase font-semibold">Course Tuition</div>
                       <div className="text-2xl font-bold text-[#0B1E33]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
                         Price: TBD
                       </div>
@@ -459,29 +471,36 @@ export default function Home() {
               <p className="section-label-gold">Common Inquiries</p>
               <h2 className="section-title-large">Frequently Asked Questions</h2>
               <p className="section-subtitle" style={{ margin: "0 auto" }}>
-                Everything you need to know about upcoming course cohorts and waitlist enrollment.
+                Everything you need to know about upcoming pre-recorded video courses and waitlist enrollment.
               </p>
             </div>
 
             <div className="faq-wrap">
+              <details className="faq-detail" open>
+                <summary>Are these classes recorded or live? Is there a Q&amp;A?</summary>
+                <div className="faq-answer">
+                  All lessons in both courses are <strong>100% pre-recorded video classes</strong>. There are <strong>no live sessions and no live Q&amp;A</strong>. The curriculum is designed so you can learn entirely at your own pace, on your own schedule, with unlimited rewatches anytime you need.
+                </div>
+              </details>
+
               <details className="faq-detail">
                 <summary>What is the price of the courses?</summary>
                 <div className="faq-answer">
-                  Pricing for both the Beginner Options Course with Strategy and the Long Term Investing Course is currently <strong>Price: TBD</strong> (To Be Determined). Joining the priority waitlist is 100% free and gives you first access to discounted early-bird tuition before enrollment opens publicly.
+                  Pricing for both the Beginner Options Course with Strategy and the Long Term Investing Course is currently <strong>Price: TBD</strong> (To Be Determined). Joining the priority waitlist is 100% free and gives you first access to discounted early-bird tuition when the pre-recorded video modules are released.
                 </div>
               </details>
 
               <details className="faq-detail">
                 <summary>Who is the Beginner Options Course with Strategy for?</summary>
                 <div className="faq-answer">
-                  This course is specifically structured for complete beginners and intermediate traders who want to learn options safely. Sounia teaches defined-risk strategies, position sizing, strike selection, and risk management without financial jargon.
+                  This course is specifically structured for complete beginners and intermediate traders who want to learn options safely. Sounia teaches defined-risk strategies, position sizing, strike selection, and risk management through detailed recorded walkthroughs without financial jargon.
                 </div>
               </details>
 
               <details className="faq-detail">
                 <summary>What will I learn in the Long Term Investing Course?</summary>
                 <div className="faq-answer">
-                  The Long Term Investing Course teaches you how to build a durable, compounding investment portfolio across stocks and index ETFs. You will master fundamental company evaluation, dollar-cost averaging, asset allocation, and the psychology to stay calm through market cycles.
+                  The Long Term Investing Course teaches you how to build a durable, compounding investment portfolio across stocks and index ETFs. Through pre-recorded modules, you will master fundamental company evaluation, dollar-cost averaging, asset allocation, and the psychology to stay calm through market cycles.
                 </div>
               </details>
 
@@ -524,7 +543,7 @@ export default function Home() {
                 marginBottom: "12px",
               }}
             >
-              UPCOMING 2026 COHORTS
+              100% PRE-RECORDED VIDEO COURSES
             </span>
 
             <h2
@@ -537,7 +556,7 @@ export default function Home() {
                 marginBottom: "16px",
               }}
             >
-              Ready to Build True Market Literacy?
+              Ready to Learn the Market at Your Own Pace?
             </h2>
 
             <p
@@ -548,7 +567,7 @@ export default function Home() {
                 marginBottom: "32px",
               }}
             >
-              Enrollment capacity is intentionally capped to guarantee personal attention and live instructor access. Join the waitlist today to lock in early-bird tuition (Price: TBD) and priority registration.
+              All classes are completely pre-recorded so you can learn on your own schedule with zero live classes, no Q&amp;A sessions, and unlimited on-demand rewatches. Join the priority waitlist today to lock in early-bird tuition (Price: TBD).
             </p>
 
             <button

@@ -290,7 +290,7 @@ export default function Navigation() {
                     <div className="text-xs font-bold" style={{ color: "#E5B84A" }}>
                       NEW COURSES • WAITLIST OPEN
                     </div>
-                    <div className="text-[11px] text-white/80">Options & Long-Term Investing (Price TBD)</div>
+                    <div className="text-[11px] text-white/80">Options & Long-Term Investing (Price TBD • Pre-Recorded)</div>
                   </div>
                 </div>
                 <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#D4AF37] text-[#091C2D]">
