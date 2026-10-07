@@ -84,7 +84,7 @@ export function WaitlistModal({
               </DialogTitle>
               <DialogDescription className="text-white/80 text-sm leading-relaxed max-w-sm mx-auto text-center">
                 We've reserved your priority spot for{" "}
-                <strong className="text-[#E5B84A]">{course}</strong>. These classes are 100% pre-recorded so you can learn at your own pace on your own schedule. When enrollment opens, you'll be the first to receive early-bird access and special launch pricing.
+                <strong className="text-[#E5B84A]">{course}</strong>. All lessons are recorded so you can learn at your own pace on your own schedule. When enrollment opens, you'll be the first to receive early-bird access and special launch pricing.
               </DialogDescription>
             </DialogHeader>
 
@@ -106,7 +106,7 @@ export function WaitlistModal({
             <div className="flex items-center justify-between">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-[#D4AF37]/15 text-[#E5B84A] border border-[#D4AF37]/35">
                 <Sparkles size={13} />
-                PRIORITY WAITLIST • 100% PRE-RECORDED
+                PRIORITY WAITLIST • SELF-PACED
               </div>
               <span className="text-[11px] font-bold px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                 PRICE: TBD
@@ -121,7 +121,7 @@ export function WaitlistModal({
                 Join the Course Waitlist
               </DialogTitle>
               <DialogDescription className="text-white/70 text-xs leading-relaxed">
-                Be the first to know when enrollment opens. All courses are 100% pre-recorded video classes (no live Q&A sessions) — watch on demand and learn at your own pace.
+                Be the first to know when enrollment opens. Since all lessons are recorded for self-paced study (no live Q&amp;A sessions), you can watch on demand and learn at your own pace.
               </DialogDescription>
             </DialogHeader>
 

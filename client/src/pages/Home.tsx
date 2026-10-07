@@ -94,7 +94,7 @@ export default function Home() {
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
                 <span className="inline-flex items-center gap-1.5 text-white/90">
-                  <Sparkles size={14} style={{ color: "#E5B84A" }} /> 100% Pre-Recorded
+                  <Sparkles size={14} style={{ color: "#E5B84A" }} /> Self-Paced Video
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
                 <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
@@ -145,13 +145,13 @@ export default function Home() {
             <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 48px" }}>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D4AF37]/15 text-[#9C6B14] border border-[#D4AF37]/35 mb-3 uppercase tracking-wider">
                 <Sparkles size={13} />
-                100% PRE-RECORDED VIDEO COURSES
+                UPCOMING COURSES • SELF-PACED
               </div>
               <h2 className="section-title-large" style={{ marginBottom: "14px" }}>
-                Pre-Recorded Courses • Learn at Your Own Pace
+                Curated Courses • Learn at Your Own Pace
               </h2>
               <p className="section-subtitle" style={{ margin: "0 auto", fontSize: "16px", color: "var(--e-muted)" }}>
-                All classes are completely pre-recorded video modules — no live classes and no Q&amp;A sessions. Watch on demand, rewatch anytime, and learn at your own pace without scheduling constraints. Join the priority waitlist to secure early access and special early-bird tuition.
+                Designed for flexible, self-paced learning. Since all sessions and lessons are recorded, you can study anytime on your own schedule with no live meeting conflicts (no live Q&amp;A sessions). Join the priority waitlist for early access and special launch tuition.
               </p>
             </div>
 
@@ -166,7 +166,7 @@ export default function Home() {
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-emerald-500/15 text-emerald-800 border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      100% RECORDED • WAITLIST OPEN
+                      WAITLIST OPEN
                     </span>
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-[#D4AF37]/20 text-[#9C6B14] border border-[#D4AF37]/40">
                       PRICE: TBD
@@ -181,7 +181,7 @@ export default function Home() {
                   </h3>
 
                   <p className="text-sm text-[#5B6472] leading-relaxed mb-6">
-                    A comprehensive, pre-recorded options curriculum tailored for beginners. Master calls, puts, and defined-risk spread strategies at your own speed — without live scheduling pressure or speculative guesswork.
+                    A comprehensive options curriculum tailored for beginners. Master calls, puts, and defined-risk spread strategies at your own speed — with lessons recorded for flexible, self-paced learning.
                   </p>
 
                   {/* Highlights Box */}
@@ -193,7 +193,7 @@ export default function Home() {
                     <ul className="space-y-2 text-xs text-[#0B1E33]">
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>100% Pre-Recorded Video:</strong> Learn at your own pace with unlimited on-demand rewatches (no live classes, no Q&amp;A).</span>
+                        <span><strong>Self-Paced Recorded Lessons:</strong> Watch anytime on your schedule and rewatch as often as needed (no live Q&amp;A).</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
@@ -255,7 +255,7 @@ export default function Home() {
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-emerald-500/15 text-emerald-800 border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      100% RECORDED • WAITLIST OPEN
+                      WAITLIST OPEN
                     </span>
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-[#D4AF37]/20 text-[#9C6B14] border border-[#D4AF37]/40">
                       PRICE: TBD
@@ -270,7 +270,7 @@ export default function Home() {
                   </h3>
 
                   <p className="text-sm text-[#5B6472] leading-relaxed mb-6">
-                    A self-paced, pre-recorded video masterclass engineered to help you compound wealth across all market cycles. Learn fundamental stock screening, index allocation, and dividend growth on your own schedule.
+                    A self-paced video curriculum engineered to help you compound wealth across all market cycles. Master fundamental stock screening, index allocation, and dividend growth on your own schedule.
                   </p>
 
                   {/* Highlights Box */}
@@ -282,7 +282,7 @@ export default function Home() {
                     <ul className="space-y-2 text-xs text-[#0B1E33]">
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>100% Pre-Recorded Video:</strong> Complete self-paced access to all video lessons with zero scheduling conflicts or live Q&amp;A.</span>
+                        <span><strong>Self-Paced Recorded Lessons:</strong> Access all modules on demand to learn at your own pace with zero live meeting conflicts.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
@@ -477,16 +477,16 @@ export default function Home() {
 
             <div className="faq-wrap">
               <details className="faq-detail" open>
-                <summary>Are these classes recorded or live? Is there a Q&amp;A?</summary>
+                <summary>Are these classes recorded or live? Is there a Q&amp;A session?</summary>
                 <div className="faq-answer">
-                  All lessons in both courses are <strong>100% pre-recorded video classes</strong>. There are <strong>no live sessions and no live Q&amp;A</strong>. The curriculum is designed so you can learn entirely at your own pace, on your own schedule, with unlimited rewatches anytime you need.
+                  All sessions and lessons are recorded so you can learn at your own pace. Because the curriculum is delivered through recorded modules for on-demand access, there is no live Q&amp;A session. You have the freedom to watch on your own schedule and rewatch lessons whenever you want.
                 </div>
               </details>
 
               <details className="faq-detail">
                 <summary>What is the price of the courses?</summary>
                 <div className="faq-answer">
-                  Pricing for both the Beginner Options Course with Strategy and the Long Term Investing Course is currently <strong>Price: TBD</strong> (To Be Determined). Joining the priority waitlist is 100% free and gives you first access to discounted early-bird tuition when the pre-recorded video modules are released.
+                  Pricing for both the Beginner Options Course with Strategy and the Long Term Investing Course is currently <strong>Price: TBD</strong> (To Be Determined). Joining the priority waitlist is completely free and gives you first access to discounted early-bird tuition when the recorded video modules are released.
                 </div>
               </details>
 
@@ -500,7 +500,7 @@ export default function Home() {
               <details className="faq-detail">
                 <summary>What will I learn in the Long Term Investing Course?</summary>
                 <div className="faq-answer">
-                  The Long Term Investing Course teaches you how to build a durable, compounding investment portfolio across stocks and index ETFs. Through pre-recorded modules, you will master fundamental company evaluation, dollar-cost averaging, asset allocation, and the psychology to stay calm through market cycles.
+                  The Long Term Investing Course teaches you how to build a durable, compounding investment portfolio across stocks and index ETFs. Through recorded modules, you will master fundamental company evaluation, dollar-cost averaging, asset allocation, and the psychology to stay calm through market cycles.
                 </div>
               </details>
 
@@ -543,7 +543,7 @@ export default function Home() {
                 marginBottom: "12px",
               }}
             >
-              100% PRE-RECORDED VIDEO COURSES
+              UPCOMING COURSES • LEARN AT YOUR OWN PACE
             </span>
 
             <h2
@@ -567,7 +567,7 @@ export default function Home() {
                 marginBottom: "32px",
               }}
             >
-              All classes are completely pre-recorded so you can learn on your own schedule with zero live classes, no Q&amp;A sessions, and unlimited on-demand rewatches. Join the priority waitlist today to lock in early-bird tuition (Price: TBD).
+              All sessions are recorded so you can study comfortably on your own schedule with no live meeting pressure or live Q&amp;A conflicts. Join the priority waitlist today for early-bird tuition (Price: TBD).
             </p>
 
             <button
