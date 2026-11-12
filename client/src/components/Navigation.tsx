@@ -288,9 +288,9 @@ export default function Navigation() {
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                   <div>
                     <div className="text-xs font-bold" style={{ color: "#E5B84A" }}>
-                      NEW COURSES • WAITLIST OPEN
+                      NEW COURSE • WAITLIST OPEN
                     </div>
-                    <div className="text-[11px] text-white/80">Options & Long-Term Investing (Price TBD • Pre-Recorded)</div>
+                    <div className="text-[11px] text-white/80">Beginner Options Course (Price TBD • Pre-Recorded)</div>
                   </div>
                 </div>
                 <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#D4AF37] text-[#091C2D]">

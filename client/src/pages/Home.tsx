@@ -24,12 +24,12 @@ export default function Home() {
     updateMetaTags({
       title: "Gift of Trading — Stock & Options Education by Sounia Gill",
       description:
-        "Learn to read the market with discipline. Beginner Options Course with Strategy and Long Term Investing Course now open for waitlist. Price: TBD.",
+        "Learn to read the market with discipline. Beginner Options Course with Strategy now open for waitlist. Price: TBD.",
       keywords:
-        "Gift of Trading, Sounia Gill, Beginner Options Course with Strategy, Long Term Investing Course, stock market education, options trading, priority waitlist",
-      ogTitle: "Gift of Trading — Courses & Priority Waitlist with Sounia Gill",
+        "Gift of Trading, Sounia Gill, Beginner Options Course with Strategy, stock market education, options trading, priority waitlist",
+      ogTitle: "Gift of Trading — Course & Priority Waitlist with Sounia Gill",
       ogDescription:
-        "Beginner Options Course with Strategy & Long Term Investing Course. Open for priority waitlist (Price: TBD).",
+        "Beginner Options Course with Strategy. Open for priority waitlist (Price: TBD).",
       ogImage: "https://giftoftrading.com/images/gift-logo_e37ab5cd.png",
       canonicalUrl: "https://giftoftrading.com/",
     });
@@ -60,7 +60,7 @@ export default function Home() {
                 }}
               >
                 <Sparkles size={13} className="text-[#E5B84A]" />
-                NEW COURSES • WAITLIST NOW OPEN
+                NEW COURSE • WAITLIST NOW OPEN
               </div>
 
               <span className="hero-banner-eyebrow">GIFT OF TRADING ACADEMY</span>
@@ -90,7 +90,7 @@ export default function Home() {
                 }}
               >
                 <span className="inline-flex items-center gap-1.5" style={{ color: "#E5B84A", fontWeight: 600 }}>
-                  <BookOpen size={14} /> Options & Investing
+                  <BookOpen size={14} /> Options Strategy
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
                 <span className="inline-flex items-center gap-1.5 text-white/90">
@@ -118,7 +118,7 @@ export default function Home() {
                   }}
                   onClick={() => trackButtonClick("home_hero_explore_courses")}
                 >
-                  VIEW COURSES <ArrowRight size={17} />
+                  VIEW COURSE <ArrowRight size={17} />
                 </a>
                 <button
                   onClick={() => {
@@ -145,18 +145,18 @@ export default function Home() {
             <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 48px" }}>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D4AF37]/15 text-[#9C6B14] border border-[#D4AF37]/35 mb-3 uppercase tracking-wider">
                 <Sparkles size={13} />
-                UPCOMING COURSES • SELF-PACED
+                UPCOMING COURSE • SELF-PACED
               </div>
               <h2 className="section-title-large" style={{ marginBottom: "14px" }}>
-                Curated Courses • Learn at Your Own Pace
+                Curated Course • Learn at Your Own Pace
               </h2>
               <p className="section-subtitle" style={{ margin: "0 auto", fontSize: "16px", color: "var(--e-muted)" }}>
                 Designed for flexible, self-paced learning. Since all sessions and lessons are recorded, you can study anytime on your own schedule with no live meeting conflicts (no live Q&amp;A sessions). Join the priority waitlist for early access and special launch tuition.
               </p>
             </div>
 
-            {/* Courses 2-Column Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            {/* Featured Course Card (Long Term Investing Course hidden for now) */}
+            <div className="max-w-2xl mx-auto">
               {/* Course 1: Beginner Options Course with Strategy */}
               <div className="bg-[#FAF9F6] border-2 border-[#D4AF37]/50 rounded-2xl p-7 lg:p-9 flex flex-col justify-between shadow-md hover:shadow-xl transition-all relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/10 rounded-full blur-2xl pointer-events-none" />
@@ -238,95 +238,6 @@ export default function Home() {
                       setSelectedCourse("Beginner Options Course with Strategy");
                       setWaitlistOpen(true);
                       trackButtonClick("home_card_options_waitlist");
-                    }}
-                    className="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-[#091C2D] bg-[#D4AF37] hover:bg-[#E5C358] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    JOIN WAITLIST — PRICE: TBD <ArrowRight size={16} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Course 2: Long Term Investing Course */}
-              <div className="bg-[#FAF9F6] border-2 border-[#D4AF37]/50 rounded-2xl p-7 lg:p-9 flex flex-col justify-between shadow-md hover:shadow-xl transition-all relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#2E6B47]/10 rounded-full blur-2xl pointer-events-none" />
-
-                <div>
-                  {/* Badges */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-emerald-500/15 text-emerald-800 border border-emerald-500/30">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      WAITLIST OPEN
-                    </span>
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-[#D4AF37]/20 text-[#9C6B14] border border-[#D4AF37]/40">
-                      PRICE: TBD
-                    </span>
-                  </div>
-
-                  <h3
-                    className="text-2xl lg:text-3xl font-bold text-[#0B1E33] mb-3 group-hover:text-[#9C6B14] transition-colors"
-                    style={{ fontFamily: "'Newsreader', Georgia, serif" }}
-                  >
-                    Long Term Investing Course
-                  </h3>
-
-                  <p className="text-sm text-[#5B6472] leading-relaxed mb-6">
-                    A self-paced video curriculum engineered to help you compound wealth across all market cycles. Master fundamental stock screening, index allocation, and dividend growth on your own schedule.
-                  </p>
-
-                  {/* Highlights Box */}
-                  <div className="bg-white border border-[#E5E2D9] rounded-xl p-5 mb-6 space-y-3">
-                    <div className="text-xs font-bold uppercase tracking-wider text-[#0B1E33] flex items-center gap-1.5">
-                      <TrendingUp size={14} className="text-[#2E6B47]" />
-                      What You'll Master:
-                    </div>
-                    <ul className="space-y-2 text-xs text-[#0B1E33]">
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Self-Paced Recorded Lessons:</strong> Access all modules on demand to learn at your own pace with zero live meeting conflicts.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Fundamental Valuation:</strong> Reading corporate balance sheets, cash flows, and P/E ratios.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Portfolio Architecture:</strong> Index ETFs vs. individual equities for reliable compound growth.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Disciplined Dollar-Cost Averaging:</strong> Systematic rebalancing rules without timing anxiety.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Tax-Advantaged Compounding:</strong> Structuring TFSA, RRSP, 401(k), and dividend reinvestments.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Investor Psychology:</strong> Surviving market drawdowns calmly and capitalizing on bear markets.</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Footer / CTA */}
-                <div className="pt-4 border-t border-[#E5E2D9] space-y-3">
-                  <div className="flex items-baseline justify-between">
-                    <div>
-                      <div className="text-xs text-[#5B6472] uppercase font-semibold">Course Tuition</div>
-                      <div className="text-2xl font-bold text-[#0B1E33]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                        Price: TBD
-                      </div>
-                    </div>
-                    <span className="text-[11px] text-[#9C6B14] font-medium bg-[#FDF6E8] px-2.5 py-1 rounded border border-[#D4AF37]/30">
-                      Early-bird rate on waitlist
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      setSelectedCourse("Long-Term Investing Course");
-                      setWaitlistOpen(true);
-                      trackButtonClick("home_card_investing_waitlist");
                     }}
                     className="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-[#091C2D] bg-[#D4AF37] hover:bg-[#E5C358] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
                   >
@@ -484,9 +395,9 @@ export default function Home() {
               </details>
 
               <details className="faq-detail">
-                <summary>What is the price of the courses?</summary>
+                <summary>What is the price of the course?</summary>
                 <div className="faq-answer">
-                  Pricing for both the Beginner Options Course with Strategy and the Long Term Investing Course is currently <strong>Price: TBD</strong> (To Be Determined). Joining the priority waitlist is completely free and gives you first access to discounted early-bird tuition when the recorded video modules are released.
+                  Pricing for the Beginner Options Course with Strategy is currently <strong>Price: TBD</strong> (To Be Determined). Joining the priority waitlist is completely free and gives you first access to discounted early-bird tuition when the recorded video modules are released.
                 </div>
               </details>
 
@@ -494,13 +405,6 @@ export default function Home() {
                 <summary>Who is the Beginner Options Course with Strategy for?</summary>
                 <div className="faq-answer">
                   This course is specifically structured for complete beginners and intermediate traders who want to learn options safely. Sounia teaches defined-risk strategies, position sizing, strike selection, and risk management through detailed recorded walkthroughs without financial jargon.
-                </div>
-              </details>
-
-              <details className="faq-detail">
-                <summary>What will I learn in the Long Term Investing Course?</summary>
-                <div className="faq-answer">
-                  The Long Term Investing Course teaches you how to build a durable, compounding investment portfolio across stocks and index ETFs. Through recorded modules, you will master fundamental company evaluation, dollar-cost averaging, asset allocation, and the psychology to stay calm through market cycles.
                 </div>
               </details>
 
@@ -543,7 +447,7 @@ export default function Home() {
                 marginBottom: "12px",
               }}
             >
-              UPCOMING COURSES • LEARN AT YOUR OWN PACE
+              UPCOMING COURSE • LEARN AT YOUR OWN PACE
             </span>
 
             <h2

@@ -25,8 +25,10 @@ export function WaitlistModal({
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    if (defaultCourse) {
+    if (defaultCourse && defaultCourse !== "Long-Term Investing Course" && defaultCourse !== "Long Term Investing Course") {
       setCourse(defaultCourse);
+    } else {
+      setCourse("Beginner Options Course with Strategy");
     }
   }, [defaultCourse]);
 
@@ -134,7 +136,6 @@ export function WaitlistModal({
                 <div className="grid grid-cols-1 gap-2">
                   {[
                     "Beginner Options Course with Strategy",
-                    "Long-Term Investing Course",
                   ].map((c) => (
                     <button
                       key={c}
