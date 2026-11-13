@@ -86,7 +86,7 @@ export function WaitlistModal({
               </DialogTitle>
               <DialogDescription className="text-white/80 text-sm leading-relaxed max-w-sm mx-auto text-center">
                 We've reserved your priority spot for{" "}
-                <strong className="text-[#E5B84A]">{course}</strong>. All lessons are recorded so you can learn at your own pace on your own schedule. When enrollment opens, you'll be the first to receive early-bird access and special launch pricing.
+                <strong className="text-[#E5B84A]">{course}</strong>. All material is <strong className="text-white">100% pre-recorded (no live classes)</strong>, and you can <strong className="text-[#E5B84A]">ask questions anytime in our Discord classroom</strong>. When enrollment opens, you'll be the first to receive early-bird access and special launch pricing.
               </DialogDescription>
             </DialogHeader>
 
@@ -123,7 +123,7 @@ export function WaitlistModal({
                 Join the Course Waitlist
               </DialogTitle>
               <DialogDescription className="text-white/70 text-xs leading-relaxed">
-                Be the first to know when enrollment opens. Since all lessons are recorded for self-paced study (no live Q&amp;A sessions), you can watch on demand and learn at your own pace.
+                Be the first to know when enrollment opens. All material is <strong className="text-white">100% pre-recorded with no live classes</strong> so you can learn at your own pace, and you can <strong className="text-[#E5B84A]">ask questions anytime in our dedicated Discord classroom</strong>.
               </DialogDescription>
             </DialogHeader>
 

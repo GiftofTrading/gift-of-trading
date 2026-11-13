@@ -12,6 +12,7 @@ import {
   Sparkles,
   BookOpen,
   TrendingUp,
+  MessageSquare,
 } from "lucide-react";
 import { WaitlistModal } from "@/components/WaitlistModal";
 import "./HomeEditorial.css";
@@ -24,12 +25,12 @@ export default function Home() {
     updateMetaTags({
       title: "Gift of Trading — Stock & Options Education by Sounia Gill",
       description:
-        "Learn to read the market with discipline. Beginner Options Course with Strategy now open for waitlist. Price: TBD.",
+        "Learn to read the market with discipline. Beginner Options Course with Strategy: 100% pre-recorded video material (no live classes) with Discord classroom Q&A support. Price: TBD.",
       keywords:
-        "Gift of Trading, Sounia Gill, Beginner Options Course with Strategy, stock market education, options trading, priority waitlist",
+        "Gift of Trading, Sounia Gill, Beginner Options Course with Strategy, stock market education, options trading, priority waitlist, discord classroom",
       ogTitle: "Gift of Trading — Course & Priority Waitlist with Sounia Gill",
       ogDescription:
-        "Beginner Options Course with Strategy. Open for priority waitlist (Price: TBD).",
+        "Beginner Options Course with Strategy: 100% pre-recorded (no live classes) with Discord classroom Q&A. Open for priority waitlist (Price: TBD).",
       ogImage: "https://giftoftrading.com/images/gift-logo_e37ab5cd.png",
       canonicalUrl: "https://giftoftrading.com/",
     });
@@ -93,16 +94,16 @@ export default function Home() {
                   <BookOpen size={14} /> Options Strategy
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
-                <span className="inline-flex items-center gap-1.5 text-white/90">
-                  <Sparkles size={14} style={{ color: "#E5B84A" }} /> Self-Paced Video
+                <span className="inline-flex items-center gap-1.5 text-white/95">
+                  <Sparkles size={14} style={{ color: "#E5B84A" }} /> <strong>100% Pre-Recorded (No Live Classes)</strong>
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
+                <span className="inline-flex items-center gap-1.5 text-white/95">
+                  <MessageSquare size={14} style={{ color: "#E5B84A" }} /> <strong>Discord Classroom Q&amp;A</strong>
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
                 <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
                   Price: TBD
-                </span>
-                <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
-                <span className="inline-flex items-center gap-1.5 text-white/90">
-                  <Users size={14} style={{ color: "#E5B84A" }} /> Learn At Your Own Pace
                 </span>
               </div>
 
@@ -151,7 +152,7 @@ export default function Home() {
                 Curated Course • Learn at Your Own Pace
               </h2>
               <p className="section-subtitle" style={{ margin: "0 auto", fontSize: "16px", color: "var(--e-muted)" }}>
-                Designed for flexible, self-paced learning. Since all sessions and lessons are recorded, you can study anytime on your own schedule with no live meeting conflicts (no live Q&amp;A sessions). Join the priority waitlist for early access and special launch tuition.
+                Designed for flexible, self-paced learning. All course materials are <strong>100% pre-recorded with no live classes</strong>, allowing you to study comfortably on your own schedule. Have questions? You can <strong>ask questions anytime in our dedicated Discord classroom</strong>! Join the priority waitlist for early access and special launch tuition.
               </p>
             </div>
 
@@ -180,9 +181,24 @@ export default function Home() {
                     Beginner Options Course with Strategy
                   </h3>
 
-                  <p className="text-sm text-[#5B6472] leading-relaxed mb-6">
+                  <p className="text-sm text-[#5B6472] leading-relaxed mb-5">
                     A comprehensive options curriculum tailored for beginners. Master calls, puts, and defined-risk spread strategies at your own speed — with lessons recorded for flexible, self-paced learning.
                   </p>
+
+                  {/* Delivery Format Callout Banner */}
+                  <div className="bg-[#091C2D] text-white rounded-xl p-4 mb-6 border border-[#D4AF37]/40 shadow-sm flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center shrink-0 text-[#E5B84A] mt-0.5">
+                      <MessageSquare size={17} />
+                    </div>
+                    <div className="text-xs leading-relaxed">
+                      <div className="text-sm font-bold text-white mb-0.5">
+                        <strong>100% Pre-Recorded Material • No Live Classes</strong>
+                      </div>
+                      <div className="text-white/85">
+                        Study at your own pace anytime on your schedule. You can <strong>ask questions and get support in our dedicated Discord classroom</strong>!
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Highlights Box */}
                   <div className="bg-white border border-[#E5E2D9] rounded-xl p-5 mb-6 space-y-3">
@@ -193,7 +209,11 @@ export default function Home() {
                     <ul className="space-y-2 text-xs text-[#0B1E33]">
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
-                        <span><strong>Self-Paced Recorded Lessons:</strong> Watch anytime on your schedule and rewatch as often as needed (no live Q&amp;A).</span>
+                        <span><strong>100% Pre-Recorded Video Modules (No Live Classes):</strong> Watch anytime on your schedule and rewatch as often as needed.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
+                        <span><strong>Discord Classroom Q&amp;A:</strong> Have questions while learning? Ask questions and get guidance directly in our dedicated Discord classroom.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 size={15} className="text-[#2E6B47] shrink-0 mt-0.5" />
@@ -388,9 +408,9 @@ export default function Home() {
 
             <div className="faq-wrap">
               <details className="faq-detail" open>
-                <summary>Are these classes recorded or live? Is there a Q&amp;A session?</summary>
+                <summary>Are these classes recorded or live? Can I ask questions?</summary>
                 <div className="faq-answer">
-                  All sessions and lessons are recorded so you can learn at your own pace. Because the curriculum is delivered through recorded modules for on-demand access, there is no live Q&amp;A session. You have the freedom to watch on your own schedule and rewatch lessons whenever you want.
+                  All course materials are <strong>100% pre-recorded video modules with no live classes</strong>. You have the total freedom to study at your own pace and rewatch lessons as often as you like with zero scheduling pressure. Whenever you have questions or need help while going through the curriculum, you can <strong>ask questions directly in our dedicated Discord classroom</strong>!
                 </div>
               </details>
 
@@ -471,7 +491,7 @@ export default function Home() {
                 marginBottom: "32px",
               }}
             >
-              All sessions are recorded so you can study comfortably on your own schedule with no live meeting pressure or live Q&amp;A conflicts. Join the priority waitlist today for early-bird tuition (Price: TBD).
+              All course material is <strong>100% pre-recorded with no live classes</strong> so you can study comfortably on your own schedule. Have questions? You can <strong>ask questions anytime in our dedicated Discord classroom</strong>. Join the priority waitlist today for early-bird tuition (Price: TBD).
             </p>
 
             <button
