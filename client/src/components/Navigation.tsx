@@ -119,9 +119,11 @@ export default function Navigation() {
 
             {/* Social Media Icons & Language Switcher (Desktop) */}
             <div className="hidden lg:flex items-center gap-3">
-              {/* Courses Waitlist CTA badge */}
-              <button
-                onClick={() => setWaitlistOpen(true)}
+              {/* Courses Enroll CTA badge */}
+              <a
+                href="https://whop.com/checkout/plan_DtEnwnGtHg5yF"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-sm hover:scale-105 whitespace-nowrap"
                 style={{
                   background: "linear-gradient(135deg, #102A43 0%, #091C2D 100%)",
@@ -131,8 +133,8 @@ export default function Navigation() {
                 }}
               >
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                JOIN WAITLIST
-              </button>
+                BUY COURSE — $399
+              </a>
 
               <div className="flex items-center gap-2 border-r border-gray-200 pr-3 mr-1">
                 {/* Instagram */}
@@ -275,9 +277,12 @@ export default function Navigation() {
             overflowY: "auto"
           }}>
             <div className="container py-5 space-y-1">
-              {/* Mobile Waitlist Callout */}
-              <div
-                onClick={() => { setIsOpen(false); setWaitlistOpen(true); }}
+              {/* Mobile Buy Course Callout */}
+              <a
+                href="https://whop.com/checkout/plan_DtEnwnGtHg5yF"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
                 className="mx-1 mb-3 p-3 rounded-xl cursor-pointer text-white flex items-center justify-between"
                 style={{
                   background: "linear-gradient(135deg, #091C2D 0%, #102A43 100%)",
@@ -288,15 +293,15 @@ export default function Navigation() {
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                   <div>
                     <div className="text-xs font-bold" style={{ color: "#E5B84A" }}>
-                      NEW COURSE • WAITLIST OPEN
+                      BEGINNER OPTIONS COURSE • $399
                     </div>
-                    <div className="text-[11px] text-white/80">Beginner Options Course (Pre-Recorded • Discord Q&amp;A)</div>
+                    <div className="text-[11px] text-white/80">Pre-Recorded Modules • Discord Classroom Included</div>
                   </div>
                 </div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#D4AF37] text-[#091C2D]">
-                  JOIN
+                <span className="text-xs font-bold px-2.5 py-1 rounded bg-[#D4AF37] text-[#091C2D] whitespace-nowrap ml-2">
+                  BUY $399
                 </span>
-              </div>
+              </a>
 
               {navLinks.map((link: any) => (
                 <Link key={link.href} href={link.href}>

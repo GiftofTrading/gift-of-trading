@@ -25,12 +25,12 @@ export default function Home() {
     updateMetaTags({
       title: "Gift of Trading — Stock & Options Education by Sounia Gill",
       description:
-        "Learn to read the market with discipline. Beginner Options Course with Strategy: 100% pre-recorded video material (no live classes) with Discord classroom Q&A support. Price: TBD.",
+        "Learn to read the market with discipline. Beginner Options Course with Strategy: 100% pre-recorded video material (no live classes) with Discord classroom Q&A support. Buy now for $399.",
       keywords:
-        "Gift of Trading, Sounia Gill, Beginner Options Course with Strategy, stock market education, options trading, priority waitlist, discord classroom",
-      ogTitle: "Gift of Trading — Course & Priority Waitlist with Sounia Gill",
+        "Gift of Trading, Sounia Gill, Beginner Options Course with Strategy, stock market education, options trading, enroll, discord classroom, $399",
+      ogTitle: "Beginner Options Course with Strategy ($399) — Gift of Trading",
       ogDescription:
-        "Beginner Options Course with Strategy: 100% pre-recorded (no live classes) with Discord classroom Q&A. Open for priority waitlist (Price: TBD).",
+        "Beginner Options Course with Strategy: 100% pre-recorded (no live classes) with Discord classroom Q&A. One-time enrollment: $399.",
       ogImage: "https://giftoftrading.com/images/gift-logo_e37ab5cd.png",
       canonicalUrl: "https://giftoftrading.com/",
     });
@@ -61,7 +61,7 @@ export default function Home() {
                 }}
               >
                 <Sparkles size={13} className="text-[#E5B84A]" />
-                NEW COURSE • WAITLIST NOW OPEN
+                NEW COURSE • ENROLLMENT NOW OPEN
               </div>
 
               <span className="hero-banner-eyebrow">GIFT OF TRADING ACADEMY</span>
@@ -102,14 +102,16 @@ export default function Home() {
                   <MessageSquare size={14} style={{ color: "#E5B84A" }} /> <strong>Discord Classroom Q&amp;A</strong>
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.4)" }}>•</span>
-                <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
-                  Price: TBD
+                <span className="inline-flex items-center gap-1.5 text-emerald-400 font-bold text-sm">
+                  $399
                 </span>
               </div>
 
               <div className="hero-banner-actions">
                 <a
-                  href="#courses"
+                  href="https://whop.com/checkout/plan_DtEnwnGtHg5yF"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-banner-gold cursor-pointer"
                   style={{
                     fontSize: "14px",
@@ -117,20 +119,17 @@ export default function Home() {
                     fontWeight: 700,
                     letterSpacing: "0.03em",
                   }}
-                  onClick={() => trackButtonClick("home_hero_explore_courses")}
+                  onClick={() => trackButtonClick("home_hero_buy_course")}
                 >
-                  VIEW COURSE <ArrowRight size={17} />
+                  BUY COURSE — $399 <ArrowRight size={17} />
                 </a>
-                <button
-                  onClick={() => {
-                    setSelectedCourse("Beginner Options Course with Strategy");
-                    setWaitlistOpen(true);
-                    trackButtonClick("home_hero_join_waitlist");
-                  }}
-                  className="cursor-pointer font-bold text-xs uppercase tracking-wider text-white hover:text-[#E5B84A] transition-colors px-4 py-3 rounded-lg border border-white/20 hover:border-[#D4AF37] bg-white/5 backdrop-blur-sm"
+                <a
+                  href="#courses"
+                  className="cursor-pointer font-bold text-xs uppercase tracking-wider text-white hover:text-[#E5B84A] transition-colors px-4 py-3 rounded-lg border border-white/20 hover:border-[#D4AF37] bg-white/5 backdrop-blur-sm inline-flex items-center gap-1.5"
+                  onClick={() => trackButtonClick("home_hero_view_curriculum")}
                 >
-                  Join Waitlist (Price: TBD) →
-                </button>
+                  View Details ↓
+                </a>
               </div>
             </div>
 
@@ -146,13 +145,13 @@ export default function Home() {
             <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 48px" }}>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D4AF37]/15 text-[#9C6B14] border border-[#D4AF37]/35 mb-3 uppercase tracking-wider">
                 <Sparkles size={13} />
-                UPCOMING COURSE • SELF-PACED
+                NOW AVAILABLE • SELF-PACED
               </div>
               <h2 className="section-title-large" style={{ marginBottom: "14px" }}>
                 Curated Course • Learn at Your Own Pace
               </h2>
               <p className="section-subtitle" style={{ margin: "0 auto", fontSize: "16px", color: "var(--e-muted)" }}>
-                Designed for flexible, self-paced learning. All course materials are <strong>100% pre-recorded with no live classes</strong>, allowing you to study comfortably on your own schedule. Have questions? You can <strong>ask questions anytime in our dedicated Discord classroom</strong>! Join the priority waitlist for early access and special launch tuition.
+                Designed for flexible, self-paced learning. All course materials are <strong>100% pre-recorded with no live classes</strong>, allowing you to study comfortably on your own schedule. Have questions? You can <strong>ask questions anytime in our dedicated Discord classroom</strong>! Enroll now for instant lifetime access.
               </p>
             </div>
 
@@ -167,10 +166,10 @@ export default function Home() {
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-emerald-500/15 text-emerald-800 border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      WAITLIST OPEN
+                      ENROLLMENT OPEN
                     </span>
                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-[#D4AF37]/20 text-[#9C6B14] border border-[#D4AF37]/40">
-                      PRICE: TBD
+                      $399 ONE-TIME
                     </span>
                   </div>
 
@@ -245,24 +244,23 @@ export default function Home() {
                     <div>
                       <div className="text-xs text-[#5B6472] uppercase font-semibold">Course Tuition</div>
                       <div className="text-2xl font-bold text-[#0B1E33]" style={{ fontFamily: "'Newsreader', Georgia, serif" }}>
-                        Price: TBD
+                        $399
                       </div>
                     </div>
-                    <span className="text-[11px] text-[#9C6B14] font-medium bg-[#FDF6E8] px-2.5 py-1 rounded border border-[#D4AF37]/30">
-                      Early-bird rate on waitlist
+                    <span className="text-[11px] text-[#2E6B47] font-semibold bg-[#EBF6EE] px-2.5 py-1 rounded border border-[#2E6B47]/30">
+                      Instant Access • One-Time
                     </span>
                   </div>
 
-                  <button
-                    onClick={() => {
-                      setSelectedCourse("Beginner Options Course with Strategy");
-                      setWaitlistOpen(true);
-                      trackButtonClick("home_card_options_waitlist");
-                    }}
+                  <a
+                    href="https://whop.com/checkout/plan_DtEnwnGtHg5yF"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackButtonClick("home_card_options_buy")}
                     className="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-[#091C2D] bg-[#D4AF37] hover:bg-[#E5C358] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    JOIN WAITLIST — PRICE: TBD <ArrowRight size={16} />
-                  </button>
+                    BUY COURSE — $399 <ArrowRight size={16} />
+                  </a>
                 </div>
               </div>
             </div>
@@ -402,7 +400,7 @@ export default function Home() {
               <p className="section-label-gold">Common Inquiries</p>
               <h2 className="section-title-large">Frequently Asked Questions</h2>
               <p className="section-subtitle" style={{ margin: "0 auto" }}>
-                Everything you need to know about upcoming pre-recorded video courses and waitlist enrollment.
+                Everything you need to know about the pre-recorded video course, Discord community, and enrollment.
               </p>
             </div>
 
@@ -417,7 +415,7 @@ export default function Home() {
               <details className="faq-detail">
                 <summary>What is the price of the course?</summary>
                 <div className="faq-answer">
-                  Pricing for the Beginner Options Course with Strategy is currently <strong>Price: TBD</strong> (To Be Determined). Joining the priority waitlist is completely free and gives you first access to discounted early-bird tuition when the recorded video modules are released.
+                  The Beginner Options Course with Strategy is a one-time enrollment of <strong>$399</strong>. There are no recurring fees or hidden charges. You receive instant, lifetime access to all pre-recorded modules and entry to our dedicated Discord classroom.
                 </div>
               </details>
 
@@ -429,9 +427,9 @@ export default function Home() {
               </details>
 
               <details className="faq-detail">
-                <summary>Does joining the waitlist obligate me to enroll?</summary>
+                <summary>How do I access the course after purchasing?</summary>
                 <div className="faq-answer">
-                  No. Joining the waitlist is completely free, carries zero obligation, and requires no credit card. It simply reserves your priority spot so you get notified first with early-bird access.
+                  Once you complete checkout via Whop ($399), you receive immediate access to the course modules inside your student portal, along with an invitation link to join our private Discord classroom where you can ask questions anytime.
                 </div>
               </details>
 
@@ -467,7 +465,7 @@ export default function Home() {
                 marginBottom: "12px",
               }}
             >
-              UPCOMING COURSE • LEARN AT YOUR OWN PACE
+              ENROLL TODAY • LEARN AT YOUR OWN PACE
             </span>
 
             <h2
@@ -491,15 +489,14 @@ export default function Home() {
                 marginBottom: "32px",
               }}
             >
-              All course material is <strong>100% pre-recorded with no live classes</strong> so you can study comfortably on your own schedule. Have questions? You can <strong>ask questions anytime in our dedicated Discord classroom</strong>. Join the priority waitlist today for early-bird tuition (Price: TBD).
+              All course material is <strong>100% pre-recorded with no live classes</strong> so you can study comfortably on your own schedule. Have questions? You can <strong>ask questions anytime in our dedicated Discord classroom</strong>. Enroll today for $399.
             </p>
 
-            <button
-              onClick={() => {
-                setSelectedCourse("Beginner Options Course with Strategy");
-                setWaitlistOpen(true);
-                trackButtonClick("home_bottom_join_waitlist");
-              }}
+            <a
+              href="https://whop.com/checkout/plan_DtEnwnGtHg5yF"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackButtonClick("home_bottom_buy_course")}
               className="btn-banner-gold cursor-pointer"
               style={{
                 fontSize: "16px",
@@ -513,8 +510,8 @@ export default function Home() {
                 boxShadow: "0 8px 32px rgba(212, 168, 71, 0.45)",
               }}
             >
-              JOIN THE WAITLIST (PRICE: TBD) <ArrowRight size={20} />
-            </button>
+              ENROLL NOW — $399 <ArrowRight size={20} />
+            </a>
 
             <p
               style={{
@@ -523,7 +520,7 @@ export default function Home() {
                 marginTop: "18px",
               }}
             >
-              Zero spam • No credit card required • Unsubscribe anytime
+              Instant access via Whop • Secure checkout • Discord classroom included
             </p>
           </div>
         </section>
